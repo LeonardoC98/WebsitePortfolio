@@ -139,22 +139,23 @@ function initTagFilter() {
         const option = document.createElement('div');
         option.className = 'tag-option';
         
+        const label = document.createElement('label');
+        
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
         checkbox.value = tag;
         checkbox.id = 'tag_' + tag.replace(/\s/g, '_');
         
-        const label = document.createElement('label');
-        label.textContent = tag;
-        label.htmlFor = checkbox.id;
-        label.style.cursor = 'pointer';
+        const labelText = document.createElement('span');
+        labelText.textContent = tag;
         
         checkbox.addEventListener('change', function() {
             updateSelectedTagsDisplay();
             updatePortfolioWithFilters();
         });
         
-        option.appendChild(checkbox);
+        label.appendChild(checkbox);
+        label.appendChild(labelText);
         option.appendChild(label);
         list.appendChild(option);
     });
