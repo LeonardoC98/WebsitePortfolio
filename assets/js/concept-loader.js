@@ -48,7 +48,7 @@ async function loadConceptData() {
         // Load dynamic content sections from local content files
         const contentContainer = document.getElementById('conceptContentSections');
         if (contentContainer) {
-            const lang = localStorage.getItem('language') || 'en';
+            const lang = currentLanguage || localStorage.getItem('language') || 'en';
             try {
                 const contentResponse = await fetch(`content-${lang}.json`);
                 if (contentResponse.ok) {
@@ -79,9 +79,9 @@ async function loadConceptData() {
 
 // Load when i18n is ready
 function initConceptPage() {
-    // Wait for i18n to be loaded
+    // Wait for i18n to be loaded with translations
     const checkI18n = setInterval(() => {
-        if (typeof t === 'function') {
+        if (typeof t === 'function' && typeof translations !== 'undefined' && Object.keys(translations).length > 0) {
             clearInterval(checkI18n);
             loadConceptData();
         }

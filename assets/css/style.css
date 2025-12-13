@@ -218,7 +218,7 @@ body {
     text-align: center;
     position: relative;
     overflow: hidden;
-    min-height: 500px;
+    min-height: 300px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -827,7 +827,7 @@ body {
     }
 
     .hero {
-        min-height: 350px;
+        min-height: 300px;
     }
 
     .featured {
@@ -858,9 +858,9 @@ body {
 }
 
 /* ===== ABOUT PAGE STYLES ===== */
-.about-hero {
+.hero.about-hero {
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-    min-height: 400px;
+    min-height: 300px !important;
 }
 
 .about-page {
