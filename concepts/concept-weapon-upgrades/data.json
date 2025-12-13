@@ -1,0 +1,27 @@
+{
+  "id": "concept-weapon-upgrades",
+  "title": "Weapon Upgrades System",
+  "subtitle": "A sophisticated upgrade system with deep progression",
+  "subtitle_de": "Ein durchdachtes Upgrade-System mit tiefgehender Progression",
+  "description": "A sophisticated weapon upgrade system with deep progression and extensive customization options.",
+  "description_de": "Ein durchdachtes Upgrade-System für Waffen mit tiefgehender Progression und Anpassungsmöglichkeiten.",
+  "image": "images/weaponupgrade.jpg",
+  "hero_image": "images/weaponupgrade.jpg",
+  "genre": "Action RPG",
+  "platforms": ["PC", "Console"],
+  "type": "Single-Player / Multiplayer",
+  "overview": "An innovative weapon upgrade system that combines strategic depth with individual customization. Players can develop their weapons through various upgrade paths and adapt them to their playstyle.",
+  "overview_de": "Ein innovatives Waffen-Upgrade-System, das strategische Tiefe mit individueller Anpassung verbindet. Spieler können ihre Waffen durch verschiedene Upgrade-Pfade entwickeln und an ihren Spielstil anpassen.",
+  "mechanics": [
+    {
+      "name": "Upgrade System",
+      "description": "Tiered improvement system with multiple upgrade paths and meaningful choices",
+      "description_de": "Stufenweises Verbesserungs-System mit mehreren Upgrade-Pfaden und Entscheidungen"
+    },
+    {
+      "name": "Weapon Customization",
+      "description": "Individual adaptation and specialization of weapons for different playstyles",
+      "description_de": "Individuelle Anpassung und Spezialisierung der Waffen für verschiedene Spielstile"
+    }
+  ]
+}

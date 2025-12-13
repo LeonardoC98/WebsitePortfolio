@@ -72,6 +72,18 @@
     "interestNarrative": "Narrative Design",
     "interestNarrativeDesc": "Geschichten durch Mechaniken"
   },
+  "contact": {
+    "title": "Kontakt",
+    "subtitle": "Lass uns über dein nächstes Projekt sprechen",
+    "infoTitle": "Kontaktinformationen",
+    "name": "Name",
+    "email": "Email",
+    "phone": "Telefon",
+    "location": "Standort",
+    "socialTitle": "Social Media",
+    "ctaTitle": "Interessiert an meinen Konzepten?",
+    "ctaButton": "Portfolio ansehen"
+  },
   "footer": {
     "copyright": "© 2025 Game Concept Portfolio. Alle Rechte vorbehalten."
   }

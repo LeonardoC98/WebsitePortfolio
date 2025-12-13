@@ -7,7 +7,7 @@ const portfolioData = [
         title: 'Dungeon Game Concept',
         description: 'Replayability through hunting mastery for drops and level resets for skill mastery.',
         image: 'concepts/concept-dungeon/images/dungeon.jpg',
-        tags: ['System', 'Looting', 'Mastery', 'Leveling', 'Exploration'],
+        tags: ['System', 'Progression', 'Enemy', 'PVM'],
         link: 'concepts/concept-dungeon/index.html',
         overview: 'Ein strategisches Dungeon-Konzept mit innovativen Mechaniken.',
         mechanics: [
@@ -17,15 +17,30 @@ const portfolioData = [
     },
     {
         id: 'concept-puzzle',
-        title: 'Puzzle Adventure',
+        title: 'TCG Card Game',
         description: 'Ein innovatives Rätsel-Adventure mit physikalischen Interaktionen und Umweltpuzzles.',
         image: 'concepts/concept-puzzle/images/puzzle.jpg',
-        tags: ['Puzzle', 'Adventure', 'Physics'],
+        tags: ['Game Concept', 'Card Game', 'PVP'],
         link: 'concepts/concept-puzzle/index.html',
         overview: 'Umweltbasierte Rätsel mit eleganten Lösungen.',
         mechanics: [
             { name: 'Physics Puzzles', description: 'Schwerkraft und Objekt-Interaktionen' },
             { name: 'Environmental Clues', description: 'Umwelt erzählt die Geschichte' }
+        ]
+    },
+    {
+        id: 'concept-weapon-upgrades',
+        title: 'Weapon Upgrades System',
+        description: 'A sophisticated weapon upgrade system with deep progression and extensive customization options.',
+        description_de: 'Ein durchdachtes Upgrade-System für Waffen mit tiefgehender Progression und Anpassungsmöglichkeiten.',
+        image: 'concepts/concept-weapon-upgrades/images/weaponupgrade.jpg',
+        tags: ['System', 'Progression', 'Upgrade'],
+        link: 'concepts/concept-weapon-upgrades/index.html',
+        overview: 'An innovative weapon upgrade system with strategic depth.',
+        overview_de: 'Ein innovatives Waffen-Upgrade-System mit strategischer Tiefe.',
+        mechanics: [
+            { name: 'Upgrade System', description: 'Tiered improvement system with multiple paths', description_de: 'Stufenweises Verbesserungs-System' },
+            { name: 'Weapon Customization', description: 'Individual adaptation and specialization', description_de: 'Individuelle Anpassung und Spezialisierung' }
         ]
     },
 
@@ -41,6 +56,16 @@ const portfolioData = [
 //     genre: 'genre',
 //     link: 'concepts/concept-2/index.html'
 // },
+
+// ===== HILFSFUNKTION FÜR LOKALISIERUNG =====
+function getLocalizedText(concept, field) {
+    const lang = localStorage.getItem('language') || 'en';
+    const localizedField = field + '_de';
+    if (lang === 'de' && concept[localizedField]) {
+        return concept[localizedField];
+    }
+    return concept[field] || '';
+}
 
 // ===== PORTFOLIO GRID LADEN =====
 function loadPortfolio(searchQuery = '', selectedTags = []) {
@@ -84,11 +109,12 @@ function loadPortfolio(searchQuery = '', selectedTags = []) {
         card.href = concept.link;
         card.className = 'portfolio-card';
         const tagsHTML = (concept.tags || []).map(tag => `<span class="tag">${tag}</span>`).join('');
+        const description = getLocalizedText(concept, 'description');
         card.innerHTML = `
             <img src="${concept.image}" alt="${concept.title}" class="portfolio-card-image">
             <div class="portfolio-card-content">
                 <h3>${concept.title}</h3>
-                <p>${concept.description || concept.subtitle || ''}</p>
+                <p>${description || concept.subtitle || ''}</p>
                 <div class="portfolio-card-meta">
                     <div class="portfolio-card-tags">${tagsHTML}</div>
                 </div>
@@ -318,7 +344,6 @@ function loadConceptDetails() {
     if (genreEl) genreEl.textContent = (concept.tags || []).join(', ');
     if (platformsEl) platformsEl.textContent = (concept.platforms || []).join(', ');
     if (typeEl) typeEl.textContent = concept.type || 'Single-Player';
-    if (audienceEl) audienceEl.textContent = concept.target_audience || '13+';
 
     // Befülle Titel im Browser-Tab
     document.title = `${concept.title} - Game Concepts`;

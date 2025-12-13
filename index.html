@@ -62,17 +62,19 @@
         document.addEventListener('DOMContentLoaded', function() {
             const grid = document.getElementById('recentProjectsGrid');
             if (grid && typeof portfolioData !== 'undefined') {
-                const recentProjects = portfolioData.slice(0, 2);
+                const recentProjects = portfolioData.slice(-2).reverse();
                 recentProjects.forEach(concept => {
                     const card = document.createElement('a');
                     card.href = concept.link;
                     card.className = 'recent-project-card';
                     const tagsHTML = (concept.tags || []).map(tag => `<span class="tag">${tag}</span>`).join('');
+                    const lang = localStorage.getItem('language') || 'en';
+                    const description = (lang === 'de' && concept.description_de) ? concept.description_de : concept.description;
                     card.innerHTML = `
                         <img src="${concept.image}" alt="${concept.title}" class="project-image">
                         <div class="project-content">
                             <h3>${concept.title}</h3>
-                            <p>${concept.description}</p>
+                            <p>${description}</p>
                             <div class="project-tags">${tagsHTML}</div>
                         </div>
                     `;

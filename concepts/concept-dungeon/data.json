@@ -8,7 +8,6 @@
   "genre": "RPG",
   "platforms": ["PC", "Console"],
   "type": "Single-Player",
-  "target_audience": "13+",
   "overview": "Ein strategisches Dungeon-Konzept mit innovativen Mechaniken.",
   "mechanics": [
     {
