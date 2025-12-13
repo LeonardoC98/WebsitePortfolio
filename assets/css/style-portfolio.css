@@ -60,7 +60,7 @@
 .portfolio-search-section {
     background-color: var(--bg-light);
     padding: 30px 20px;
-    border-bottom: 2px solid var(--primary-color);
+    border-bottom: 1px solid #2a2a2a;
 }
 
 /* Search and Filter Wrapper */

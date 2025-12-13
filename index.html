@@ -12,33 +12,33 @@
     <!-- Hero Section -->
     <section class="hero">
         <div class="hero-content">
-            <h1 data-i18n="hero.title">Game Concepts Portfolio</h1>
-            <p data-i18n="hero.subtitle">Innovative game mechanics and creative concepts</p>
-            <a href="portfolio.html" class="cta-button" data-i18n="hero.cta">View Projects</a>
+            <h1 data-i18n="hero.title">Game System Designer</h1>
+            <p data-i18n="hero.subtitle">Entwicklung innovativer Spielmechaniken und durchdachter Systemkonzepte</p>
+            <a href="contact.html" class="cta-button" data-i18n="hero.cta">Kontakt aufnehmen</a>
         </div>
         <div class="hero-background"></div>
     </section>
 
-    <!-- Featured Section -->
-    <section class="featured">
+    <!-- About Section -->
+    <section class="about-intro">
         <div class="container">
-            <h2>Highlights</h2>
-            <div class="featured-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">🎯</div>
-                    <h3>Innovative Konzepte</h3>
-                    <p>Durchdachte Spiel-Systeme und Mechaniken für moderne Gaming-Erfahrungen</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🎨</div>
-                    <h3>Design & Gameplay</h3>
-                    <p>Balance zwischen Ästhetik und spielerischer Tiefe</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">⚙️</div>
-                    <h3>Komplexe Systeme</h3>
-                    <p>Detaillierte Beschreibung von Spielmechaniken und Interactions</p>
-                </div>
+            <h2>Über mein Portfolio</h2>
+            <p class="intro-text">
+                Willkommen in meiner Sammlung innovativer Game-Design-Konzepte. Hier präsentiere ich durchdachte Spielmechaniken,
+                Systeme und kreative Ideen, die das Potenzial haben, einzigartige Gaming-Erfahrungen zu schaffen.
+            </p>
+        </div>
+    </section>
+
+    <!-- Recent Projects Section -->
+    <section class="recent-projects">
+        <div class="container">
+            <h2>Neueste Konzepte</h2>
+            <div id="recentProjectsGrid" class="recent-grid">
+                <!-- Wird dynamisch mit JavaScript gefüllt -->
+            </div>
+            <div class="view-all-container">
+                <a href="portfolio.html" class="view-all-btn">Alle Konzepte ansehen</a>
             </div>
         </div>
     </section>
@@ -51,11 +51,35 @@
     </footer>
 
     <script src="assets/js/navbar-loader.js"></script>
+    <script src="assets/js/portfolio.js"></script>
     <script>
         setTimeout(() => {
             document.body.style.transition = 'opacity 0.3s ease';
             document.body.style.opacity = '1';
         }, 100);
+
+        // Load recent projects on homepage
+        document.addEventListener('DOMContentLoaded', function() {
+            const grid = document.getElementById('recentProjectsGrid');
+            if (grid && typeof portfolioData !== 'undefined') {
+                const recentProjects = portfolioData.slice(0, 2);
+                recentProjects.forEach(concept => {
+                    const card = document.createElement('a');
+                    card.href = concept.link;
+                    card.className = 'recent-project-card';
+                    const tagsHTML = (concept.tags || []).map(tag => `<span class="tag">${tag}</span>`).join('');
+                    card.innerHTML = `
+                        <img src="${concept.image}" alt="${concept.title}" class="project-image">
+                        <div class="project-content">
+                            <h3>${concept.title}</h3>
+                            <p>${concept.description}</p>
+                            <div class="project-tags">${tagsHTML}</div>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                });
+            }
+        });
     </script>
     <script src="assets/js/i18n.js"></script>
     <script src="assets/js/script.js"></script>

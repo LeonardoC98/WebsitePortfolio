@@ -2,12 +2,13 @@
   "nav": {
     "home": "Home",
     "portfolio": "Portfolio",
-    "about": "About Me"
+    "about": "About Me",
+    "contact": "Contact"
   },
   "hero": {
-    "title": "Game Concepts Portfolio",
-    "subtitle": "Innovative game mechanics and creative concepts",
-    "cta": "View Projects"
+    "title": "Game System Designer",
+    "subtitle": "Developing innovative game mechanics and sophisticated system concepts",
+    "cta": "Get in Touch"
   },
   "portfolio": {
     "title": "My Game Concepts",
