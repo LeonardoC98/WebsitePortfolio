@@ -1,0 +1,33 @@
+{
+  "sections": [
+    {
+      "type": "text",
+      "title": "Core Idea",
+      "text": "A dungeon-based action RPG that focuses on replayability through a unique progression system. Players hunt specific enemies to master their drop tables and can reset their character levels to gain permanent skill masteries. This creates a deep progression loop where knowledge and strategy matter more than raw stats."
+    },
+    {
+      "type": "text",
+      "title": "Key Features",
+      "text": "• Enemy-specific loot mastery system\n• Level reset mechanics for skill progression\n• Knowledge-based gameplay\n• Strategic character building\n• Permanent progression through mastery"
+    },
+    {
+      "type": "text",
+      "title": "Implementation Challenges",
+      "text": "Balancing the loot mastery system to remain engaging across multiple playthroughs without becoming tedious. Ensuring the level reset mechanic feels rewarding rather than punishing. Creating a difficulty curve that accommodates both new and mastered players. Designing enemy encounters that remain interesting even after players have mastered their patterns and drops."
+    },
+    {
+      "title": "Images & Visualization",
+      "type": "gallery",
+      "images": [
+        {
+          "src": "images/concept1.jpg",
+          "alt": "Concept Image 1"
+        },
+        {
+          "src": "images/concept2.jpg",
+          "alt": "Concept Image 2"
+        }
+      ]
+    }
+  ]
+}

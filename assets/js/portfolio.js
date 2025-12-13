@@ -1,34 +1,27 @@
 // ===== PORTFOLIO DATA =====
-// Diese JSON-Daten könnten auch von einem Server kommen
+// Base data structure - all text content is in languages/*.json for translation
 const portfolioData = [
-
     {
-        id: 'concept-dungeon',
-        title: 'Dungeon Game Concept',
-        description: 'Replayability through hunting mastery for drops and level resets for skill mastery.',
+        id: 'dungeon',
+        translationKey: 'concepts.dungeon',
         image: 'concepts/concept-dungeon/images/dungeon.jpg',
-        tags: ['System', 'Looting', 'Mastery', 'Leveling', 'Exploration'],
-        link: 'concepts/concept-dungeon/index.html',
-        overview: 'Ein strategisches Dungeon-Konzept mit innovativen Mechaniken.',
-        mechanics: [
-            { name: 'Dungeon System', description: 'Dynamische Dungeons und Exploration' },
-            { name: 'Ressourcenmanagement', description: 'Strategische Ressourcen-Verwaltung' }
-        ]
+        tags: ['System', 'Progression', 'Enemy', 'PVM'],
+        link: 'concepts/concept-dungeon/index.html'
     },
     {
-        id: 'concept-puzzle',
-        title: 'Puzzle Adventure',
-        description: 'Ein innovatives Rätsel-Adventure mit physikalischen Interaktionen und Umweltpuzzles.',
-        image: 'concepts/concept-puzzle/images/puzzle.jpg',
-        tags: ['Puzzle', 'Adventure', 'Physics'],
-        link: 'concepts/concept-puzzle/index.html',
-        overview: 'Umweltbasierte Rätsel mit eleganten Lösungen.',
-        mechanics: [
-            { name: 'Physics Puzzles', description: 'Schwerkraft und Objekt-Interaktionen' },
-            { name: 'Environmental Clues', description: 'Umwelt erzählt die Geschichte' }
-        ]
+        id: 'puzzle',
+        translationKey: 'concepts.puzzle',
+        image: 'concepts/concept-puzzle/images/card.jpg',
+        tags: ['Game Concept', 'Card Game', 'PVP'],
+        link: 'concepts/concept-puzzle/index.html'
     },
-
+    {
+        id: 'weaponUpgrades',
+        translationKey: 'concepts.weaponUpgrades',
+        image: 'concepts/concept-weapon-upgrades/images/weaponupgrade.jpg',
+        tags: ['System', 'Progression', 'Upgrade'],
+        link: 'concepts/concept-weapon-upgrades/index.html'
+    }
 ];
 
 // Weitere Konzepte können hier hinzugefügt werden
@@ -52,16 +45,18 @@ function loadPortfolio(searchQuery = '', selectedTags = []) {
     const q = (searchQuery || '').trim().toLowerCase();
 
     const items = portfolioData.filter(c => {
+        // Get translated title and description for search
+        const title = (t(`${c.translationKey}.title`) || '').toLowerCase();
+        const desc = (t(`${c.translationKey}.description`) || '').toLowerCase();
+        const tags = (c.tags || []).map(t => t.toLowerCase()).join(' ');
+        
         // Filter by search query
         let matchesSearch = true;
         if (q) {
-            const title = (c.title || '').toLowerCase();
-            const desc = (c.description || '').toLowerCase();
-            const tags = (c.tags || []).map(t => t.toLowerCase()).join(' ');
             matchesSearch = title.includes(q) || desc.includes(q) || tags.includes(q);
         }
 
-        // Filter by selected tags (concept must have at least one selected tag)
+        // Filter by selected tags
         let matchesTags = true;
         if (selectedTags.length > 0) {
             matchesTags = (c.tags || []).some(tag => selectedTags.includes(tag));
@@ -73,7 +68,7 @@ function loadPortfolio(searchQuery = '', selectedTags = []) {
     if (items.length === 0) {
         portfolioGrid.innerHTML = `
             <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; color: var(--text-light);">
-                Keine Ergebnisse gefunden.
+                ${t('portfolio.noResults')}
             </div>
         `;
         return;
@@ -84,11 +79,16 @@ function loadPortfolio(searchQuery = '', selectedTags = []) {
         card.href = concept.link;
         card.className = 'portfolio-card';
         const tagsHTML = (concept.tags || []).map(tag => `<span class="tag">${tag}</span>`).join('');
+        
+        // Get translated content
+        const title = t(`${concept.translationKey}.title`);
+        const description = t(`${concept.translationKey}.description`);
+        
         card.innerHTML = `
-            <img src="${concept.image}" alt="${concept.title}" class="portfolio-card-image">
+            <img src="${concept.image}" alt="${title}" class="portfolio-card-image">
             <div class="portfolio-card-content">
-                <h3>${concept.title}</h3>
-                <p>${concept.description || concept.subtitle || ''}</p>
+                <h3>${title}</h3>
+                <p>${description}</p>
                 <div class="portfolio-card-meta">
                     <div class="portfolio-card-tags">${tagsHTML}</div>
                 </div>
@@ -214,7 +214,17 @@ function updatePortfolioWithFilters() {
 }
 
 // Wire up search on DOMContentLoaded
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
+    // Wait for i18n to load
+    await new Promise(resolve => {
+        const checkI18n = setInterval(() => {
+            if (typeof t === 'function' && typeof translations !== 'undefined' && Object.keys(translations).length > 0) {
+                clearInterval(checkI18n);
+                resolve();
+            }
+        }, 50);
+    });
+    
     initTagFilter();
     loadPortfolio('', []);
 
@@ -318,7 +328,6 @@ function loadConceptDetails() {
     if (genreEl) genreEl.textContent = (concept.tags || []).join(', ');
     if (platformsEl) platformsEl.textContent = (concept.platforms || []).join(', ');
     if (typeEl) typeEl.textContent = concept.type || 'Single-Player';
-    if (audienceEl) audienceEl.textContent = concept.target_audience || '13+';
 
     // Befülle Titel im Browser-Tab
     document.title = `${concept.title} - Game Concepts`;

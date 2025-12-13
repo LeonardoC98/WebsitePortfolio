@@ -10,6 +10,12 @@
     "subtitle": "Developing innovative game mechanics and sophisticated system concepts",
     "cta": "Get in Touch"
   },
+  "home": {
+    "aboutTitle": "About my Portfolio",
+    "aboutIntro": "Welcome to my collection of innovative game design concepts. Here you'll find detailed documentation of various game systems, mechanics, and design approaches.",
+    "recentProjectsTitle": "Recent Concepts",
+    "viewAllButton": "View All Concepts"
+  },
   "portfolio": {
     "title": "My Game Concepts",
     "subtitle": "Browse through my collection of game design concepts",
@@ -27,21 +33,22 @@
   },
   "concept": {
     "back": "← Back to Portfolio",
-    "overview": "Overview",
-    "mechanics": "Game Mechanics",
-    "gallery": "Images & Visualization",
-    "technicalDetails": "Technical Details",
-    "genre": "Genre",
-    "platforms": "Platforms",
-    "type": "Type",
-    "audience": "Target Audience",
-    "moreInfo": "More Information",
-    "moreInfoText": "For a complete design document and more details",
-    "clickHere": "click here",
-    "mechanicPlaceholder1": "Main Mechanic 1",
-    "mechanicPlaceholder2": "Main Mechanic 2",
-    "mechanicDescription": "Description of the game mechanic...",
-    "overviewPlaceholder": "Here comes a detailed description of the game concept. Describe the core idea, game mechanics and unique features of your concept."
+    "gallery": "Images & Visualization"
+  },
+  "concepts": {
+    "dungeon": {
+      "title": "Dungeon Game Concept",
+      "description": "Replayability through hunting mastery for drops and level resets for skill mastery."
+    },
+    "puzzle": {
+      "title": "TCG Card Game",
+      "description": "A strategic and engaging card game concept with chess like mechanics for deep tactical gameplay."
+    },
+    "weaponUpgrades": {
+      "title": "Weapon Upgrades System",
+      "subtitle": "A sophisticated upgrade system with deep progression",
+      "description": "A sophisticated weapon upgrade system with deep progression and extensive customization options."
+    }
   },
   "about": {
     "title": "About Me",
@@ -71,6 +78,18 @@
     "interestStrategyDesc": "Tactical depth and planning",
     "interestNarrative": "Narrative Design",
     "interestNarrativeDesc": "Stories through mechanics"
+  },
+  "contact": {
+    "title": "Contact",
+    "subtitle": "Let's talk about your next project",
+    "infoTitle": "Contact Information",
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone",
+    "location": "Location",
+    "socialTitle": "Social Media",
+    "ctaTitle": "Interested in my concepts?",
+    "ctaButton": "View Portfolio"
   },
   "footer": {
     "copyright": "© 2025 Game Concept Portfolio. All rights reserved."

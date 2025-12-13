@@ -10,6 +10,12 @@
     "subtitle": "Entwicklung innovativer Spielmechaniken und durchdachter Systemkonzepte",
     "cta": "Kontakt aufnehmen"
   },
+  "home": {
+    "aboutTitle": "Über mein Portfolio",
+    "aboutIntro": "Willkommen in meiner Sammlung innovativer Game-Design-Konzepte. Hier findest du detaillierte Dokumentationen verschiedener Spielsysteme, Mechaniken und Design-Ansätze.",
+    "recentProjectsTitle": "Neueste Konzepte",
+    "viewAllButton": "Alle Konzepte ansehen"
+  },
   "portfolio": {
     "title": "Meine Spielkonzepte",
     "subtitle": "Durchstöbere meine Sammlung an Game-Design-Konzepten",
@@ -27,21 +33,22 @@
   },
   "concept": {
     "back": "← Zurück zum Portfolio",
-    "overview": "Überblick",
-    "mechanics": "Spielmechaniken",
-    "gallery": "Bilder & Visualisierung",
-    "technicalDetails": "Technische Details",
-    "genre": "Genre",
-    "platforms": "Plattformen",
-    "type": "Art",
-    "audience": "Zielgruppe",
-    "moreInfo": "Mehr Informationen",
-    "moreInfoText": "Für ein vollständiges Design-Dokument und weitere Details",
-    "clickHere": "klicke hier",
-    "mechanicPlaceholder1": "Hauptmechanik 1",
-    "mechanicPlaceholder2": "Hauptmechanik 2",
-    "mechanicDescription": "Beschreibung der Spielmechanik...",
-    "overviewPlaceholder": "Hier kommt eine detaillierte Beschreibung des Spiel-Konzepts. Beschreibe die Kernidee, die Spielmechaniken und die einzigartigen Eigenschaften deines Konzepts."
+    "gallery": "Bilder & Visualisierung"
+  },
+  "concepts": {
+    "dungeon": {
+      "title": "Dungeon Game Concept",
+      "description": "Wiederholbarkeit durch Meisterung der Jagd nach Drops und Level-Resets für Skill-Meisterung."
+    },
+    "puzzle": {
+      "title": "TCG Card Game",
+      "description": "Ein strategisches und fesselndes Kartenspiel-Konzept mit schachähnlichen Mechaniken für tiefgründiges taktisches Gameplay."
+    },
+    "weaponUpgrades": {
+      "title": "Weapon Upgrades System",
+      "subtitle": "Ein durchdachtes Upgrade-System mit tiefgehender Progression",
+      "description": "Ein durchdachtes Upgrade-System für Waffen mit tiefgehender Progression und Anpassungsmöglichkeiten."
+    }
   },
   "about": {
     "title": "Über mich",
@@ -71,6 +78,18 @@
     "interestStrategyDesc": "Taktische Tiefe und Planung",
     "interestNarrative": "Narrative Design",
     "interestNarrativeDesc": "Geschichten durch Mechaniken"
+  },
+  "contact": {
+    "title": "Kontakt",
+    "subtitle": "Lass uns über dein nächstes Projekt sprechen",
+    "infoTitle": "Kontaktinformationen",
+    "name": "Name",
+    "email": "Email",
+    "phone": "Telefon",
+    "location": "Standort",
+    "socialTitle": "Social Media",
+    "ctaTitle": "Interessiert an meinen Konzepten?",
+    "ctaButton": "Portfolio ansehen"
   },
   "footer": {
     "copyright": "© 2025 Game Concept Portfolio. Alle Rechte vorbehalten."
