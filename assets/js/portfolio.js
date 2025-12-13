@@ -163,12 +163,14 @@ function initTagFilter() {
     btn.addEventListener('click', function(e) {
         e.stopPropagation();
         list.classList.toggle('show');
+        btn.classList.toggle('active');
     });
 
     // Close when clicking outside
     document.addEventListener('click', function(e) {
         if (!list.contains(e.target) && !btn.contains(e.target)) {
             list.classList.remove('show');
+            btn.classList.remove('active');
         }
     });
 }
