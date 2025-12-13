@@ -127,85 +127,85 @@ function getAllTags() {
 
 // Initialize tag filter dropdown
 function initTagFilter() {
-    const tagDropdownMenu = document.getElementById('tagDropdownMenu');
-    const tagDropdownButton = document.getElementById('tagDropdownButton');
+    const btn = document.getElementById('tagSelectBtn');
+    const list = document.getElementById('tagDropdownList');
     
-    if (!tagDropdownMenu || !tagDropdownButton) return;
+    if (!btn || !list) return;
 
     const allTags = getAllTags();
-    tagDropdownMenu.innerHTML = '';
+    list.innerHTML = '';
 
     allTags.forEach(tag => {
-        const label = document.createElement('label');
-        label.className = 'tag-dropdown-item';
+        const option = document.createElement('div');
+        option.className = 'tag-option';
         
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
         checkbox.value = tag;
-        checkbox.className = 'tag-checkbox';
+        checkbox.id = 'tag_' + tag.replace(/\s/g, '_');
+        
+        const label = document.createElement('label');
+        label.textContent = tag;
+        label.htmlFor = checkbox.id;
+        label.style.cursor = 'pointer';
         
         checkbox.addEventListener('change', function() {
             updateSelectedTagsDisplay();
             updatePortfolioWithFilters();
         });
         
-        label.appendChild(checkbox);
-        label.appendChild(document.createTextNode(' ' + tag));
-        tagDropdownMenu.appendChild(label);
+        option.appendChild(checkbox);
+        option.appendChild(label);
+        list.appendChild(option);
     });
 
     // Toggle dropdown
-    tagDropdownButton.addEventListener('click', function(e) {
+    btn.addEventListener('click', function(e) {
         e.stopPropagation();
-        tagDropdownMenu.classList.toggle('open');
+        list.classList.toggle('show');
     });
 
-    // Close dropdown when clicking outside
+    // Close when clicking outside
     document.addEventListener('click', function(e) {
-        if (!tagDropdownMenu.contains(e.target) && !tagDropdownButton.contains(e.target)) {
-            tagDropdownMenu.classList.remove('open');
+        if (!list.contains(e.target) && !btn.contains(e.target)) {
+            list.classList.remove('show');
         }
     });
 }
 
 // Update display of selected tags
 function updateSelectedTagsDisplay() {
-    const selectedTagsDisplay = document.getElementById('selectedTagsDisplay');
-    const selectedCheckboxes = document.querySelectorAll('.tag-checkbox:checked');
+    const display = document.getElementById('selectedTagsDisplay');
+    const checkboxes = document.querySelectorAll('.tag-option input[type="checkbox"]:checked');
     
-    if (!selectedTagsDisplay) return;
+    if (!display) return;
     
-    if (selectedCheckboxes.length === 0) {
-        selectedTagsDisplay.innerHTML = '';
-        return;
-    }
-
-    selectedTagsDisplay.innerHTML = '';
-    selectedCheckboxes.forEach(checkbox => {
-        const tagBadge = document.createElement('span');
-        tagBadge.className = 'selected-tag-badge';
-        tagBadge.textContent = checkbox.value;
+    display.innerHTML = '';
+    
+    checkboxes.forEach(checkbox => {
+        const badge = document.createElement('span');
+        badge.className = 'selected-tag-badge';
+        badge.textContent = checkbox.value;
         
         const removeBtn = document.createElement('button');
         removeBtn.className = 'remove-tag-btn';
         removeBtn.textContent = '×';
-        removeBtn.addEventListener('click', function(e) {
-            e.preventDefault();
+        removeBtn.addEventListener('click', function() {
             checkbox.checked = false;
             updateSelectedTagsDisplay();
             updatePortfolioWithFilters();
         });
         
-        tagBadge.appendChild(removeBtn);
-        selectedTagsDisplay.appendChild(tagBadge);
+        badge.appendChild(removeBtn);
+        display.appendChild(badge);
     });
 }
 
 // Update portfolio based on current filters
 function updatePortfolioWithFilters() {
     const searchEl = document.getElementById('portfolioSearch');
-    const selectedTags = Array.from(document.querySelectorAll('.tag-checkbox:checked'))
-        .map(checkbox => checkbox.value);
+    const selectedTags = Array.from(document.querySelectorAll('.tag-option input[type="checkbox"]:checked'))
+        .map(cb => cb.value);
     
     loadPortfolio(searchEl ? searchEl.value : '', selectedTags);
 }
