@@ -3,27 +3,64 @@
 
 /* ===== PORTFOLIO HEADER ===== */
 .portfolio-header {
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-    color: white;
-    padding: 60px 20px;
+    background: url('../images/portfolio-header-bg.jpg?v=2') center/cover no-repeat, var(--bg-darker);
+    color: var(--text-dark);
+    padding: 100px 20px;
     text-align: center;
+    border-bottom: 3px solid var(--primary-color);
+    box-shadow: inset 0 0 50px rgba(255, 0, 51, 0.2);
+    position: relative;
+    overflow: hidden;
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.portfolio-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.85);
+    z-index: 0;
+}
+
+.portfolio-header-content {
+    position: relative;
+    z-index: 1;
+}
+
+.portfolio-header h1,
+.portfolio-header p {
+    position: relative;
+    z-index: 1;
 }
 
 .portfolio-header h1 {
-    font-size: 2.5rem;
+    font-size: 3.5rem;
     margin-bottom: 1rem;
+    color: var(--primary-color);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    text-shadow: 0 0 10px rgba(255, 0, 51, 0.5);
+    font-weight: 900;
 }
 
 .portfolio-header p {
-    font-size: 1.1rem;
+    font-size: 1.3rem;
     opacity: 0.95;
+    color: var(--text-light);
+    letter-spacing: 1px;
 }
 
 /* Search Section */
 .portfolio-search-section {
-    background-color: var(--bg-white);
+    background-color: var(--bg-light);
     padding: 30px 20px;
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 2px solid var(--primary-color);
 }
 
 /* Search and Filter Wrapper */
@@ -42,20 +79,26 @@
 
 .tag-select-btn {
     padding: 10px 20px;
-    background: white;
-    border: 2px solid var(--border-color);
-    border-radius: 8px;
+    background-color: var(--bg-white);
+    border: 2px solid var(--primary-color);
     cursor: pointer;
     display: flex;
     align-items: center;
     gap: 10px;
     font-size: 0.95rem;
     min-width: 180px;
-    transition: border-color 0.3s;
+    transition: all 0.2s ease;
+    color: var(--text-dark);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
 }
 
 .tag-select-btn:hover {
     border-color: var(--primary-color);
+    box-shadow: var(--glow-red);
+    background-color: rgba(255, 0, 51, 0.05);
 }
 
 .tag-select-btn .arrow {
@@ -71,10 +114,9 @@
     position: absolute;
     top: calc(100% + 8px);
     left: 0;
-    background: white;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    background-color: var(--bg-white);
+    border: 2px solid var(--primary-color);
+    box-shadow: var(--shadow-lg);
     min-width: 200px;
     max-height: 300px;
     overflow-y: auto;
@@ -82,7 +124,8 @@
     opacity: 0;
     visibility: hidden;
     transform: translateY(-10px);
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%);
 }
 
 .tag-dropdown-list.show {
@@ -95,11 +138,13 @@
     display: flex;
     align-items: center;
     cursor: pointer;
-    transition: background 0.2s ease;
+    transition: all 0.2s ease;
+    border-bottom: 1px solid var(--border-dark);
 }
 
 .tag-option:hover {
-    background: var(--bg-light);
+    background-color: rgba(255, 0, 51, 0.1);
+    border-left: 3px solid var(--primary-color);
 }
 
 .tag-option label {
@@ -128,16 +173,19 @@
 .search-wrapper input[type="search"] {
     flex: 1;
     padding: 10px 14px;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    background: var(--bg-light);
+    border: 2px solid var(--border-dark);
+    background-color: var(--bg-white);
     font-size: 0.95rem;
+    color: var(--text-dark);
+    clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 0 100%);
+    transition: all 0.2s ease;
 }
 
 .search-wrapper input[type="search"]:focus {
     outline: none;
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(99,102,241,0.1);
+    box-shadow: var(--glow-red);
+    background-color: rgba(255, 0, 51, 0.05);
 }
 
 .clear-btn {
@@ -147,10 +195,11 @@
     color: var(--text-light);
     font-size: 1.2rem;
     padding: 5px 10px;
+    transition: all 0.2s ease;
 }
 
 .clear-btn:hover {
-    color: var(--text-dark);
+    color: var(--primary-color);
 }
 
 /* Selected Tags */
@@ -167,33 +216,39 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    padding: 6px 12px;
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-    color: white;
-    border-radius: 16px;
+    padding: 8px 15px;
+    background-color: var(--primary-color);
+    color: var(--bg-darker);
     font-size: 0.85rem;
-    font-weight: 500;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    clip-path: polygon(5px 0, 100% 0, 100% calc(100% - 5px), calc(100% - 5px) 100%, 0 100%, 0 5px);
+    border: 1px solid var(--primary-color);
+    box-shadow: var(--glow-red);
 }
 
 .remove-tag-btn {
-    background: rgba(255, 255, 255, 0.3);
-    border: none;
-    color: white;
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
+    background-color: var(--bg-darker);
+    border: 1px solid var(--bg-darker);
+    color: var(--primary-color);
+    width: 18px;
+    height: 18px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.2rem;
+    font-size: 1rem;
     line-height: 1;
     padding: 0;
-    transition: background 0.2s ease;
+    transition: all 0.2s ease;
+    clip-path: polygon(3px 0, 100% 0, 100% calc(100% - 3px), calc(100% - 3px) 100%, 0 100%, 0 3px);
 }
 
 .remove-tag-btn:hover {
-    background: rgba(255, 255, 255, 0.5);
+    background-color: var(--accent-cyan);
+    color: var(--bg-darker);
+    box-shadow: 0 0 10px var(--accent-cyan);
 }
 
 .portfolio-grid {
@@ -205,27 +260,55 @@
 
 .portfolio-card {
     background-color: var(--bg-white);
-    border-radius: 10px;
     overflow: hidden;
     box-shadow: var(--shadow);
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
     cursor: pointer;
     display: flex;
     flex-direction: column;
     text-decoration: none;
     color: inherit;
+    border: 2px solid var(--border-dark);
+    clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px);
+    position: relative;
+}
+
+.portfolio-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent 48%, rgba(255, 0, 51, 0.1) 49%, rgba(255, 0, 51, 0.1) 51%, transparent 52%);
+    background-size: 15px 15px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    pointer-events: none;
 }
 
 .portfolio-card:hover {
-    transform: translateY(-10px);
+    transform: translateY(-5px);
+    border-color: var(--primary-color);
     box-shadow: var(--shadow-lg);
+}
+
+.portfolio-card:hover::after {
+    opacity: 1;
 }
 
 .portfolio-card-image {
     width: 100%;
     height: 200px;
     object-fit: cover;
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    background-color: var(--bg-darker);
+    border-bottom: 2px solid var(--primary-color);
+    filter: grayscale(20%) contrast(1.1);
+    transition: all 0.2s ease;
+}
+
+.portfolio-card:hover .portfolio-card-image {
+    filter: grayscale(0%) contrast(1.2);
 }
 
 .portfolio-card-content {
@@ -239,6 +322,9 @@
     font-size: 1.3rem;
     margin-bottom: 0.5rem;
     color: var(--primary-color);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 700;
 }
 
 .portfolio-card p {
@@ -255,7 +341,7 @@
     font-size: 0.9rem;
     color: var(--text-light);
     padding-top: 1rem;
-    border-top: 1px solid var(--border-color);
+    border-top: 2px solid var(--border-dark);
     margin-top: auto;
     gap: 10px;
 }
@@ -269,13 +355,23 @@
 
 .portfolio-card-tags .tag {
     display: inline-block;
-    padding: 4px 10px;
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-    color: white;
-    border-radius: 12px;
-    font-size: 0.75rem;
-    font-weight: 500;
+    padding: 5px 12px;
+    background-color: rgba(255, 0, 51, 0.1);
+    color: var(--primary-color);
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border: 1px solid var(--primary-color);
+    clip-path: polygon(3px 0, 100% 0, 100% calc(100% - 3px), calc(100% - 3px) 100%, 0 100%, 0 3px);
+    transition: all 0.2s ease;
     white-space: nowrap;
+}
+
+.portfolio-card:hover .portfolio-card-tags .tag {
+    background-color: var(--primary-color);
+    color: var(--bg-darker);
+    box-shadow: var(--glow-red);
 }
 
 .portfolio-card-link {

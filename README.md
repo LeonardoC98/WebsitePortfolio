@@ -1,4 +1,4 @@
-# Game Concept Portfolio - Anleitung
+# Game Concept Portfolio 
 
 ## 📋 Projektstruktur
 

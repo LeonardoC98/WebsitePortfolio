@@ -1,9 +1,11 @@
 ﻿/* ===== HERO SECTION FOR ABOUT PAGE ===== */
 .hero {
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-    color: white;
+    background: url('../images/portfolio-header-bg.jpg?v=2') center/cover no-repeat, var(--bg-darker);
+    color: var(--text-dark);
     padding: 100px 20px;
     text-align: center;
+    border-bottom: 3px solid var(--primary-color);
+    box-shadow: inset 0 0 50px rgba(255, 0, 51, 0.2);
     position: relative;
     overflow: hidden;
     min-height: 400px;
@@ -12,7 +14,24 @@
     justify-content: center;
 }
 
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.85);
+    z-index: 0;
+}
+
 .hero-content {
+    position: relative;
+    z-index: 1;
+}
+
+.hero h1,
+.hero p {
     position: relative;
     z-index: 1;
 }
@@ -20,6 +39,11 @@
 .hero h1 {
     font-size: 3.5rem;
     margin-bottom: 1rem;
+    color: var(--primary-color);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    text-shadow: 0 0 10px rgba(255, 0, 51, 0.5);
+    font-weight: 900;
     animation: slideInDown 0.8s ease;
 }
 
@@ -27,13 +51,15 @@
     font-size: 1.3rem;
     margin-bottom: 2rem;
     opacity: 0.95;
-    animation: slideInUp 0.8s ease 0.2s both;
+    color: var(--text-light);
+    letter-spacing: 1px;
 }
 
 /* ===== ABOUT SECTION ===== */
 .about {
-    padding: 60px 20px;
-    background-color: var(--bg-white);
+    padding: 80px 20px;
+    background-color: var(--bg-light);
+    position: relative;
 }
 
 .about-content {
@@ -47,6 +73,10 @@
     font-size: 2.5rem;
     margin-bottom: 1.5rem;
     color: var(--primary-color);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 0 0 10px rgba(255, 0, 51, 0.5);
+    font-weight: 700;
 }
 
 .about-text p {
@@ -65,13 +95,23 @@
 
 .skill-item {
     padding: 20px;
-    border-left: 4px solid var(--primary-color);
-    background-color: var(--bg-light);
-    border-radius: 5px;
+    background-color: var(--bg-card);
+    border: 2px solid var(--border-color);
+    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.skill-item:hover {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 25px rgba(255, 0, 51, 0.4);
+    transform: translateY(-3px);
 }
 
 .skill-item h3 {
     color: var(--primary-color);
+    text-transform: uppercase;
+    letter-spacing: 1px;
     margin-bottom: 0.5rem;
 }
 
@@ -102,8 +142,7 @@
 
 /* ===== ABOUT PAGE STYLES ===== */
 .about-hero {
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-    min-height: 400px;
+    /* Removed red gradient - using .hero styles instead */
 }
 
 .about-page {
