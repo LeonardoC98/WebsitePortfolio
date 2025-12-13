@@ -13,23 +13,27 @@ html {
 }
 
 :root {
-    --primary-color: #6366f1;
-    --primary-dark: #4f46e5;
-    --secondary-color: #8b5cf6;
-    --accent-color: #ec4899;
-    --text-dark: #1f2937;
-    --text-light: #6b7280;
-    --bg-light: #f9fafb;
-    --bg-white: #ffffff;
-    --border-color: #e5e7eb;
-    --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.15);
+    --primary-color: #ff0033;
+    --primary-dark: #cc0028;
+    --secondary-color: #ff3355;
+    --accent-color: #00ffff;
+    --text-dark: #ffffff;
+    --text-light: #b0b0b0;
+    --bg-light: #0a0a0a;
+    --bg-white: #141414;
+    --bg-darker: #000000;
+    --border-color: #ff0033;
+    --border-dark: #1a1a1a;
+    --shadow: 0 0 20px rgba(255, 0, 51, 0.4);
+    --shadow-lg: 0 0 30px rgba(255, 0, 51, 0.6);
+    --glow-red: 0 0 15px rgba(255, 0, 51, 0.8);
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Rajdhani', 'Orbitron', 'Segoe UI', monospace, sans-serif;
     color: var(--text-dark);
     background-color: var(--bg-light);
+    background-image: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255, 0, 51, 0.03) 2px, rgba(255, 0, 51, 0.03) 4px);
     line-height: 1.6;
     scrollbar-gutter: stable;
 }
@@ -42,12 +46,14 @@ body {
 
 /* ===== NAVIGATION ===== */
 .navbar {
-    background-color: var(--bg-white);
-    box-shadow: var(--shadow);
+    background-color: var(--bg-darker);
+    box-shadow: 0 0 20px rgba(255, 0, 51, 0.5);
     position: sticky;
     top: 0;
     z-index: 100;
     width: 100%;
+    border-bottom: 2px solid var(--primary-color);
+    border-top: 1px solid var(--primary-color);
 }
 
 .nav-container {
@@ -83,10 +89,12 @@ body {
 
 .nav-link {
     text-decoration: none;
-    color: var(--text-dark);
-    font-weight: 500;
+    color: var(--text-light);
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
     position: relative;
-    transition: color 0.3s ease;
+    transition: all 0.2s ease;
 }
 
 .nav-link:after {
@@ -97,7 +105,8 @@ body {
     bottom: -5px;
     left: 0;
     background-color: var(--primary-color);
-    transition: width 0.3s ease;
+    box-shadow: var(--glow-red);
+    transition: width 0.2s ease;
 }
 
 .nav-link:hover:after,
@@ -105,8 +114,10 @@ body {
     width: 100%;
 }
 
+.nav-link:hover,
 .nav-link.active {
     color: var(--primary-color);
+    text-shadow: 0 0 10px rgba(255, 0, 51, 0.8);
 }
 
 .language-selector {
@@ -117,16 +128,16 @@ body {
 .lang-current {
     cursor: pointer;
     font-size: 0.9rem;
-    font-weight: 500;
+    font-weight: 600;
     color: var(--text-dark);
     padding: 8px 12px;
-    border-radius: 6px;
-    background-color: var(--bg-light);
+    background-color: var(--bg-card);
     display: flex;
     align-items: center;
     gap: 6px;
-    transition: all 0.3s ease;
-    border: 1px solid var(--border-color);
+    transition: all 0.2s ease;
+    border: 2px solid var(--border-color);
+    clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
 }
 
 .lang-current:hover {
@@ -147,8 +158,7 @@ body {
     position: absolute;
     top: calc(100% + 8px);
     right: 0;
-    background-color: var(--bg-white);
-    border-radius: 8px;
+    background-color: var(--bg-card);
     box-shadow: var(--shadow-lg);
     min-width: 120px;
     max-height: 250px;
@@ -156,9 +166,10 @@ body {
     opacity: 0;
     visibility: hidden;
     transform: translateY(-10px);
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
     z-index: 1000;
-    border: 1px solid var(--border-color);
+    border: 2px solid var(--primary-color);
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%);
 }
 
 .language-selector.open .lang-dropdown {
@@ -170,13 +181,13 @@ body {
 .lang-option {
     cursor: pointer;
     font-size: 0.9rem;
-    color: var(--text-dark);
+    color: var(--text-light);
     padding: 10px 16px;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-dark);
 }
 
 .lang-option:last-child {
@@ -224,24 +235,91 @@ body {
 
 /* ===== ANIMATIONS ===== */
 @keyframes slideInDown {
-    from {
+    0% {
         opacity: 0;
-        transform: translateY(-30px);
+        transform: scale(1.1) skew(-2deg);
+        filter: brightness(2) blur(3px);
     }
-    to {
+    5% {
         opacity: 1;
-        transform: translateY(0);
+    }
+    10% {
+        opacity: 0.3;
+        transform: scale(0.95) translate(-10px, 0);
+        text-shadow: 
+            -5px 0 0 rgba(255, 0, 51, 1),
+            5px 0 0 rgba(0, 255, 255, 1);
+    }
+    15% {
+        opacity: 1;
+        transform: scale(1.05) translate(10px, 0);
+    }
+    20% {
+        opacity: 0.5;
+        transform: scale(0.98) skew(3deg);
+    }
+    25% {
+        opacity: 1;
+        transform: scale(1.02) translate(-5px, 0);
+        text-shadow: 
+            3px 0 0 rgba(255, 0, 51, 0.8),
+            -3px 0 0 rgba(0, 255, 255, 0.8);
+    }
+    30% {
+        opacity: 0.7;
+    }
+    35%, 100% {
+        opacity: 1;
+        transform: scale(1) skew(0) translate(0, 0);
+        filter: brightness(1) blur(0);
+        text-shadow: 0 0 10px rgba(255, 0, 51, 0.5);
     }
 }
 
 @keyframes slideInUp {
-    from {
+    0% {
         opacity: 0;
-        transform: translateY(30px);
+        transform: scale(0.8);
+        filter: contrast(3) brightness(0);
     }
-    to {
+    8% {
+        opacity: 0.4;
+        filter: contrast(2) brightness(1.5);
+    }
+    12% {
+        opacity: 0;
+    }
+    16% {
+        opacity: 0.8;
+        transform: scale(1.1) skew(-5deg);
+        text-shadow: 
+            -4px 0 0 rgba(255, 0, 51, 1),
+            4px 0 0 rgba(0, 255, 255, 1);
+    }
+    20% {
+        opacity: 0.2;
+    }
+    24% {
         opacity: 1;
-        transform: translateY(0);
+        transform: scale(0.95) skew(2deg);
+    }
+    28% {
+        opacity: 0.6;
+        transform: scale(1.05);
+        text-shadow: 
+            2px 2px 0 rgba(255, 0, 51, 0.8),
+            -2px -2px 0 rgba(0, 255, 255, 0.8);
+    }
+    32% {
+        opacity: 0.3;
+    }
+    40%, 100% {
+        opacity: 1;
+        transform: scale(1) skew(0);
+        filter: contrast(1) brightness(1);
+        text-shadow: 
+            0 0 15px rgba(255, 0, 51, 0.6),
+            0 0 30px rgba(255, 0, 51, 0.3);
     }
 }
 
