@@ -12,6 +12,61 @@ html {
     overflow-y: scroll;
 }
 
+/* ===== SHARED PAGE HERO ===== */
+.page-hero {
+    background: url('../images/portfolio-header-bg.jpg?v=2') center/cover no-repeat, var(--bg-darker);
+    color: var(--text-dark);
+    padding: 100px 20px;
+    text-align: center;
+    border-bottom: 3px solid var(--primary-color);
+    box-shadow: inset 0 0 50px rgba(255, 0, 51, 0.2);
+    position: relative;
+    overflow: hidden;
+    height: 300px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.page-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.85);
+    z-index: 0;
+}
+
+.page-hero .hero-content {
+    position: relative;
+    z-index: 1;
+}
+
+.page-hero h1 {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    text-shadow: 0 0 10px rgba(255, 0, 51, 0.5);
+    font-weight: 900;
+    animation: slideInDown 0.8s ease, glitchEffect 1.2s ease-in-out;
+    position: relative;
+    z-index: 1;
+}
+
+.page-hero p {
+    font-size: 1.3rem;
+    opacity: 0.95;
+    color: var(--text-light);
+    letter-spacing: 1px;
+    animation: slideInUp 1s ease;
+    position: relative;
+    z-index: 1;
+}
+
 :root {
     --primary-color: #ff0033;
     --primary-dark: #cc0028;
@@ -234,6 +289,66 @@ body {
 }
 
 /* ===== ANIMATIONS ===== */
+@keyframes glitchEffect {
+    0%, 100% {
+        text-shadow: 0 0 10px rgba(255, 0, 51, 0.5);
+        opacity: 1;
+    }
+    5% {
+        text-shadow: 
+            -5px 0 0 rgba(255, 0, 51, 1),
+            5px 0 0 rgba(0, 255, 255, 1),
+            0 0 20px rgba(255, 0, 51, 0.8);
+        transform: translate(-5px, 0) skew(-5deg);
+        opacity: 0.8;
+    }
+    10% {
+        text-shadow: 
+            5px 0 0 rgba(255, 0, 51, 1),
+            -5px 0 0 rgba(0, 255, 255, 1);
+        transform: translate(5px, 0) skew(5deg);
+        opacity: 0.9;
+    }
+    15% {
+        text-shadow: 0 0 10px rgba(255, 0, 51, 0.5);
+        transform: translate(0, 0) skew(0);
+        opacity: 1;
+    }
+    25% {
+        text-shadow: 
+            -8px 0 0 rgba(255, 0, 51, 1),
+            8px 0 0 rgba(0, 255, 255, 1),
+            0 0 25px rgba(0, 255, 255, 0.9);
+        transform: translate(-8px, 0) skew(8deg);
+        opacity: 0.7;
+    }
+    30% {
+        text-shadow: 
+            4px 0 0 rgba(255, 0, 51, 0.9),
+            -4px 0 0 rgba(0, 255, 255, 0.9);
+        transform: translate(4px, 0) skew(-3deg);
+        opacity: 0.95;
+    }
+    35% {
+        text-shadow: 0 0 10px rgba(255, 0, 51, 0.5);
+        transform: translate(0, 0) skew(0);
+        opacity: 1;
+    }
+    45% {
+        text-shadow: 
+            -3px 0 0 rgba(255, 0, 51, 1),
+            3px 0 0 rgba(0, 255, 255, 1),
+            0 0 15px rgba(255, 0, 51, 0.7);
+        transform: translate(-3px, 0);
+        opacity: 0.85;
+    }
+    50% {
+        text-shadow: 0 0 10px rgba(255, 0, 51, 0.5);
+        transform: translate(0, 0);
+        opacity: 1;
+    }
+}
+
 @keyframes slideInDown {
     0% {
         opacity: 0;

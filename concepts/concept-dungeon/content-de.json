@@ -19,13 +19,13 @@
       "type": "video",
       "title": "Gameplay Video",
       "src": "videos/gameplay.mp4",
-      "description": "Lade hier dein Gameplay-Video hoch und ersetze 'gameplay.mp4' mit dem Dateinamen"
+      "description": ""
     },
     {
       "type": "video",
       "title": "YouTube Trailer",
       "src": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-      "description": "Ersetze den Link mit deinem YouTube- oder Vimeo-Video"
+      "description": ""
     },
     {
       "type": "documents",

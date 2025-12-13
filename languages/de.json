@@ -37,16 +37,15 @@
   },
   "concepts": {
     "dungeon": {
-      "title": "Dungeon Game Concept",
+      "title": "Dungeon Spielkonzept",
       "description": "Wiederholbarkeit durch Meisterung der Jagd nach Drops und Level-Resets für Skill-Meisterung."
     },
     "puzzle": {
-      "title": "TCG Card Game",
+      "title": "TCG Kartenspiel",
       "description": "Ein strategisches und fesselndes Kartenspiel-Konzept mit schachähnlichen Mechaniken für tiefgründiges taktisches Gameplay."
     },
     "weaponUpgrades": {
-      "title": "Weapon Upgrades System",
-      "subtitle": "Ein durchdachtes Upgrade-System mit tiefgehender Progression",
+      "title": "Waffen-Upgrade System",
       "description": "Ein durchdachtes Upgrade-System für Waffen mit tiefgehender Progression und Anpassungsmöglichkeiten."
     }
   },
