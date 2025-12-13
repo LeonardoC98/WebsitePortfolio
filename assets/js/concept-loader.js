@@ -1,3 +1,10 @@
+// Map concept folder names to translation keys
+const conceptMapping = {
+    'concept-dungeon': 'dungeon',
+    'concept-puzzle': 'puzzle',
+    'concept-weapon-upgrades': 'weaponUpgrades'
+};
+
 // Load concept data from data.json and populate the page
 async function loadConceptData() {
     try {
@@ -8,7 +15,14 @@ async function loadConceptData() {
         
         if (!conceptFolder) return;
         
-        // Fetch concept data
+        // Get translation key for this concept
+        const translationKey = conceptMapping[conceptFolder];
+        if (!translationKey) {
+            console.error('No translation mapping for:', conceptFolder);
+            return;
+        }
+        
+        // Fetch concept data for hero image and technical details
         const response = await fetch(`../../concepts/${conceptFolder}/data.json`);
         const concept = await response.json();
         
@@ -18,44 +32,40 @@ async function loadConceptData() {
             heroImage.src = concept.hero_image;
         }
         
-        // Load concept title
+        // Load concept title from translations
         const titleEl = document.getElementById('conceptTitle');
         if (titleEl) {
-            titleEl.textContent = concept.title;
+            titleEl.textContent = t(`concepts.${translationKey}.title`);
         }
         
-        // Load concept subtitle
+        // Load concept subtitle from translations
         const subtitleEl = document.getElementById('conceptSubtitle');
         if (subtitleEl) {
-            subtitleEl.textContent = concept.subtitle;
+            const subtitle = t(`concepts.${translationKey}.subtitle`);
+            subtitleEl.textContent = subtitle !== `concepts.${translationKey}.subtitle` ? subtitle : t(`concepts.${translationKey}.description`);
         }
         
-        // Load overview
-        const overviewEl = document.getElementById('conceptOverview');
-        if (overviewEl) {
-            overviewEl.textContent = concept.overview;
+        // Load dynamic content sections from local content files
+        const contentContainer = document.getElementById('conceptContentSections');
+        if (contentContainer) {
+            const lang = localStorage.getItem('language') || 'en';
+            try {
+                const contentResponse = await fetch(`content-${lang}.json`);
+                if (contentResponse.ok) {
+                    const contentData = await contentResponse.json();
+                    contentContainer.innerHTML = '';
+                    
+                    if (contentData.sections && Array.isArray(contentData.sections)) {
+                        contentData.sections.forEach(section => {
+                            // Render section using template system
+                            renderSection(section, contentContainer);
+                        });
+                    }
+                }
+            } catch (error) {
+                console.log('No content file found for this concept');
+            }
         }
-        
-        // Load mechanics
-        const mechanicsContainer = document.getElementById('mechanicsContainer');
-        if (mechanicsContainer && concept.mechanics) {
-            mechanicsContainer.innerHTML = '';
-            concept.mechanics.forEach(mechanic => {
-                const mechanicHTML = `
-                    <div class="mechanic-item">
-                        <h3>${mechanic.name}</h3>
-                        <p>${mechanic.description}</p>
-                    </div>
-                `;
-                mechanicsContainer.insertAdjacentHTML('beforeend', mechanicHTML);
-            });
-        }
-        
-        // Load technical details
-        document.getElementById('conceptGenre').textContent = concept.genre;
-        document.getElementById('conceptPlatforms').textContent = concept.platforms.join(', ');
-        document.getElementById('conceptType').textContent = concept.type;
-        document.getElementById('conceptAudience').textContent = concept.target_audience;
         
         // Update page language (translate i18n keys)
         if (typeof updatePageLanguage === 'function') {

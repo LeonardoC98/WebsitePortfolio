@@ -94,6 +94,11 @@ async function changeLanguage(lang) {
         if (typeof loadConceptData === 'function') {
             loadConceptData();
         }
+        
+        // Reload recent projects on homepage
+        if (typeof window.loadRecentProjects === 'function') {
+            window.loadRecentProjects();
+        }
     }
 }
 

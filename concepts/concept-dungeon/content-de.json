@@ -1,0 +1,69 @@
+{
+  "sections": [
+    {
+      "type": "text",
+      "title": "Grundidee",
+      "text": "Ein Dungeon-basiertes Action-RPG mit Fokus auf Wiederholbarkeit durch ein einzigartiges Progressionssystem. Spieler jagen spezifische Gegner um deren Drop-Tabellen zu meistern und können ihre Charakter-Level zurücksetzen um permanente Skill-Meisterschaften zu erlangen. Dies erschafft eine tiefgehende Progression-Schleife wo Wissen und Strategie wichtiger sind als pure Stats."
+    },
+    {
+      "type": "text",
+      "title": "Hauptmerkmale",
+      "text": "• Gegner-spezifisches Loot-Meisterungssystem\n• Level-Reset-Mechaniken für Skill-Progression\n• Wissensbasiertes Gameplay\n• Strategischer Charakteraufbau\n• Permanente Progression durch Meisterung"
+    },
+    {
+      "type": "text",
+      "title": "Herausforderungen der Umsetzung",
+      "text": "Die Balance des Loot-Meisterungssystems so zu gestalten, dass es über mehrere Durchläufe hinweg fesselnd bleibt ohne langweilig zu werden. Sicherstellen dass die Level-Reset-Mechanik sich belohnend anfühlt statt bestrafend. Eine Schwierigkeitskurve zu kreieren die sowohl neue als auch gemeisterte Spieler berücksichtigt. Gegnerbegegnungen zu designen die interessant bleiben auch nachdem Spieler deren Muster und Drops gemeistert haben."
+    },
+    {
+      "type": "video",
+      "title": "Gameplay Video",
+      "src": "videos/gameplay.mp4",
+      "description": "Lade hier dein Gameplay-Video hoch und ersetze 'gameplay.mp4' mit dem Dateinamen"
+    },
+    {
+      "type": "video",
+      "title": "YouTube Trailer",
+      "src": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "description": "Ersetze den Link mit deinem YouTube- oder Vimeo-Video"
+    },
+    {
+      "type": "documents",
+      "title": "Dokumente & Downloads",
+      "files": [
+        {
+          "name": "Game Design Document",
+          "src": "documents/design-doc.pdf",
+          "size": "2.5 MB"
+        },
+        {
+          "name": "Technische Spezifikation",
+          "src": "documents/tech-spec.pdf",
+          "size": "1.2 MB"
+        }
+      ]
+    },
+    {
+      "type": "gallery",
+      "title": "Bilder & Visualisierung",
+      "images": [
+        {
+          "src": "images/concept1.jpg",
+          "alt": "Konzeptbild 1"
+        },
+        {
+          "src": "images/concept1.jpg",
+          "alt": "Konzeptbild 1"
+        },
+        {
+          "src": "images/concept1.jpg",
+          "alt": "Konzeptbild 1"
+        },
+        {
+          "src": "images/concept1.jpg",
+          "alt": "Konzeptbild 1"
+        }
+      ]
+    }
+  ]
+}

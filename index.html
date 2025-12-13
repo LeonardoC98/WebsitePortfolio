@@ -22,10 +22,9 @@
     <!-- About Section -->
     <section class="about-intro">
         <div class="container">
-            <h2>Über mein Portfolio</h2>
-            <p class="intro-text">
-                Willkommen in meiner Sammlung innovativer Game-Design-Konzepte. Hier präsentiere ich durchdachte Spielmechaniken,
-                Systeme und kreative Ideen, die das Potenzial haben, einzigartige Gaming-Erfahrungen zu schaffen.
+            <h2 data-i18n="home.aboutTitle">About my Portfolio</h2>
+            <p class="intro-text" data-i18n="home.aboutIntro">
+                Welcome to my collection of innovative game design concepts. Here you'll find detailed documentation of various game systems, mechanics, and design approaches.
             </p>
         </div>
     </section>
@@ -33,12 +32,12 @@
     <!-- Recent Projects Section -->
     <section class="recent-projects">
         <div class="container">
-            <h2>Neueste Konzepte</h2>
+            <h2 data-i18n="home.recentProjectsTitle">Recent Concepts</h2>
             <div id="recentProjectsGrid" class="recent-grid">
-                <!-- Wird dynamisch mit JavaScript gefüllt -->
+                <!-- Dynamically loaded with JavaScript -->
             </div>
             <div class="view-all-container">
-                <a href="portfolio.html" class="view-all-btn">Alle Konzepte ansehen</a>
+                <a href="portfolio.html" class="view-all-btn" data-i18n="home.viewAllButton">View All Concepts</a>
             </div>
         </div>
     </section>
@@ -50,40 +49,64 @@
         </div>
     </footer>
 
+    <script src="assets/js/i18n.js"></script>
     <script src="assets/js/navbar-loader.js"></script>
     <script src="assets/js/portfolio.js"></script>
+    <script src="assets/js/script.js"></script>
     <script>
         setTimeout(() => {
             document.body.style.transition = 'opacity 0.3s ease';
             document.body.style.opacity = '1';
         }, 100);
 
-        // Load recent projects on homepage
-        document.addEventListener('DOMContentLoaded', function() {
+        // Load recent projects on homepage - wait for translations to load
+        function loadRecentProjects() {
             const grid = document.getElementById('recentProjectsGrid');
-            if (grid && typeof portfolioData !== 'undefined') {
-                const recentProjects = portfolioData.slice(-2).reverse();
-                recentProjects.forEach(concept => {
-                    const card = document.createElement('a');
-                    card.href = concept.link;
-                    card.className = 'recent-project-card';
-                    const tagsHTML = (concept.tags || []).map(tag => `<span class="tag">${tag}</span>`).join('');
-                    const lang = localStorage.getItem('language') || 'en';
-                    const description = (lang === 'de' && concept.description_de) ? concept.description_de : concept.description;
-                    card.innerHTML = `
-                        <img src="${concept.image}" alt="${concept.title}" class="project-image">
-                        <div class="project-content">
-                            <h3>${concept.title}</h3>
-                            <p>${description}</p>
-                            <div class="project-tags">${tagsHTML}</div>
-                        </div>
-                    `;
-                    grid.appendChild(card);
-                });
-            }
+            if (!grid || typeof portfolioData === 'undefined') return;
+            
+            // Clear existing content
+            grid.innerHTML = '';
+            
+            const recentProjects = portfolioData.slice(-2).reverse();
+            recentProjects.forEach(concept => {
+                const card = document.createElement('a');
+                card.href = concept.link;
+                card.className = 'recent-project-card';
+                const tagsHTML = (concept.tags || []).map(tag => `<span class="tag">${tag}</span>`).join('');
+                
+                // Get translated content
+                const title = t(`${concept.translationKey}.title`);
+                const description = t(`${concept.translationKey}.description`);
+                
+                card.innerHTML = `
+                    <img src="${concept.image}" alt="${title}" class="project-image">
+                    <div class="project-content">
+                        <h3>${title}</h3>
+                        <p>${description}</p>
+                        <div class="project-tags">${tagsHTML}</div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Wait for i18n to load, then load projects
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Wait for i18n to be ready
+            await new Promise(resolve => {
+                const checkI18n = setInterval(() => {
+                    if (typeof t === 'function' && typeof translations !== 'undefined' && Object.keys(translations).length > 0) {
+                        clearInterval(checkI18n);
+                        resolve();
+                    }
+                }, 50);
+            });
+            
+            loadRecentProjects();
+            
+            // Make loadRecentProjects available globally for language changes
+            window.loadRecentProjects = loadRecentProjects;
         });
     </script>
-    <script src="assets/js/i18n.js"></script>
-    <script src="assets/js/script.js"></script>
 </body>
 </html>
