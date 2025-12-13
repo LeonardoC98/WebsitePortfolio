@@ -17,32 +17,30 @@
         </div>
     </section>
 
-    <!-- Portfolio Search -->
+    <!-- Portfolio Search and Filters -->
     <section class="portfolio-search-section">
         <div class="container">
-            <div class="portfolio-search-container">
-                <!-- Search Input -->
-                <div class="portfolio-search">
-                    <input id="portfolioSearch" type="search" placeholder="Suche..." data-i18n-placeholder="portfolio.search" aria-label="Search portfolio">
-                    <button id="portfolioClear" class="btn-clear" data-i18n="portfolio.clear" aria-label="Clear search">✕</button>
+            <div class="search-filter-wrapper">
+                <!-- Tag Dropdown -->
+                <div class="tag-dropdown-wrapper">
+                    <button class="tag-select-btn" id="tagSelectBtn" type="button">
+                        <span data-i18n="portfolio.selectTags">Tags auswählen</span>
+                        <span class="arrow">▼</span>
+                    </button>
+                    <div class="tag-dropdown-list" id="tagDropdownList">
+                        <!-- Checkboxes dynamisch geladen -->
+                    </div>
+                </div>
+                
+                <!-- Search Bar -->
+                <div class="search-wrapper">
+                    <input type="search" id="portfolioSearch" placeholder="Suche..." data-i18n-placeholder="portfolio.search">
+                    <button type="button" id="portfolioClear" class="clear-btn" data-i18n="portfolio.clear">✕</button>
                 </div>
             </div>
             
-            <!-- Tag Filter Dropdown -->
-            <div class="tag-filter-container">
-                <div class="tag-filter-dropdown">
-                    <button type="button" class="tag-dropdown-button" id="tagDropdownButton">
-                        <span data-i18n="portfolio.selectTags">Tags auswählen</span>
-                        <span class="dropdown-arrow">▼</span>
-                    </button>
-                    <div class="tag-dropdown-menu" id="tagDropdownMenu">
-                        <!-- Tag checkboxes werden hier dynamisch geladen -->
-                    </div>
-                </div>
-                <div class="selected-tags-display" id="selectedTagsDisplay">
-                    <!-- Ausgewählte Tags werden hier angezeigt -->
-                </div>
-            </div>
+            <!-- Selected Tags -->
+            <div id="selectedTagsDisplay" class="selected-tags"></div>
         </div>
     </section>
 

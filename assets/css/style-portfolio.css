@@ -26,165 +26,122 @@
     border-bottom: 1px solid var(--border-color);
 }
 
-.portfolio-search-container {
+/* Search and Filter Wrapper */
+.search-filter-wrapper {
     display: flex;
-    flex-direction: column;
-    gap: 16px;
-    max-width: 500px;
-    margin: 0 auto;
-}
-
-/* Filter Tabs */
-.portfolio-filter-tabs {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    flex-wrap: wrap;
-}
-
-.filter-tab {
-    padding: 8px 14px;
-    border: 1px solid var(--border-color);
-    background: var(--bg-light);
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    font-weight: 500;
-    color: var(--text-light);
-    transition: all 0.3s ease;
-}
-
-.filter-tab:hover {
-    border-color: var(--primary-color);
-    color: var(--primary-color);
-}
-
-.filter-tab.active {
-    background: var(--primary-color);
-    color: white;
-    border-color: var(--primary-color);
-}
-
-/* Search */
-.portfolio-search {
-    display: flex;
-    justify-content: center;
+    gap: 15px;
+    max-width: 800px;
+    margin: 0 auto 20px;
     align-items: center;
-    gap: 10px;
 }
 
-.portfolio-search input[type="search"] {
-    flex: 1;
-    padding: 10px 14px;
-    border-radius: 8px;
-    border: 1px solid var(--border-color);
-    background: var(--bg-light);
-    box-shadow: 0 4px 12px rgba(99,102,241,0.05);
-    font-size: 0.95rem;
-}
-
-.portfolio-search input[type="search"]:focus {
-    outline: none;
-    box-shadow: 0 6px 20px rgba(99,102,241,0.1);
-    border-color: var(--primary-color);
-}
-
-.btn-clear {
-    background: transparent;
-    border: none;
-    font-size: 1rem;
-    cursor: pointer;
-    padding: 6px 8px;
-    color: var(--text-light);
-}
-
-.btn-clear:hover {
-    color: var(--text-dark);
-}
-   font-size: 1rem;
-}
-
-/* Tag Filter Dropdown */
-.tag-filter-container {
-    margin-top: 30px;
-}
-
-.tag-filter-dropdown {
+/* Tag Dropdown */
+.tag-dropdown-wrapper {
     position: relative;
-    display: inline-block;
 }
 
-.tag-dropdown-button {
+.tag-select-btn {
     padding: 10px 20px;
-    background: var(--bg-white);
+    background: white;
     border: 2px solid var(--border-color);
     border-radius: 8px;
-    font-size: 0.95rem;
     cursor: pointer;
     display: flex;
     align-items: center;
     gap: 10px;
-    transition: all 0.3s ease;
-    min-width: 200px;
+    font-size: 0.95rem;
+    min-width: 180px;
+    transition: border-color 0.3s;
 }
 
-.tag-dropdown-button:hover {
+.tag-select-btn:hover {
     border-color: var(--primary-color);
 }
 
-.dropdown-arrow {
+.tag-select-btn .arrow {
     margin-left: auto;
-    transition: transform 0.3s ease;
 }
 
-.tag-dropdown-menu.open + .tag-dropdown-button .dropdown-arrow {
-    transform: rotate(180deg);
-}
-
-.tag-dropdown-menu {
+.tag-dropdown-list {
     position: absolute;
     top: 100%;
     left: 0;
     margin-top: 5px;
-    background: var(--bg-white);
+    background: white;
     border: 1px solid var(--border-color);
     border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    min-width: 200px;
     max-height: 300px;
     overflow-y: auto;
-    min-width: 200px;
     z-index: 1000;
     display: none;
 }
 
-.tag-dropdown-menu.open {
+.tag-dropdown-list.show {
     display: block;
 }
 
-.tag-dropdown-item {
+.tag-option {
+    padding: 10px 15px;
     display: flex;
     align-items: center;
-    padding: 10px 15px;
-    cursor: pointer;
-    transition: background 0.2s ease;
     gap: 10px;
+    cursor: pointer;
 }
 
-.tag-dropdown-item:hover {
+.tag-option:hover {
     background: var(--bg-light);
 }
 
-.tag-checkbox {
+.tag-option input[type="checkbox"] {
     cursor: pointer;
-    width: 18px;
-    height: 18px;
 }
 
-.selected-tags-display {
+/* Search Bar */
+.search-wrapper {
+    flex: 1;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.search-wrapper input[type="search"] {
+    flex: 1;
+    padding: 10px 14px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--bg-light);
+    font-size: 0.95rem;
+}
+
+.search-wrapper input[type="search"]:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(99,102,241,0.1);
+}
+
+.clear-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--text-light);
+    font-size: 1.2rem;
+    padding: 5px 10px;
+}
+
+.clear-btn:hover {
+    color: var(--text-dark);
+}
+
+/* Selected Tags */
+.selected-tags {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    margin-top: 15px;
+    justify-content: center;
+    max-width: 800px;
+    margin: 0 auto;
 }
 
 .selected-tag-badge {
