@@ -1,0 +1,74 @@
+{
+  "nav": {
+    "home": "Home",
+    "portfolio": "Portfolio",
+    "about": "About Me"
+  },
+  "hero": {
+    "title": "Game Concepts Portfolio",
+    "subtitle": "Innovative game mechanics and creative concepts",
+    "cta": "View Projects"
+  },
+  "portfolio": {
+    "title": "My Game Concepts",
+    "subtitle": "Browse through my collection of game design concepts",
+    "search": "Search concepts...",
+    "clear": "Clear",
+    "filterAll": "All",
+    "filterTitle": "Title",
+    "filterDescription": "Description",
+    "filterGenre": "Genre",
+    "noResults": "No results found.",
+    "more": "More"
+  },
+  "concept": {
+    "back": "← Back to Portfolio",
+    "overview": "Overview",
+    "mechanics": "Game Mechanics",
+    "gallery": "Images & Visualization",
+    "technicalDetails": "Technical Details",
+    "genre": "Genre",
+    "platforms": "Platforms",
+    "type": "Type",
+    "audience": "Target Audience",
+    "moreInfo": "More Information",
+    "moreInfoText": "For a complete design document and more details",
+    "clickHere": "click here",
+    "mechanicPlaceholder1": "Main Mechanic 1",
+    "mechanicPlaceholder2": "Main Mechanic 2",
+    "mechanicDescription": "Description of the game mechanic...",
+    "overviewPlaceholder": "Here comes a detailed description of the game concept. Describe the core idea, game mechanics and unique features of your concept."
+  },
+  "about": {
+    "title": "About Me",
+    "welcome": "Welcome",
+    "intro": "Hi! I'm a passionate game designer with a love for creating unique gameplay experiences and innovative mechanics.",
+    "skills": "My Skills",
+    "experience": "Experience",
+    "interests": "Interests & Passion",
+    "contact": "Get in Touch",
+    "skillGame": "Game Design",
+    "skillGameDesc": "Concept development and balancing",
+    "skillMechanics": "Mechanics Design",
+    "skillMechanicsDesc": "Innovative gameplay systems",
+    "skillLevel": "Level Design",
+    "skillLevelDesc": "Engaging environments",
+    "skillPrototype": "Prototyping",
+    "skillPrototypeDesc": "Fast iteration and testing",
+    "skillBalance": "Game Balance",
+    "skillBalanceDesc": "Balanced difficulty curves",
+    "skillDoc": "Documentation",
+    "skillDocDesc": "Clear design documents",
+    "interestIndie": "Indie Games",
+    "interestIndieDesc": "Small teams, big creativity",
+    "interestRoguelike": "Roguelike Design",
+    "interestRoguelikeDesc": "Procedural and replayable",
+    "interestStrategy": "Strategy Games",
+    "interestStrategyDesc": "Tactical depth and planning",
+    "interestNarrative": "Narrative Design",
+    "interestNarrativeDesc": "Stories through mechanics"
+  },
+  "footer": {
+    "copyright": "© 2025 Game Concept Portfolio. All rights reserved."
+  }
+}

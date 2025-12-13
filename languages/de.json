@@ -1,0 +1,74 @@
+{
+  "nav": {
+    "home": "Home",
+    "portfolio": "Portfolio",
+    "about": "About Me"
+  },
+  "hero": {
+    "title": "Game Concepts Portfolio",
+    "subtitle": "Innovative Spielmechaniken und kreative Konzepte",
+    "cta": "Projekte ansehen"
+  },
+  "portfolio": {
+    "title": "Meine Spielkonzepte",
+    "subtitle": "Durchstöbere meine Sammlung an Game-Design-Konzepten",
+    "search": "Konzepte durchsuchen...",
+    "clear": "Löschen",
+    "filterAll": "Alle",
+    "filterTitle": "Titel",
+    "filterDescription": "Beschreibung",
+    "filterGenre": "Genre",
+    "noResults": "Keine Ergebnisse gefunden.",
+    "more": "Mehr"
+  },
+  "concept": {
+    "back": "← Zurück zum Portfolio",
+    "overview": "Überblick",
+    "mechanics": "Spielmechaniken",
+    "gallery": "Bilder & Visualisierung",
+    "technicalDetails": "Technische Details",
+    "genre": "Genre",
+    "platforms": "Plattformen",
+    "type": "Art",
+    "audience": "Zielgruppe",
+    "moreInfo": "Mehr Informationen",
+    "moreInfoText": "Für ein vollständiges Design-Dokument und weitere Details",
+    "clickHere": "klicke hier",
+    "mechanicPlaceholder1": "Hauptmechanik 1",
+    "mechanicPlaceholder2": "Hauptmechanik 2",
+    "mechanicDescription": "Beschreibung der Spielmechanik...",
+    "overviewPlaceholder": "Hier kommt eine detaillierte Beschreibung des Spiel-Konzepts. Beschreibe die Kernidee, die Spielmechaniken und die einzigartigen Eigenschaften deines Konzepts."
+  },
+  "about": {
+    "title": "Über mich",
+    "welcome": "Willkommen",
+    "intro": "Hi! Ich bin ein leidenschaftlicher Game Designer mit einer Vorliebe für einzigartige Gameplay-Erfahrungen und innovative Mechaniken.",
+    "skills": "Meine Fähigkeiten",
+    "experience": "Erfahrung",
+    "interests": "Interessen & Leidenschaft",
+    "contact": "Kontakt",
+    "skillGame": "Game Design",
+    "skillGameDesc": "Konzeptentwicklung und Balancing",
+    "skillMechanics": "Mechanik Design",
+    "skillMechanicsDesc": "Innovative Gameplay-Systeme",
+    "skillLevel": "Level Design",
+    "skillLevelDesc": "Fesselnde Umgebungen",
+    "skillPrototype": "Prototyping",
+    "skillPrototypeDesc": "Schnelle Iteration und Tests",
+    "skillBalance": "Spiel-Balance",
+    "skillBalanceDesc": "Ausgewogene Schwierigkeitskurven",
+    "skillDoc": "Dokumentation",
+    "skillDocDesc": "Klare Design-Dokumente",
+    "interestIndie": "Indie-Spiele",
+    "interestIndieDesc": "Kleine Teams, große Kreativität",
+    "interestRoguelike": "Roguelike Design",
+    "interestRoguelikeDesc": "Prozedural und wiederholbar",
+    "interestStrategy": "Strategiespiele",
+    "interestStrategyDesc": "Taktische Tiefe und Planung",
+    "interestNarrative": "Narrative Design",
+    "interestNarrativeDesc": "Geschichten durch Mechaniken"
+  },
+  "footer": {
+    "copyright": "© 2025 Game Concept Portfolio. Alle Rechte vorbehalten."
+  }
+}

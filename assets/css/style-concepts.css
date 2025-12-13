@@ -1,0 +1,180 @@
+﻿/* ===== CONCEPT DETAIL ===== */
+.back-button-container {
+    padding: 20px;
+    background-color: var(--bg-white);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.back-button {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+}
+
+.back-button:hover {
+    color: var(--primary-dark);
+}
+
+.concept-hero {
+    position: relative;
+    height: 400px;
+    overflow: hidden;
+}
+
+.concept-hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+}
+
+.concept-hero-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+    color: white;
+    padding: 40px;
+}
+
+.concept-hero-overlay h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.concept-subtitle {
+    font-size: 1.2rem;
+    opacity: 0.9;
+}
+
+.concept-detail {
+    background-color: var(--bg-white);
+}
+
+.concept-content {
+    display: grid;
+    grid-template-columns: 1fr 250px;
+    gap: 40px;
+    padding: 60px 20px;
+    align-items: start;
+}
+
+.concept-main {
+    min-width: 0;
+}
+
+.concept-section {
+    margin-bottom: 40px;
+}
+
+.concept-section h2 {
+    font-size: 1.8rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.concept-section p {
+    color: var(--text-light);
+    line-height: 1.8;
+    margin-bottom: 1rem;
+}
+
+.mechanic-item {
+    padding: 20px;
+    background-color: var(--bg-light);
+    border-left: 4px solid var(--secondary-color);
+    margin-bottom: 1.5rem;
+    border-radius: 5px;
+}
+
+.mechanic-item h3 {
+    color: var(--secondary-color);
+    margin-bottom: 0.5rem;
+}
+
+.concept-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin: 1.5rem 0;
+}
+
+.concept-gallery img {
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    transition: transform 0.3s ease;
+}
+
+.concept-gallery img:hover {
+    transform: scale(1.05);
+}
+
+.details-list {
+    list-style: none;
+    padding: 20px;
+    background-color: var(--bg-light);
+    border-radius: 10px;
+}
+
+.details-list li {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-light);
+}
+
+.details-list li:last-child {
+    border-bottom: none;
+}
+
+.details-list strong {
+    color: var(--text-dark);
+}
+
+.concept-sidebar {
+    background-color: var(--bg-light);
+    padding: 20px;
+    border-radius: 10px;
+    height: fit-content;
+}
+
+.concept-sidebar h3 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+}
+
+.related-concept {
+    padding: 15px;
+    background-color: var(--bg-white);
+    border-radius: 5px;
+    margin-bottom: 1rem;
+    border-left: 3px solid var(--primary-color);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.related-concept:hover {
+    background-color: var(--bg-light);
+    transform: translateX(5px);
+}
+
+.related-concept a {
+    text-decoration: none;
+    color: var(--text-dark);
+    font-weight: 500;
+    display: block;
+}
+
+.related-concept p {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    margin-top: 0.5rem;
+}

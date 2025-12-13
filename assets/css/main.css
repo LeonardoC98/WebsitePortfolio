@@ -1,0 +1,20 @@
+/* ===== MAIN CSS - IMPORTS ALL MODULES ===== */
+
+/* Base Styles */
+@import url('base.css');
+
+/* Components */
+@import url('components/navbar.css');
+@import url('components/footer.css');
+@import url('components/cards.css');
+@import url('components/buttons.css');
+
+/* Pages */
+@import url('pages/home.css');
+@import url('pages/portfolio.css');
+@import url('pages/about.css');
+@import url('pages/concepts.css');
+
+/* Utilities */
+@import url('utils/animations.css');
+@import url('utils/responsive.css');

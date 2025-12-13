@@ -1,0 +1,23 @@
+{
+  "id": "concept-puzzle",
+  "title": "Puzzle Adventure",
+  "subtitle": "Ein innovatives Rätsel-Adventure mit physikalischen Interaktionen und Umweltpuzzles.",
+  "description": "Ein innovatives Rätsel-Adventure mit physikalischen Interaktionen und Umweltpuzzles.",
+  "image": "images/puzzle.jpg",
+  "hero_image": "images/puzzle.jpg",
+  "genre": "Puzzle",
+  "platforms": ["PC"],
+  "type": "Single-Player",
+  "target_audience": "10+",
+  "overview": "Umweltbasierte Rätsel mit eleganten Lösungen.",
+  "mechanics": [
+    {
+      "name": "Physics Puzzles",
+      "description": "Schwerkraft und Objekt-Interaktionen"
+    },
+    {
+      "name": "Environmental Clues",
+      "description": "Umwelt erzählt die Geschichte"
+    }
+  ]
+}

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Concept Portfolio</title>
+    <link rel="stylesheet" href="assets/css/style-base.css">
+    <link rel="stylesheet" href="assets/css/style-home.css">
+</head>
+<body style="opacity: 0;">
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1 data-i18n="hero.title">Game Concepts Portfolio</h1>
+            <p data-i18n="hero.subtitle">Innovative game mechanics and creative concepts</p>
+            <a href="portfolio.html" class="cta-button" data-i18n="hero.cta">View Projects</a>
+        </div>
+        <div class="hero-background"></div>
+    </section>
+
+    <!-- Featured Section -->
+    <section class="featured">
+        <div class="container">
+            <h2>Highlights</h2>
+            <div class="featured-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3>Innovative Konzepte</h3>
+                    <p>Durchdachte Spiel-Systeme und Mechaniken für moderne Gaming-Erfahrungen</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎨</div>
+                    <h3>Design & Gameplay</h3>
+                    <p>Balance zwischen Ästhetik und spielerischer Tiefe</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚙️</div>
+                    <h3>Komplexe Systeme</h3>
+                    <p>Detaillierte Beschreibung von Spielmechaniken und Interactions</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p data-i18n="footer.copyright">© 2025 Game Concept Portfolio. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="assets/js/navbar-loader.js"></script>
+    <script>
+        setTimeout(() => {
+            document.body.style.transition = 'opacity 0.3s ease';
+            document.body.style.opacity = '1';
+        }, 100);
+    </script>
+    <script src="assets/js/i18n.js"></script>
+    <script src="assets/js/script.js"></script>
+</body>
+</html>

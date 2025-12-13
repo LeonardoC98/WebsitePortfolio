@@ -1,0 +1,23 @@
+{
+  "id": "concept-dungeon",
+  "title": "Dungeon Game Concept",
+  "subtitle": "Replayability through hunting mastery for drops and level resets for skill mastery.",
+  "description": "Replayability through hunting mastery for drops and level resets for skill mastery.",
+  "image": "images/dungeon.jpg",
+  "hero_image": "images/dungeon.jpg",
+  "genre": "RPG",
+  "platforms": ["PC", "Console"],
+  "type": "Single-Player",
+  "target_audience": "13+",
+  "overview": "Ein strategisches Dungeon-Konzept mit innovativen Mechaniken.",
+  "mechanics": [
+    {
+      "name": "Dungeon System",
+      "description": "Dynamische Dungeons und Exploration"
+    },
+    {
+      "name": "Ressourcenmanagement",
+      "description": "Strategische Ressourcen-Verwaltung"
+    }
+  ]
+}
