@@ -17,6 +17,9 @@
     "filterAll": "Alle",
     "filterTitle": "Titel",
     "filterDescription": "Beschreibung",
+    "filterTags": "Tags",
+    "filterByTags": "Filter nach Tags:",
+    "selectTags": "Tags auswählen",
     "filterGenre": "Genre",
     "noResults": "Keine Ergebnisse gefunden.",
     "more": "Mehr"

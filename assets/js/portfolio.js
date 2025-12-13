@@ -7,7 +7,7 @@ const portfolioData = [
         title: 'Dungeon Game Concept',
         description: 'Replayability through hunting mastery for drops and level resets for skill mastery.',
         image: 'concepts/concept-dungeon/images/dungeon.jpg',
-        genre: 'RPG',
+        tags: ['RPG', 'Action', 'Dungeon Crawler'],
         link: 'concepts/concept-dungeon/index.html',
         overview: 'Ein strategisches Dungeon-Konzept mit innovativen Mechaniken.',
         mechanics: [
@@ -20,8 +20,7 @@ const portfolioData = [
         title: 'Puzzle Adventure',
         description: 'Ein innovatives Rätsel-Adventure mit physikalischen Interaktionen und Umweltpuzzles.',
         image: 'concepts/concept-puzzle/images/puzzle.jpg',
-        genre: 'Puzzle',
-
+        tags: ['Puzzle', 'Adventure', 'Physics'],
         link: 'concepts/concept-puzzle/index.html',
         overview: 'Umweltbasierte Rätsel mit eleganten Lösungen.',
         mechanics: [
@@ -44,7 +43,7 @@ const portfolioData = [
 // },
 
 // ===== PORTFOLIO GRID LADEN =====
-function loadPortfolio(filter = '', searchQuery = '') {
+function loadPortfolio(searchQuery = '', selectedTags = []) {
     const portfolioGrid = document.getElementById('portfolioGrid');
     if (!portfolioGrid) return;
 
@@ -53,24 +52,22 @@ function loadPortfolio(filter = '', searchQuery = '') {
     const q = (searchQuery || '').trim().toLowerCase();
 
     const items = portfolioData.filter(c => {
-        if (!q) return true;
-
-        const title = (c.title || '').toLowerCase();
-        const desc = (c.description || '').toLowerCase();
-        const genre = (c.genre || '').toLowerCase();
-
-        // Filter based on selected filter type
-        switch (filter) {
-            case 'title':
-                return title.includes(q);
-            case 'description':
-                return desc.includes(q);
-            case 'genre':
-                return genre.includes(q);
-            case 'all':
-            default:
-                return title.includes(q) || desc.includes(q) || genre.includes(q);
+        // Filter by search query
+        let matchesSearch = true;
+        if (q) {
+            const title = (c.title || '').toLowerCase();
+            const desc = (c.description || '').toLowerCase();
+            const tags = (c.tags || []).map(t => t.toLowerCase()).join(' ');
+            matchesSearch = title.includes(q) || desc.includes(q) || tags.includes(q);
         }
+
+        // Filter by selected tags (concept must have at least one selected tag)
+        let matchesTags = true;
+        if (selectedTags.length > 0) {
+            matchesTags = (c.tags || []).some(tag => selectedTags.includes(tag));
+        }
+
+        return matchesSearch && matchesTags;
     });
 
     if (items.length === 0) {
@@ -86,14 +83,14 @@ function loadPortfolio(filter = '', searchQuery = '') {
         const card = document.createElement('a');
         card.href = concept.link;
         card.className = 'portfolio-card';
+        const tagsHTML = (concept.tags || []).map(tag => `<span class="tag">${tag}</span>`).join('');
         card.innerHTML = `
             <img src="${concept.image}" alt="${concept.title}" class="portfolio-card-image">
             <div class="portfolio-card-content">
                 <h3>${concept.title}</h3>
                 <p>${concept.description || concept.subtitle || ''}</p>
                 <div class="portfolio-card-meta">
-                    <span>${concept.genre}</span>
-                    <span class="portfolio-card-link">Mehr →</span>
+                    <div class="portfolio-card-tags">${tagsHTML}</div>
                 </div>
             </div>
         `;
@@ -119,36 +116,118 @@ function debounce(fn, delay = 250) {
     };
 }
 
+// Get all unique tags from portfolio data
+function getAllTags() {
+    const allTags = new Set();
+    portfolioData.forEach(concept => {
+        (concept.tags || []).forEach(tag => allTags.add(tag));
+    });
+    return Array.from(allTags).sort();
+}
+
+// Initialize tag filter dropdown
+function initTagFilter() {
+    const tagDropdownMenu = document.getElementById('tagDropdownMenu');
+    const tagDropdownButton = document.getElementById('tagDropdownButton');
+    
+    if (!tagDropdownMenu || !tagDropdownButton) return;
+
+    const allTags = getAllTags();
+    tagDropdownMenu.innerHTML = '';
+
+    allTags.forEach(tag => {
+        const label = document.createElement('label');
+        label.className = 'tag-dropdown-item';
+        
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.value = tag;
+        checkbox.className = 'tag-checkbox';
+        
+        checkbox.addEventListener('change', function() {
+            updateSelectedTagsDisplay();
+            updatePortfolioWithFilters();
+        });
+        
+        label.appendChild(checkbox);
+        label.appendChild(document.createTextNode(' ' + tag));
+        tagDropdownMenu.appendChild(label);
+    });
+
+    // Toggle dropdown
+    tagDropdownButton.addEventListener('click', function(e) {
+        e.stopPropagation();
+        tagDropdownMenu.classList.toggle('open');
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!tagDropdownMenu.contains(e.target) && !tagDropdownButton.contains(e.target)) {
+            tagDropdownMenu.classList.remove('open');
+        }
+    });
+}
+
+// Update display of selected tags
+function updateSelectedTagsDisplay() {
+    const selectedTagsDisplay = document.getElementById('selectedTagsDisplay');
+    const selectedCheckboxes = document.querySelectorAll('.tag-checkbox:checked');
+    
+    if (!selectedTagsDisplay) return;
+    
+    if (selectedCheckboxes.length === 0) {
+        selectedTagsDisplay.innerHTML = '';
+        return;
+    }
+
+    selectedTagsDisplay.innerHTML = '';
+    selectedCheckboxes.forEach(checkbox => {
+        const tagBadge = document.createElement('span');
+        tagBadge.className = 'selected-tag-badge';
+        tagBadge.textContent = checkbox.value;
+        
+        const removeBtn = document.createElement('button');
+        removeBtn.className = 'remove-tag-btn';
+        removeBtn.textContent = '×';
+        removeBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            checkbox.checked = false;
+            updateSelectedTagsDisplay();
+            updatePortfolioWithFilters();
+        });
+        
+        tagBadge.appendChild(removeBtn);
+        selectedTagsDisplay.appendChild(tagBadge);
+    });
+}
+
+// Update portfolio based on current filters
+function updatePortfolioWithFilters() {
+    const searchEl = document.getElementById('portfolioSearch');
+    const selectedTags = Array.from(document.querySelectorAll('.tag-checkbox:checked'))
+        .map(checkbox => checkbox.value);
+    
+    loadPortfolio(searchEl ? searchEl.value : '', selectedTags);
+}
+
 // Wire up search on DOMContentLoaded
 document.addEventListener('DOMContentLoaded', function() {
-    loadPortfolio('all', '');
+    initTagFilter();
+    loadPortfolio('', []);
 
     const searchEl = document.getElementById('portfolioSearch');
     const clearEl = document.getElementById('portfolioClear');
-    const filterTabs = document.querySelectorAll('.filter-tab');
-
-    let currentFilter = 'all';
-
-    // Wire up filter tabs
-    filterTabs.forEach(tab => {
-        tab.addEventListener('click', function() {
-            filterTabs.forEach(t => t.classList.remove('active'));
-            this.classList.add('active');
-            currentFilter = this.getAttribute('data-filter');
-            loadPortfolio(currentFilter, searchEl ? searchEl.value : '');
-        });
-    });
 
     if (searchEl) {
         const onInput = debounce(function(e) {
-            loadPortfolio(currentFilter, e.target.value);
+            updatePortfolioWithFilters();
         }, 200);
 
         searchEl.addEventListener('input', onInput);
         searchEl.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 searchEl.value = '';
-                loadPortfolio(currentFilter, '');
+                updatePortfolioWithFilters();
             }
         });
     }
@@ -158,7 +237,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (searchEl) {
                 searchEl.value = '';
                 searchEl.focus();
-                loadPortfolio(currentFilter, '');
+                updatePortfolioWithFilters();
             }
         });
     }
@@ -233,7 +312,7 @@ function loadConceptDetails() {
     const typeEl = document.getElementById('conceptType');
     const audienceEl = document.getElementById('conceptAudience');
     
-    if (genreEl) genreEl.textContent = concept.genre;
+    if (genreEl) genreEl.textContent = (concept.tags || []).join(', ');
     if (platformsEl) platformsEl.textContent = (concept.platforms || []).join(', ');
     if (typeEl) typeEl.textContent = concept.type || 'Single-Player';
     if (audienceEl) audienceEl.textContent = concept.target_audience || '13+';
@@ -247,16 +326,16 @@ document.addEventListener('DOMContentLoaded', loadConceptDetails);
 // ===== ADD NEW CONCEPT HELPER FUNCTION =====
 /**
  * Fügt ein neues Konzept zur Portfolio-Liste hinzu
- * Beispiel: addConcept('my-game', 'My Game Title', 'Subtitle', 'Description', 'Genre', 'path/to/image.jpg')
+ * Beispiel: addConcept('my-game', 'My Game Title', 'Subtitle', 'Description', ['RPG', 'Action'], 'path/to/image.jpg')
  */
-function addConcept(id, title, subtitle, description, genre, image) {
+function addConcept(id, title, subtitle, description, tags, image) {
     const newConcept = {
         id: id,
         title: title,
         subtitle: subtitle,
         description: description,
         image: image,
-        genre: genre,
+        tags: tags || [],
         link: `concepts/${id}/index.html`
     };
     

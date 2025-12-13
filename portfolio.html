@@ -21,18 +21,26 @@
     <section class="portfolio-search-section">
         <div class="container">
             <div class="portfolio-search-container">
-                <!-- Filter Tabs -->
-                <div class="portfolio-filter-tabs">
-                    <button class="filter-tab active" data-filter="all" data-i18n="portfolio.filterAll">Alle</button>
-                    <button class="filter-tab" data-filter="title" data-i18n="portfolio.filterTitle">Titel</button>
-                    <button class="filter-tab" data-filter="description" data-i18n="portfolio.filterDescription">Beschreibung</button>
-                    <button class="filter-tab" data-filter="genre" data-i18n="portfolio.filterGenre">Genre</button>
-                </div>
-
                 <!-- Search Input -->
                 <div class="portfolio-search">
                     <input id="portfolioSearch" type="search" placeholder="Suche..." data-i18n-placeholder="portfolio.search" aria-label="Search portfolio">
                     <button id="portfolioClear" class="btn-clear" data-i18n="portfolio.clear" aria-label="Clear search">✕</button>
+                </div>
+            </div>
+            
+            <!-- Tag Filter Dropdown -->
+            <div class="tag-filter-container">
+                <div class="tag-filter-dropdown">
+                    <button type="button" class="tag-dropdown-button" id="tagDropdownButton">
+                        <span data-i18n="portfolio.selectTags">Tags auswählen</span>
+                        <span class="dropdown-arrow">▼</span>
+                    </button>
+                    <div class="tag-dropdown-menu" id="tagDropdownMenu">
+                        <!-- Tag checkboxes werden hier dynamisch geladen -->
+                    </div>
+                </div>
+                <div class="selected-tags-display" id="selectedTagsDisplay">
+                    <!-- Ausgewählte Tags werden hier angezeigt -->
                 </div>
             </div>
         </div>
