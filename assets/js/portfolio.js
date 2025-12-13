@@ -7,7 +7,7 @@ const portfolioData = [
         title: 'Dungeon Game Concept',
         description: 'Replayability through hunting mastery for drops and level resets for skill mastery.',
         image: 'concepts/concept-dungeon/images/dungeon.jpg',
-        tags: ['RPG', 'Action', 'Dungeon Crawler'],
+        tags: ['System', 'Looting', 'Mastery', 'Leveling', 'Exploration'],
         link: 'concepts/concept-dungeon/index.html',
         overview: 'Ein strategisches Dungeon-Konzept mit innovativen Mechaniken.',
         mechanics: [
