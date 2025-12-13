@@ -20,12 +20,14 @@
 .hero h1 {
     font-size: 3.5rem;
     margin-bottom: 1rem;
+    animation: slideInDown 0.8s ease;
 }
 
 .hero p {
     font-size: 1.3rem;
     margin-bottom: 2rem;
     opacity: 0.95;
+    animation: slideInUp 0.8s ease 0.2s both;
 }
 
 /* ===== ABOUT SECTION ===== */
