@@ -1,7 +1,7 @@
 // Map blog folder names to translation keys
 const blogMapping = {
     'gameplay-loops': 'gameplayLoops',
-    'card-game-balance': 'cardBalance',
+    'power-balance': 'powerBalance',
     'progression-systems': 'progression'
 };
 

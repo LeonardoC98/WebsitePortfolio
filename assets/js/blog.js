@@ -3,33 +3,23 @@ const blogData = [
     {
         id: 'gameplay-loops',
         translationKey: 'blog.posts.gameplayLoops',
-        image: 'concepts/concept-dungeon/images/dungeon.jpg',
-        heroImage: 'concepts/concept-dungeon/images/dungeon.jpg',
+        image: 'blog/images/gploop.jpg',
+        heroImage: 'blog/images/gploop.jpg',
         tags: ['RPG', 'Game Design', 'Mechanics'],
-        date: '2025-01-15',
+        date: '2025-12-14',
         category: 'Game Design',
         link: 'blog/gameplay-loops/index.html'
     },
     {
-        id: 'card-game-balance',
-        translationKey: 'blog.posts.cardBalance',
-        image: 'concepts/concept-puzzle/images/card.jpg',
-        heroImage: 'concepts/concept-puzzle/images/card.jpg',
-        tags: ['Card Game', 'Balance', 'PVP'],
-        date: '2025-01-10',
-        category: 'Balance',
-        link: 'blog/card-game-balance/index.html'
+        id: 'power-balance',
+        translationKey: 'blog.posts.powerBalance',
+        image: 'blog/images/scalebalance.jpg',
+        heroImage: 'blog/images/scalebalance.jpg',
+        tags: ['Theory', 'Balance', 'PVP'],
+        date: '2025-12-14',
+        category: 'Game Theory',
+        link: 'blog/power-balance/index.html'
     },
-    {
-        id: 'progression-systems',
-        translationKey: 'blog.posts.progression',
-        image: 'concepts/concept-weapon-upgrades/images/weaponupgrade.jpg',
-        heroImage: 'concepts/concept-weapon-upgrades/images/weaponupgrade.jpg',
-        tags: ['Progression', 'System', 'RPG'],
-        date: '2025-01-05',
-        category: 'Systems',
-        link: 'blog/progression-systems/index.html'
-    }
 ];
 
 // ===== BLOG GRID LADEN =====

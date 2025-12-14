@@ -12,10 +12,11 @@
     "cta": "Get in Touch"
   },
   "home": {
-    "aboutTitle": "About my Portfolio",
-    "aboutIntro": "Welcome to my collection of innovative game design concepts. Here you'll find detailed documentation of various game systems, mechanics, and design approaches.",
+    "aboutTitle": "About this Website",
+    "aboutIntro": "Concepts like item upgrades, skill and spell progression, and the interaction of game systems are essential elements for making a game engaging and fun. Here, we explore these ideas and develop new concepts.",
     "recentProjectsTitle": "Recent Concepts",
-    "viewAllButton": "View All Concepts"
+    "viewAllButton": "View All Concepts",
+    "description": "Created on December 14, 2025"
   },
   "portfolio": {
     "title": "My Game Concepts",
@@ -90,12 +91,12 @@
     "backToBlog": "Back to Blog",
     "posts": {
       "gameplayLoops": {
-        "title": "Gameplay Loops in RPGs",
+        "title": "Gameplay Loops in MMORPGs",
         "excerpt": "How to design compelling core mechanics that bring players back again and again."
       },
-      "cardBalance": {
-        "title": "Balance in Card Games",
-        "excerpt": "The art of balancing competitive card games and TCGs."
+      "powerBalance": {
+        "title": "Balance in PVP",
+        "excerpt": "The art of balancing competitive games."
       },
       "progression": {
         "title": "Progression Systems",

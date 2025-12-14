@@ -163,12 +163,6 @@
         ]
     },
     {
-      "type": "video",
-      "title": "Gameplay Trailer",
-      "src": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-      "description": ""
-    },
-    {
       "type": "documents",
       "title": "Dokumente & Downloads",
       "files": [
