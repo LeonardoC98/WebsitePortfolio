@@ -14,16 +14,10 @@ function smoothParallax() {
     currentX += (targetX - currentX) * lerp;
     currentY += (targetY - currentY) * lerp;
     
-    // Update blog hero
+    // Update blog hero ONLY (smooth)
     const blogHeroImage = document.querySelector('.blog-hero-image');
     if (blogHeroImage) {
         blogHeroImage.style.transform = `translate(${currentX}px, ${currentY}px)`;
-    }
-    
-    // Update concept hero
-    const conceptHeroImage = document.querySelector('.concept-hero-image');
-    if (conceptHeroImage) {
-        conceptHeroImage.style.transform = `translateY(${currentY}px)`;
     }
     
     // Continue animation if values are still changing
@@ -37,12 +31,13 @@ function smoothParallax() {
 window.addEventListener('scroll', () => {
     const scrolled = window.pageYOffset;
     
-    // Concept pages parallax (vertical only)
+    // Concept pages parallax (INSTANT - no smooth animation)
     const conceptHeroImage = document.querySelector('.concept-hero-image');
     if (conceptHeroImage) {
         const parallaxSpeed = 0.35;
         const initialOffset = -40;
-        targetY = initialOffset + (scrolled * parallaxSpeed);
+        const translateY = initialOffset + (scrolled * parallaxSpeed);
+        conceptHeroImage.style.transform = `translateY(${translateY}px)`;
     }
     
     // Blog pages parallax (exponential acceleration)
