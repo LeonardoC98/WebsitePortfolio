@@ -29,36 +29,40 @@
       ]
     },
     {
-      "type": "text",
+      "type": "list",
       "title": "Design-Prinzipien",
-      "text": "Beim Design von Gameplay Loops solltest du beachten:<br><br><ul style='color: var(--text-light); line-height: 2; margin: 1rem 0 1rem 2rem;'><li><strong style='color: var(--primary-color);'>Konstante Belohnungen:</strong> Spieler sollten regelmäßig Fortschritt spüren</li><li><strong style='color: var(--primary-color);'>Variabilität:</strong> Der Loop sollte sich entwickeln und nicht monoton werden</li><li><strong style='color: var(--primary-color);'>Klares Feedback:</strong> Spieler müssen verstehen, was sie erreicht haben</li><li><strong style='color: var(--primary-color);'>Skalierung:</strong> Der Loop sollte mit dem Spieler-Level schwieriger werden</li></ul>"
-    },
-    {
-      "type": "text",
-      "title": "Beispiel: Diablo-Serie",
-      "text": "Diablo ist ein Paradebeispiel für perfekte Gameplay Loops:<br><br><div style='background: var(--bg-light); padding: 20px; border-left: 4px solid var(--accent-color); margin: 1.5rem 0;'><p style='color: var(--text-light); line-height: 1.8; margin: 0;'><strong style='color: var(--accent-color);'>Mikro:</strong> Monster töten → Loot sammeln → Stärker werden<br><strong style='color: var(--accent-color);'>Meso:</strong> Dungeon abschließen → Boss besiegen → Legendäres Item<br><strong style='color: var(--accent-color);'>Makro:</strong> Schwierigkeitsgrad erhöhen → Build optimieren → Endgame-Content</p></div>"
-    },
-    {
-      "type": "text",
-      "title": "Häufige Fehler",
-      "text": ""
-    },
-    {
-      "type": "features",
-      "title": "",
+      "ordered": false,
       "items": [
         {
-          "icon": "❌",
-          "text": "<strong style='color: var(--primary-color);'>Zu lange Wartezeiten:</strong> Wenn Belohnungen zu selten kommen, verlieren Spieler die Motivation."
+          "label": "Konstante Belohnungen",
+          "text": "Spieler sollten regelmäßig Fortschritt spüren"
         },
         {
-          "icon": "❌",
-          "text": "<strong style='color: var(--primary-color);'>Keine Eskalation:</strong> Der Loop sollte sich weiterentwickeln - neue Mechaniken, Gegner und Herausforderungen einführen."
+          "label": "Variabilität",
+          "text": "Der Loop sollte sich entwickeln und nicht monoton werden"
         },
         {
-          "icon": "❌",
-          "text": "<strong style='color: var(--primary-color);'>Fehlende Variation:</strong> Selbst der beste Loop wird langweilig, wenn er zu repetitiv ist. Baue Abwechslung ein."
+          "label": "Klares Feedback",
+          "text": "Spieler müssen verstehen, was sie erreicht haben"
+        },
+        {
+          "label": "Skalierung",
+          "text": "Der Loop sollte mit dem Spieler-Level schwieriger werden"
         }
+      ]
+    },
+    {
+      "type": "example",
+      "title": "Beispiel: Diablo-Serie",
+      "content": "Diablo ist ein Paradebeispiel für perfekte Gameplay Loops:<br><br><strong style='color: var(--accent-color);'>Mikro:</strong> Monster töten → Loot sammeln → Stärker werden<br><strong style='color: var(--accent-color);'>Meso:</strong> Dungeon abschließen → Boss besiegen → Legendäres Item<br><strong style='color: var(--accent-color);'>Makro:</strong> Schwierigkeitsgrad erhöhen → Build optimieren → Endgame-Content"
+    },
+    {
+      "type": "mistakes",
+      "title": "Häufige Fehler",
+      "items": [
+        "<strong>Zu lange Wartezeiten:</strong> Wenn Belohnungen zu selten kommen, verlieren Spieler die Motivation.",
+        "<strong>Keine Eskalation:</strong> Der Loop sollte sich weiterentwickeln - neue Mechaniken, Gegner und Herausforderungen einführen.",
+        "<strong>Fehlende Variation:</strong> Selbst der beste Loop wird langweilig, wenn er zu repetitiv ist. Baue Abwechslung ein."
       ]
     }
   ]

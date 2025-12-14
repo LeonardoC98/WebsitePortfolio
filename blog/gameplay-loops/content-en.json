@@ -29,36 +29,40 @@
       ]
     },
     {
-      "type": "text",
+      "type": "list",
       "title": "Design Principles",
-      "text": "When designing gameplay loops, consider:<br><br><ul style='color: var(--text-light); line-height: 2; margin: 1rem 0 1rem 2rem;'><li><strong style='color: var(--primary-color);'>Constant Rewards:</strong> Players should regularly feel progress</li><li><strong style='color: var(--primary-color);'>Variability:</strong> The loop should evolve and not become monotonous</li><li><strong style='color: var(--primary-color);'>Clear Feedback:</strong> Players must understand what they've achieved</li><li><strong style='color: var(--primary-color);'>Scaling:</strong> The loop should become harder with player level</li></ul>"
-    },
-    {
-      "type": "text",
-      "title": "Example: Diablo Series",
-      "text": "Diablo is a prime example of perfect gameplay loops:<br><br><div style='background: var(--bg-light); padding: 20px; border-left: 4px solid var(--accent-color); margin: 1.5rem 0;'><p style='color: var(--text-light); line-height: 1.8; margin: 0;'><strong style='color: var(--accent-color);'>Micro:</strong> Kill monsters → Collect loot → Get stronger<br><strong style='color: var(--accent-color);'>Meso:</strong> Complete dungeon → Defeat boss → Legendary item<br><strong style='color: var(--accent-color);'>Macro:</strong> Increase difficulty → Optimize build → Endgame content</p></div>"
-    },
-    {
-      "type": "text",
-      "title": "Common Mistakes",
-      "text": ""
-    },
-    {
-      "type": "features",
-      "title": "",
+      "ordered": false,
       "items": [
         {
-          "icon": "❌",
-          "text": "<strong style='color: var(--primary-color);'>Too Long Wait Times:</strong> When rewards come too rarely, players lose motivation."
+          "label": "Constant Rewards",
+          "text": "Players should regularly feel progress"
         },
         {
-          "icon": "❌",
-          "text": "<strong style='color: var(--primary-color);'>No Escalation:</strong> The loop should evolve - introduce new mechanics, enemies and challenges."
+          "label": "Variability",
+          "text": "The loop should evolve and not become monotonous"
         },
         {
-          "icon": "❌",
-          "text": "<strong style='color: var(--primary-color);'>Missing Variation:</strong> Even the best loop becomes boring if it's too repetitive. Build in variety."
+          "label": "Clear Feedback",
+          "text": "Players must understand what they've achieved"
+        },
+        {
+          "label": "Scaling",
+          "text": "The loop should become harder with player level"
         }
+      ]
+    },
+    {
+      "type": "example",
+      "title": "Example: Diablo Series",
+      "content": "Diablo is a prime example of perfect gameplay loops:<br><br><strong style='color: var(--accent-color);'>Micro:</strong> Kill monsters → Collect loot → Get stronger<br><strong style='color: var(--accent-color);'>Meso:</strong> Complete dungeon → Defeat boss → Legendary item<br><strong style='color: var(--accent-color);'>Macro:</strong> Increase difficulty → Optimize build → Endgame content"
+    },
+    {
+      "type": "mistakes",
+      "title": "Common Mistakes",
+      "items": [
+        "<strong>Too Long Wait Times:</strong> When rewards come too rarely, players lose motivation.",
+        "<strong>No Escalation:</strong> The loop should evolve - introduce new mechanics, enemies and challenges.",
+        "<strong>Missing Variation:</strong> Even the best loop becomes boring if it's too repetitive. Build in variety."
       ]
     }
   ]

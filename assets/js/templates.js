@@ -479,6 +479,103 @@ function escapeHtml(text) {
     return text.replace(/[&<>"']/g, m => map[m]);
 }
 
+/**
+ * EXAMPLE TEMPLATE
+ * Purpose: Display highlighted examples in colored box (e.g., "Example: Diablo Series")
+ * Use case: Case studies, game examples, practical demonstrations
+ * Data structure: { type: "example", title: "...", content: "..." }
+ */
+function renderExampleSection(section, container) {
+    if (section.content) {
+        const exampleHTML = `
+            <section class="concept-section">
+                ${section.title ? `<h2>${section.title}</h2>` : ''}
+                <div style="background: var(--bg-light); padding: 25px; border-left: 4px solid var(--accent-color); margin: 1.5rem 0; border-radius: 8px;">
+                    <p style="color: var(--text-light); line-height: 1.8; margin: 0;">${section.content}</p>
+                </div>
+            </section>
+        `;
+        container.insertAdjacentHTML('beforeend', exampleHTML);
+    }
+}
+
+/**
+ * MISTAKES TEMPLATE
+ * Purpose: Display common mistakes/errors with X icons (red theme)
+ * Use case: Anti-patterns, things to avoid, common errors
+ * Data structure: { type: "mistakes", title: "...", items: ["mistake1", "mistake2"] }
+ */
+function renderMistakesSection(section, container) {
+    if (section.items && Array.isArray(section.items)) {
+        const itemsHTML = section.items.map(item => `
+            <div class="mistake-item" style="display: flex; gap: 15px; align-items: flex-start; padding: 15px; background: rgba(255, 0, 51, 0.05); border-radius: 8px; margin-bottom: 12px;">
+                <span style="color: var(--primary-color); font-size: 1.5rem; flex-shrink: 0;">❌</span>
+                <span style="color: var(--text-light); line-height: 1.6;">${item}</span>
+            </div>
+        `).join('');
+        const mistakesHTML = `
+            <section class="concept-section">
+                ${section.title ? `<h2>${section.title}</h2>` : ''}
+                <div class="mistakes-container">
+                    ${itemsHTML}
+                </div>
+            </section>
+        `;
+        container.insertAdjacentHTML('beforeend', mistakesHTML);
+    }
+}
+
+/**
+ * BULLETPOINTS TEMPLATE
+ * Purpose: Display simple bullet points without icons (clean list)
+ * Use case: Key points, summaries, requirements
+ * Data structure: { type: "bulletpoints", title: "...", items: ["point1", "point2"] }
+ */
+function renderBulletpointsSection(section, container) {
+    if (section.items && Array.isArray(section.items)) {
+        const itemsHTML = section.items.map(item => `<li>${item}</li>`).join('');
+        const bulletpointsHTML = `
+            <section class="concept-section">
+                ${section.title ? `<h2>${section.title}</h2>` : ''}
+                <ul style="color: var(--text-light); line-height: 2; margin: 1rem 0 1rem 2rem; list-style-type: disc;">
+                    ${itemsHTML}
+                </ul>
+            </section>
+        `;
+        container.insertAdjacentHTML('beforeend', bulletpointsHTML);
+    }
+}
+
+/**
+ * LIST TEMPLATE
+ * Purpose: Display numbered or unnumbered lists with custom styling
+ * Use case: Steps, instructions, ordered points
+ * Data structure: { type: "list", title: "...", ordered: true/false, items: [{label: "...", text: "..."}] }
+ */
+function renderListSection(section, container) {
+    if (section.items && Array.isArray(section.items)) {
+        const listTag = section.ordered ? 'ol' : 'ul';
+        const itemsHTML = section.items.map(item => {
+            if (typeof item === 'string') {
+                return `<li style="margin-bottom: 12px;">${item}</li>`;
+            } else if (item.label && item.text) {
+                return `<li style="margin-bottom: 12px;"><strong style="color: var(--primary-color);">${item.label}:</strong> ${item.text}</li>`;
+            }
+            return '';
+        }).join('');
+        
+        const listHTML = `
+            <section class="concept-section">
+                ${section.title ? `<h2>${section.title}</h2>` : ''}
+                <${listTag} style="color: var(--text-light); line-height: 2; margin: 1rem 0 1rem 2rem;">
+                    ${itemsHTML}
+                </${listTag}>
+            </section>
+        `;
+        container.insertAdjacentHTML('beforeend', listHTML);
+    }
+}
+
 // Template registry - maps section types to render functions
 const templateRenderers = {
     'text': renderTextSection,
@@ -494,7 +591,11 @@ const templateRenderers = {
     'embed': renderEmbedSection,
     'split': renderSplitSection,
     'accordion': renderAccordionSection,
-    'slider': renderSliderSection
+    'slider': renderSliderSection,
+    'example': renderExampleSection,
+    'mistakes': renderMistakesSection,
+    'bulletpoints': renderBulletpointsSection,
+    'list': renderListSection
 };
 
 // Main render function - calls appropriate template renderer based on section.type

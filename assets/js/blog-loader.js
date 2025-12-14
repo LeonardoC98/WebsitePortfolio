@@ -106,7 +106,7 @@ function renderSection(section, container) {
             break;
             
         default:
-            // For any other types, use concept-templates.js if available
+            // For any other types, use templates.js if available
             if (typeof window.renderSectionByType === 'function') {
                 window.renderSectionByType(section, sectionDiv);
             }
