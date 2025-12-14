@@ -1,4 +1,12 @@
 {
   "id": "weaponUpgrades",
+  "translationKey": "concepts.weaponUpgrades",
+  "titleDE": "Waffen-Upgrade System",
+  "titleEN": "Weapon Upgrade System",
+  "descriptionDE": "Ein durchdachtes Upgrade-System für Waffen mit tiefgehender Progression und Anpassungsmöglichkeiten.",
+  "descriptionEN": "A sophisticated weapon upgrade system with deep progression and extensive customization options.",
+  "image": "concepts/concept-weapon-upgrades/images/weaponupgrade.jpg",
+  "tags": ["System", "Progression", "Upgrade"],
+  "link": "concepts/concept-weapon-upgrades/index.html",
   "hero_image": "images/weaponupgrade.jpg"
 }

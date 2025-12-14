@@ -32,9 +32,9 @@ async function loadNavbar() {
         
         if (isConceptPage) {
             // On concept pages, always set Portfolio as active
-            navLinks.forEach(link => {
+                navLinks.forEach(link => {
                 const href = link.getAttribute('href');
-                if (href.includes('portfolio.html')) {
+                    if (href.includes('concepts.html')) {
                     link.classList.add('active');
                 } else {
                     link.classList.remove('active');

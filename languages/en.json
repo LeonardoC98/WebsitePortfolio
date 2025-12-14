@@ -35,23 +35,10 @@
   },
   "concept": {
     "back": "← Back to Portfolio",
-    "gallery": "Images & Visualization"
+    "gallery": "Images & Visualization",
+    "noResults": "No concepts found."
   },
-  "concepts": {
-    "dungeon": {
-      "title": "Dungeon Game Concept",
-      "description": "Replayability through hunting mastery for drops and level resets for skill mastery."
-    },
-    "puzzle": {
-      "title": "TCG Card Game",
-      "description": "A strategic and engaging card game concept with chess like mechanics for deep tactical gameplay."
-    },
-    "weaponUpgrades": {
-      "title": "Weapon Upgrades System",
-      "subtitle": "A sophisticated upgrade system with deep progression",
-      "description": "A sophisticated weapon upgrade system with deep progression and extensive customization options."
-    }
-  },
+  "concepts": {},
   "about": {
     "title": "About Me",
     "subtitle": "Game Designer with a passion for innovative game mechanics",
@@ -90,20 +77,7 @@
     "selectTags": "Select Tags",
     "noResults": "No posts found.",
     "backToBlog": "Back to Blog",
-    "posts": {
-      "gameplayLoops": {
-        "title": "Gameplay Loops in MMORPGs",
-        "excerpt": "How to design compelling core mechanics that bring players back again and again."
-      },
-      "powerBalance": {
-        "title": "Balance in PVP",
-        "excerpt": "The art of balancing competitive games."
-      },
-      "progression": {
-        "title": "Progression Systems",
-        "excerpt": "How to develop satisfying and motivating progression systems."
-      }
-    }
+    "posts": {}
   },
   "contact": {
     "title": "Contact",

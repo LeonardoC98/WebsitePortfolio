@@ -1,0 +1,55 @@
+{
+  "sections": [
+    {
+      "type": "text",
+      "title": "Die Kern-Idee",
+      "text": "Jeder Skill hat drei Mastery-Stufen: <strong>Anfänger</strong>, <strong>Experte</strong> und <strong>Meister</strong>. Mit jeder Nutzung sammelt der Spieler Mastery-Punkte und schaltet neue Fähigkeiten frei."
+    },
+    {
+      "type": "features",
+      "title": "Die drei Mastery-Stufen",
+      "items": [
+        {
+          "icon": "⭐",
+          "text": "<strong>Anfänger (0-100 Punkte):</strong> Basis-Skill mit Standard-Effekt. Simple aber effektiv."
+        },
+        {
+          "icon": "⚡",
+          "text": "<strong>Experte (100-500 Punkte):</strong> Skill erhält einen Bonus-Effekt oder reduzierte Cooldown. Erste Spezialisierung möglich."
+        },
+        {
+          "icon": "🔥",
+          "text": "<strong>Meister (500+ Punkte):</strong> Freischaltung von 2-3 Skill-Varianten. Jede Variante hat einen völlig anderen Playstyle."
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "title": "Beispiel: Feuerball-Skill",
+      "text": "<ul><li><strong>Anfänger:</strong> Wirft einen einfachen Feuerball (100 Schaden)</li><li><strong>Experte:</strong> +20% Schaden, +10% Chance auf kritischen Treffer</li><li><strong>Meister - Variante 1 (Inferno):</strong> Feuerball explodiert und verursacht Flächenschaden</li><li><strong>Meister - Variante 2 (Blitz):</strong> Schnellerer Projektil, durchschlägt Gegner</li><li><strong>Meister - Variante 3 (Brand):</strong> Setzt Gegner in Brand für Damage-over-Time</li></ul>"
+    },
+    {
+      "type": "text",
+      "title": "Warum dieses System funktioniert",
+      "text": "Spieler werden für das Verwenden ihrer Lieblings-Skills belohnt. Die Meister-Varianten ermöglichen Build-Diversität ohne komplexe Skill-Trees. Jeder kann sein eigenes Play-Style entwickeln."
+    },
+    {
+      "type": "features",
+      "title": "Design-Vorteile",
+      "items": [
+        {
+          "icon": "🎯",
+          "text": "<strong>Klare Progression:</strong> Spieler sehen genau, wie weit sie bis zur nächsten Stufe sind."
+        },
+        {
+          "icon": "🎮",
+          "text": "<strong>Replay-Value:</strong> Spieler wollen alle Varianten ausprobieren und meistern."
+        },
+        {
+          "icon": "⚖️",
+          "text": "<strong>Balance:</strong> Alle Varianten sind gleich stark, nur unterschiedlich im Playstyle."
+        }
+      ]
+    }
+  ]
+}

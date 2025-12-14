@@ -1,49 +1,36 @@
-// Map concept folder names to translation keys
-const conceptMapping = {
-    'concept-dungeon': 'dungeon',
-    'concept-puzzle': 'puzzle',
-    'concept-weapon-upgrades': 'weaponUpgrades'
-};
-
 // Load concept data from data.json and populate the page
 async function loadConceptData() {
     try {
-        // Get concept ID from URL path
+        // Get concept ID from URL path (same as blog system)
         const pathParts = window.location.pathname.split('/');
         const conceptIndex = pathParts.indexOf('concepts');
         const conceptFolder = pathParts[conceptIndex + 1];
         
         if (!conceptFolder) return;
         
-        // Get translation key for this concept
-        const translationKey = conceptMapping[conceptFolder];
-        if (!translationKey) {
-            console.error('No translation mapping for:', conceptFolder);
-            return;
-        }
-        
         // Fetch concept data for hero image and technical details
         const response = await fetch(`../../concepts/${conceptFolder}/data.json`);
         const concept = await response.json();
+        
+        // Get current language
+        const lang = localStorage.getItem('language') || 'de';
         
         // Load hero image
         const heroImage = document.getElementById('conceptHeroImage');
         if (heroImage) {
             heroImage.src = concept.hero_image;
-            
         }
         
-        // Load concept title from translations
+        // Load concept title directly from data.json based on language
         const titleEl = document.getElementById('conceptTitle');
         if (titleEl) {
-            titleEl.textContent = t(`concepts.${translationKey}.title`);
+            titleEl.textContent = lang === 'de' ? concept.titleDE : concept.titleEN;
         }
         
-        // Load concept subtitle from translations
-        const subtitleEl = document.getElementById('conceptSubtitle');
-        if (subtitleEl) {
-            const subtitle = t(`concepts.${translationKey}.subtitle`);
-            subtitleEl.textContent = subtitle !== `concepts.${translationKey}.subtitle` ? subtitle : t(`concepts.${translationKey}.description`);
+        // Load concept description directly from data.json based on language
+        const descriptionEl = document.getElementById('conceptDescription');
+        if (descriptionEl) {
+            descriptionEl.textContent = lang === 'de' ? concept.descriptionDE : concept.descriptionEN;
         }
         
         // Load dynamic content sections from local content files
@@ -85,6 +72,9 @@ function initConceptPage() {
         if (typeof t === 'function' && typeof translations !== 'undefined' && Object.keys(translations).length > 0) {
             clearInterval(checkI18n);
             loadConceptData();
+            
+            // Listen for language changes
+            window.addEventListener('languageChanged', loadConceptData);
         }
     }, 50);
 }

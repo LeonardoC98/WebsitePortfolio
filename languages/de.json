@@ -35,22 +35,10 @@
   },
   "concept": {
     "back": "← Zurück zum Portfolio",
-    "gallery": "Bilder & Visualisierung"
+    "gallery": "Bilder & Visualisierung",
+    "noResults": "Keine Konzepte gefunden."
   },
-  "concepts": {
-    "dungeon": {
-      "title": "Dungeon Spielkonzept",
-      "description": "Wiederholbarkeit durch Meisterung der Jagd nach Drops und Level-Resets für Skill-Meisterung."
-    },
-    "puzzle": {
-      "title": "TCG Kartenspiel",
-      "description": "Ein strategisches und fesselndes Kartenspiel-Konzept mit schachähnlichen Mechaniken für tiefgründiges taktisches Gameplay."
-    },
-    "weaponUpgrades": {
-      "title": "Waffen-Upgrade System",
-      "description": "Ein durchdachtes Upgrade-System für Waffen mit tiefgehender Progression und Anpassungsmöglichkeiten."
-    }
-  },
+  "concepts": {},
   "about": {
     "title": "About Me",
     "subtitle": "Game Designer mit Leidenschaft für innovative Spielmechaniken",
@@ -89,20 +77,7 @@
     "selectTags": "Tags auswählen",
     "noResults": "Keine Beiträge gefunden.",
     "backToBlog": "Zurück zum Blog",
-    "posts": {
-      "gameplayLoops": {
-        "title": "Gameplay Loops in MMORPGs",
-        "excerpt": "Wie man fesselnde Kern-Mechaniken designt die Spieler immer wieder zurückbringen."
-      },
-      "powerBalance": {
-        "title": "Balance in PVP Spiele",
-        "excerpt": "Die Kunst des Balancings in kompetitiven Spielen."
-      },
-      "progression": {
-        "title": "Progressions-Systeme",
-        "excerpt": "Wie man befriedigende und motivierende Fortschrittssysteme entwickelt."
-      }
-    }
+    "posts": {}
   },
   "contact": {
     "title": "Kontakt",

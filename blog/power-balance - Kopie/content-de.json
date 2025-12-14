@@ -1,0 +1,32 @@
+{
+  "sections": [
+    {
+      "type": "text",
+      "title": "Die Kunst des Balancings",
+      "text": "Kartenspiele leben von ihrer Balance. Eine einzige übermächtige Karte kann das gesamte Meta zerstören und das Spiel unspielbar machen."
+    },
+    {
+      "type": "features",
+      "title": "Balance-Prinzipien",
+      "items": [
+        {
+          "icon": "⚖️",
+          "text": "<strong>Kosten vs. Effekt:</strong> Der Mana-Cost einer Karte muss ihrem Effekt entsprechen. Zu günstige Karten dominieren das Meta."
+        },
+        {
+          "icon": "🎯",
+          "text": "<strong>Counterplay:</strong> Jede starke Strategie braucht eine Konter-Möglichkeit. Ohne Gegenspiel fühlt sich das Spiel unfair an."
+        },
+        {
+          "icon": "📊",
+          "text": "<strong>Statistik-Analyse:</strong> Nutze Daten: Win-Rates, Pick-Rates und Deck-Diversität zeigen Balance-Probleme auf."
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "title": "Beispiele aus TCGs",
+      "text": "Magic: The Gathering und Hearthstone zeigen, wie schwierig Balance ist - selbst mit jahrzehntelanger Erfahrung müssen regelmäßig Karten gebannt oder angepasst werden."
+    }
+  ]
+}

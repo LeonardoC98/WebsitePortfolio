@@ -77,6 +77,9 @@ function updatePageLanguage() {
     
     // Update HTML lang attribute
     document.documentElement.lang = currentLanguage;
+    
+    // Dispatch custom event for components to update
+    window.dispatchEvent(new Event('languageChanged'));
 }
 
 // Change language

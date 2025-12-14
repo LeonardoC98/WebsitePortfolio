@@ -1,0 +1,12 @@
+{
+  "id": "skillMastery",
+  "translationKey": "concepts.skillMastery",
+  "titleDE": "Skill-Mastery System",
+  "titleEN": "Skill Mastery System",
+  "descriptionDE": "Ein dreistufiges Mastery-System, das Spieler für wiederholtes Ausführen von Skills belohnt und neue Varianten freischaltet.",
+  "descriptionEN": "A three-tier mastery system that rewards players for repeated skill usage and unlocks new variations.",
+  "image": "concepts/concept-skill-mastery/images/skill.jpg",
+  "tags": ["Skills", "Progression", "Mastery", "RPG"],
+  "link": "concepts/concept-skill-mastery/index.html",
+  "hero_image": "images/skill.jpg"
+}
