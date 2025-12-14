@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> - Blog</title>
+    <link rel="stylesheet" href="../../assets/css/style-base.css?v=2">
+    <link rel="stylesheet" href="../../assets/css/style-concepts.css?v=2">
+    <link rel="stylesheet" href="../../assets/css/style-blog-post.css?v=2">
+</head>
+<body style="opacity: 0;">
+
+    <div id="navbar-placeholder"></div>
+
+    <div class="back-button-container">
+        <a href="../../blog.html" class="back-button">← <span data-i18n="blog.back">i18n error</span></a>
+    </div>
+
+    <section class="concept-detail">
+        <div class="blog-hero">
+            <img id="postHeroImage" alt="" class="blog-hero-image">
+            <div class="blog-hero-overlay">
+                <h1 id="postTitle" data-i18n="blog.posts.test123.title">i18n error</h1>
+                <p class="concept-subtitle" id="postMeta"></p>
+            </div>
+        </div>
+
+        <div class="container concept-content">
+            <div class="concept-main">
+                <div id="postContent"></div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p data-i18n="footer.copyright">i18n error</p>
+        </div>
+    </footer>
+
+    <script src="../../assets/js/navbar-loader.js"></script>
+    <script src="../../assets/js/i18n.js"></script>
+    <script src="../../assets/js/blog.js"></script>
+    <script src="../../assets/js/templates.js"></script>
+    <script src="../../assets/js/blog-loader.js"></script>
+    <script src="../../assets/js/parallax.js"></script>
+    <script>
+        setTimeout(() => {
+            document.body.style.transition = 'opacity 0.3s ease';
+            document.body.style.opacity = '1';
+        }, 100);
+    </script>
+</body>
+</html>
