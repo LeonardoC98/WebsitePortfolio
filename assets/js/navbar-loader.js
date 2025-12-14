@@ -52,16 +52,25 @@ async function loadNavbar() {
             });
         } else {
             // On normal pages, detect active link by filename
-            const currentFile = currentPath.split('/').pop() || 'index.html';
+            let currentFile = currentPath.split('/').pop();
+            
+            // Handle empty path or root
+            if (!currentFile || currentFile === '' || currentPath === '/' || currentPath.endsWith('/')) {
+                currentFile = 'index.html';
+            }
+            
             navLinks.forEach(link => {
                 const href = link.getAttribute('href');
                 const hrefFile = href.split('/').pop();
                 
-                if (hrefFile === currentFile || 
-                    (currentFile === '' && hrefFile === 'index.html')) {
+                // Remove active from all first
+                link.classList.remove('active');
+                
+                // Check if this link matches current page
+                if (hrefFile === currentFile) {
                     link.classList.add('active');
-                } else {
-                    link.classList.remove('active');
+                } else if (currentFile === 'index.html' && hrefFile === 'index.html') {
+                    link.classList.add('active');
                 }
             });
         }
