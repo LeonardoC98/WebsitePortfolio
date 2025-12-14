@@ -1,0 +1,32 @@
+{
+  "sections": [
+    {
+      "type": "text",
+      "title": "Why Progression Matters",
+      "text": "Progression gives players a sense of advancement and development. Without clear progression, many players quickly lose interest."
+    },
+    {
+      "type": "features",
+      "title": "Types of Progression",
+      "items": [
+        {
+          "icon": "📈",
+          "text": "<strong>Vertical Progression:</strong> The player becomes directly stronger - higher stats, more damage, better equipment. Clearly measurable and satisfying."
+        },
+        {
+          "icon": "🌐",
+          "text": "<strong>Horizontal Progression:</strong> The player gains more options and variety - new abilities, playstyles, and strategies. Increases game depth."
+        },
+        {
+          "icon": "🎨",
+          "text": "<strong>Cosmetic Progression:</strong> Visual customization without gameplay impact - skins, emotes, effects. Important for long-term motivation."
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "title": "Design Tips",
+      "text": "<ul style=\"color: var(--text-light); line-height: 2; margin: 1rem 0 1rem 2rem;\"><li><strong style=\"color: var(--primary-color);\">Early Rewards:</strong> Level up more frequently at the start</li><li><strong style=\"color: var(--primary-color);\">Multiple Paths:</strong> Offer different ways to progress</li><li><strong style=\"color: var(--primary-color);\">Transparency:</strong> Show clearly what the next step is</li><li><strong style=\"color: var(--primary-color);\">Meaningful Rewards:</strong> Every level should feel valuable</li></ul>"
+    }
+  ]
+}

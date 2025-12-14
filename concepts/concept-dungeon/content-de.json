@@ -6,26 +6,167 @@
       "text": "Ein Dungeon-basiertes Action-RPG mit Fokus auf Wiederholbarkeit durch ein einzigartiges Progressionssystem. Spieler jagen spezifische Gegner um deren Drop-Tabellen zu meistern und können ihre Charakter-Level zurücksetzen um permanente Skill-Meisterschaften zu erlangen. Dies erschafft eine tiefgehende Progression-Schleife wo Wissen und Strategie wichtiger sind als pure Stats."
     },
     {
-      "type": "text",
-      "title": "Hauptmerkmale",
-      "text": "• Gegner-spezifisches Loot-Meisterungssystem\n• Level-Reset-Mechaniken für Skill-Progression\n• Wissensbasiertes Gameplay\n• Strategischer Charakteraufbau\n• Permanente Progression durch Meisterung"
+      "type": "quote",
+      "text": "Wahre Meisterschaft kommt nicht von hohen Stats, sondern vom Verstehen des Systems",
+      "author": "Design Philosophy"
     },
     {
-      "type": "text",
-      "title": "Herausforderungen der Umsetzung",
-      "text": "Die Balance des Loot-Meisterungssystems so zu gestalten, dass es über mehrere Durchläufe hinweg fesselnd bleibt ohne langweilig zu werden. Sicherstellen dass die Level-Reset-Mechanik sich belohnend anfühlt statt bestrafend. Eine Schwierigkeitskurve zu kreieren die sowohl neue als auch gemeisterte Spieler berücksichtigt. Gegnerbegegnungen zu designen die interessant bleiben auch nachdem Spieler deren Muster und Drops gemeistert haben."
+      "type": "features",
+      "title": "Kernmechaniken",
+      "items": [
+        {
+          "icon": "⚔️",
+          "text": "Gegner-spezifisches Loot-Meisterungssystem"
+        },
+        {
+          "icon": "🔄",
+          "text": "Level-Reset-Mechaniken für permanente Skill-Progression"
+        },
+        {
+          "icon": "🧠",
+          "text": "Wissensbasiertes Gameplay - Strategie über Bruteforce"
+        },
+        {
+          "icon": "📊",
+          "text": "Strategischer Charakteraufbau mit Tiefgang"
+        },
+        {
+          "icon": "🏆",
+          "text": "Permanente Progression durch Meisterung"
+        },
+        {
+          "icon": "🎯",
+          "text": "Präzises Drop-Tracking und Farming-Optimierung"
+        }
+      ]
+    },
+    {
+      "type": "stats",
+      "title": "Spielumfang",
+      "metrics": [
+        {
+          "label": "Spielstunden",
+          "value": "40-60h"
+        },
+        {
+          "label": "Dungeons",
+          "value": "15+"
+        },
+        {
+          "label": "Gegnertypen",
+          "value": "80+"
+        },
+        {
+          "label": "Skills",
+          "value": "50+"
+        }
+      ]
+    },
+    {
+      "type": "comparison",
+      "title": "Schwierigkeitsgrade",
+      "columns": ["Normal", "Hart", "Meister"],
+      "rows": [
+        {
+          "label": "Gegner HP",
+          "values": ["100%", "150%", "250%"]
+        },
+        {
+          "label": "Gegner Schaden",
+          "values": ["100%", "140%", "200%"]
+        },
+        {
+          "label": "Drop Rate",
+          "values": ["1x", "1.2x", "1.5x"]
+        },
+        {
+          "label": "XP Bonus",
+          "values": ["1x", "1.5x", "2x"]
+        },
+        {
+          "label": "Permanente Rewards",
+          "values": ["Basis", "+Cosmetics", "+Titel & Achievements"]
+        }
+      ]
+    },
+    {
+      "type": "split",
+      "title": "Das Meisterungssystem",
+      "image": "images/concept1.jpg",
+      "text": "Jeder Gegner hat eine spezifische Drop-Tabelle die Spieler durch wiederholtes Besiegen meistern können. Je mehr du einen Gegnertyp besiegst, desto besser verstehst du deren Bewegungsmuster und Drop-Wahrscheinlichkeiten.\n\nNach 100 Kills erhältst du garantierte seltene Drops. Nach 500 Kills kannst du die Drop-Tabelle permanent einsehen. Bei 1000 Kills wird der Gegner zu deinem 'Gemeisterten Feind' und du erhältst einen permanenten Bonus gegen diesen Typ.",
+      "imagePosition": "left"
+    },
+    {
+      "type": "timeline",
+      "title": "Entwicklungsroadmap",
+      "events": [
+        {
+          "date": "Q1 2024",
+          "title": "Prototype Phase",
+          "description": "Kern-Mechaniken implementieren: Kampfsystem, Loot-Drop System, Basis-Gegner-KI"
+        },
+        {
+          "date": "Q2 2024",
+          "title": "Alpha Release",
+          "description": "Erste 5 Dungeons, 30 Gegnertypen, Meisterungssystem Basis-Implementation"
+        },
+        {
+          "date": "Q3 2024",
+          "title": "Beta Phase",
+          "description": "Balance-Testing, Community-Feedback, Erweiterung auf 10 Dungeons"
+        },
+        {
+          "date": "Q4 2024",
+          "title": "Release 1.0",
+          "description": "Vollständige 15 Dungeons, alle Schwierigkeitsgrade, Endgame-Content"
+        }
+      ]
+    },
+    {
+      "type": "accordion",
+      "title": "Häufig gestellte Fragen",
+      "items": [
+        {
+          "question": "Wie funktioniert das Level-Reset System?",
+          "answer": "Du kannst jederzeit dein Level auf 1 zurücksetzen. Dabei behältst du alle gemeisterten Skills permanent und erhältst einen Meisterschafts-Punkt. Diese Punkte kannst du in mächtige passive Fähigkeiten investieren die über alle Durchläufe hinweg bleiben."
+        },
+        {
+          "question": "Verliere ich mein Equipment beim Reset?",
+          "answer": "Nein! Dein Equipment, Gold und alle gemeisterten Gegner-Drops bleiben erhalten. Nur dein Charakter-Level und aktive Skill-Punkte werden zurückgesetzt."
+        },
+        {
+          "question": "Ist Multiplayer geplant?",
+          "answer": "Ja! Co-Op für 2-4 Spieler ist für die Post-Launch Updates geplant. Das Meisterungssystem wird gemeinsam geteilt, aber jeder Spieler hat seine eigenen Reset-Fortschritte."
+        },
+        {
+          "question": "Wie lange dauert ein kompletter Durchlauf?",
+          "answer": "Ein erster Durchlauf dauert etwa 20-30 Stunden. Spätere Resets mit gemeisterten Skills können in 8-12 Stunden abgeschlossen werden, je nach Skill-Level."
+        }
+      ]
+    },
+    {
+      "type": "code",
+      "title": "Drop-Chance Berechnung",
+      "language": "pseudo",
+      "code": [
+            "finalDropChance = baseDropChance * masteryMultiplier * difficultyBonus",
+            "",
+            "masteryMultiplier = 1.0 + (enemyKills / 100) * 0.1",
+            "// Bei 100 Kills: 2x Drop Chance",
+            "// Bei 500 Kills: 6x Drop Chance",
+            "// Bei 1000 Kills: 11x Drop Chance (praktisch garantiert)",
+            "",
+            "difficultyBonus:",
+            "  Normal: 1.0x",
+            "  Hart: 1.2x",
+            "  Meister: 1.5x"
+        ]
     },
     {
       "type": "video",
-      "title": "Gameplay Video",
-      "src": "videos/gameplay.mp4",
-      "description": ""
-    },
-    {
-      "type": "video",
-      "title": "YouTube Trailer",
+      "title": "Gameplay Trailer",
       "src": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-      "description": ""
+      "description": "Erste Gameplay-Aufnahmen aus der Pre-Alpha Phase"
     },
     {
       "type": "documents",
@@ -40,28 +181,41 @@
           "name": "Technische Spezifikation",
           "src": "documents/tech-spec.pdf",
           "size": "1.2 MB"
+        },
+        {
+          "name": "Balancing Spreadsheet",
+          "src": "documents/balancing.xlsx",
+          "size": "890 KB"
         }
       ]
     },
     {
       "type": "gallery",
-      "title": "Bilder & Visualisierung",
+      "title": "Concept Art & Screenshots",
       "images": [
         {
           "src": "images/concept1.jpg",
-          "alt": "Konzeptbild 1"
+          "alt": "Dungeon Environment Concept"
         },
         {
           "src": "images/concept1.jpg",
-          "alt": "Konzeptbild 1"
+          "alt": "Boss Design Sketches"
         },
         {
           "src": "images/concept1.jpg",
-          "alt": "Konzeptbild 1"
+          "alt": "UI Mockup - Meisterung System"
         },
         {
           "src": "images/concept1.jpg",
-          "alt": "Konzeptbild 1"
+          "alt": "Character Progression Tree"
+        },
+        {
+          "src": "images/concept1.jpg",
+          "alt": "Level Design - Crystal Caverns"
+        },
+        {
+          "src": "images/concept1.jpg",
+          "alt": "Enemy Variety Showcase"
         }
       ]
     }

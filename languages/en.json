@@ -2,6 +2,7 @@
   "nav": {
     "home": "Home",
     "portfolio": "Portfolio",
+    "blog": "Blog",
     "about": "About Me",
     "contact": "Contact"
   },
@@ -79,6 +80,29 @@
     "interestNarrative": "Narrative Design",
     "interestNarrativeDesc": "Stories through mechanics"
   },
+  "blog": {
+    "title": "Game Design Blog",
+    "subtitle": "Insights into game mechanics and design philosophy",
+    "search": "Search blog...",
+    "clear": "Clear",
+    "selectTags": "Select Tags",
+    "noResults": "No posts found.",
+    "backToBlog": "Back to Blog",
+    "posts": {
+      "gameplayLoops": {
+        "title": "Gameplay Loops in RPGs",
+        "excerpt": "How to design compelling core mechanics that bring players back again and again."
+      },
+      "cardBalance": {
+        "title": "Balance in Card Games",
+        "excerpt": "The art of balancing competitive card games and TCGs."
+      },
+      "progression": {
+        "title": "Progression Systems",
+        "excerpt": "How to develop satisfying and motivating progression systems."
+      }
+    }
+  },
   "contact": {
     "title": "Contact",
     "subtitle": "Let's talk about your next project",
@@ -91,6 +115,7 @@
     "ctaTitle": "Interested in my concepts?",
     "ctaButton": "View Portfolio"
   },
+
   "footer": {
     "copyright": "© 2025 Game Concept Portfolio. All rights reserved."
   }

@@ -1,0 +1,75 @@
+/* ===== BLOG POST STYLES ===== */
+/* Spezielle Styles für einzelne Blog-Beiträge */
+
+/* Hero Section mit schrägem Bild-Verlauf */
+.concept-hero {
+    position: relative;
+    height: 400px;
+    overflow: visible;
+}
+
+.concept-hero-image {
+    position: absolute;
+    width: 65%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    clip-path: polygon(
+        0 0,           /* Oben links */
+        100% 0,        /* Oben rechts */
+        80% 100%,      /* Unten rechts schräg */
+        0 100%         /* Unten links */
+    );
+}
+
+.concept-hero-overlay {
+    position: relative;
+    z-index: 1;
+    grid-column: 1 / -1;
+    grid-row: 1;
+    background: linear-gradient(
+        to right,
+        rgba(0, 0, 0, 0.85) 0%,
+        rgba(0, 0, 0, 0.85) 50%,
+        rgba(0, 0, 0, 0.75) 60%,
+        rgba(0, 0, 0, 0.95) 100%
+    );
+    color: white;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.concept-hero-overlay h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--primary-color);
+    text-shadow: 0 0 20px rgba(255, 0, 51, 0.8);
+}
+
+.concept-subtitle {
+    font-size: 1rem;
+    opacity: 0.9;
+    color: var(--text-light);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .concept-hero {
+        height: 300px;
+    }
+    
+    .concept-hero-image {
+        clip-path: polygon(
+            0 0,
+            80% 0,
+            60% 100%,
+            0 100%
+        );
+    }
+    
+    .concept-hero-overlay h1 {
+        font-size: 2rem;
+    }
+}

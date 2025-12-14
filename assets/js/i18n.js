@@ -6,7 +6,8 @@ let currentLanguage = localStorage.getItem('language') || 'en';
 // Determine the base path for language files
 function getLanguageBasePath() {
     const isConceptPage = window.location.pathname.includes('/concepts/');
-    return isConceptPage ? '../../languages/' : 'languages/';
+    const isBlogPost = window.location.pathname.includes('/blog/');
+    return (isConceptPage || isBlogPost) ? '../../languages/' : 'languages/';
 }
 
 // Load translation file
@@ -85,6 +86,9 @@ async function changeLanguage(lang) {
         updatePageLanguage();
         initLanguageSelectorEvents();
         
+        // Wait a bit to ensure translations are fully loaded
+        await new Promise(resolve => setTimeout(resolve, 50));
+        
         // Reload portfolio if on portfolio page
         if (typeof loadPortfolio === 'function') {
             loadPortfolio();
@@ -92,7 +96,17 @@ async function changeLanguage(lang) {
         
         // Reload concept data if on concept page
         if (typeof loadConceptData === 'function') {
-            loadConceptData();
+            await loadConceptData();
+        }
+        
+        // Reload blog post if on blog post page
+        if (typeof loadBlogPostData === 'function') {
+            await loadBlogPostData();
+        }
+        
+        // Reload blog listing if on blog page
+        if (typeof loadBlog === 'function') {
+            loadBlog();
         }
         
         // Reload recent projects on homepage

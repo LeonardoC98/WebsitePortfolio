@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog - Game Design</title>
+    <link rel="stylesheet" href="assets/css/style-base.css">
+    <link rel="stylesheet" href="assets/css/style-blog.css">
+</head>
+<body style="opacity: 0;">
+
+    <!-- Blog Header -->
+    <section class="page-hero">
+        <div class="hero-content">
+            <h1 data-i18n="blog.title">Game Design Blog</h1>
+            <p data-i18n="blog.subtitle">Einblicke in Spielmechaniken und Design-Philosophie</p>
+        </div>
+    </section>
+
+    <!-- Blog Search and Filters -->
+    <section class="portfolio-search-section">
+        <div class="container">
+            <div class="search-filter-wrapper">
+                <!-- Tag Dropdown -->
+                <div class="tag-dropdown-wrapper">
+                    <button class="tag-select-btn" id="tagSelectBtn" type="button">
+                        <span data-i18n="blog.selectTags">Tags auswählen</span>
+                        <span class="arrow">▼</span>
+                    </button>
+                    <div class="tag-dropdown-list" id="tagDropdownList">
+                        <!-- Checkboxes dynamisch geladen -->
+                    </div>
+                </div>
+                
+                <!-- Search Bar -->
+                <div class="search-wrapper">
+                    <input type="search" id="blogSearch" placeholder="Suche..." data-i18n-placeholder="blog.search">
+                    <button type="button" id="blogClear" class="clear-btn" data-i18n="blog.clear">✕</button>
+                </div>
+            </div>
+            
+            <!-- Selected Tags -->
+            <div id="selectedTagsDisplay" class="selected-tags"></div>
+        </div>
+    </section>
+
+    <!-- Blog Grid -->
+    <section class="portfolio">
+        <div class="container">
+            <div class="blog-grid" id="blogGrid">
+                <!-- Blog posts werden hier dynamisch geladen -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p data-i18n="footer.copyright">&copy; 2025 Game Concept Portfolio. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="assets/js/navbar-loader.js"></script>
+    <script>
+        // Fade in page once navbar is loaded
+        setTimeout(() => {
+            document.body.style.transition = 'opacity 0.3s ease';
+            document.body.style.opacity = '1';
+        }, 100);
+    </script>
+    <script src="assets/js/i18n.js"></script>
+    <script src="assets/js/script.js"></script>
+    <script src="assets/js/blog.js"></script>
+</body>
+</html>

@@ -3,7 +3,155 @@
     {
       "type": "text",
       "title": "Grundidee",
-      "text": "Füge hier deinen Inhalt hinzu..."
+      "text": "Ein taktisches Kartenspiel (TCG) das Deck-Building mit Puzzle-Mechaniken kombiniert. Spieler platzieren Karten auf einem 5x5 Grid und müssen strategische Kombinationen bilden um Gegner zu besiegen. Jede Karte hat Synergien mit benachbarten Karten, wodurch räumliches Denken genauso wichtig wird wie Deck-Zusammenstellung."
+    },
+    {
+      "type": "features",
+      "title": "Kernfeatures",
+      "items": [
+        {
+          "icon": "🎴",
+          "text": "Grid-basiertes Kartenplatzierungssystem (5x5)"
+        },
+        {
+          "icon": "🔗",
+          "text": "Nachbarschafts-Synergien zwischen Karten"
+        },
+        {
+          "icon": "⚡",
+          "text": "Combo-Ketten für mächtige Effekte"
+        },
+        {
+          "icon": "🎲",
+          "text": "Roguelike Deck-Building mit permanenten Unlocks"
+        },
+        {
+          "icon": "🏅",
+          "text": "PvE Kampagnen und PvP Modi"
+        }
+      ]
+    },
+    {
+      "type": "comparison",
+      "title": "Kartentypen Vergleich",
+      "columns": ["Krieger", "Magier", "Unterstützer"],
+      "rows": [
+        {
+          "label": "Primäre Rolle",
+          "values": ["Direkter Schaden", "AoE & Kontrolle", "Buffs & Heilung"]
+        },
+        {
+          "label": "Synergien",
+          "values": ["Horizontal", "Diagonal", "Kreuzförmig"]
+        },
+        {
+          "label": "Mana Kosten",
+          "values": ["Niedrig (1-3)", "Mittel (3-5)", "Variabel (0-4)"]
+        },
+        {
+          "label": "Combo Potential",
+          "values": ["Mittel", "Hoch", "Sehr Hoch"]
+        }
+      ]
+    },
+    {
+      "type": "split",
+      "title": "Das Grid-System",
+      "image": "images/concept1.jpg",
+      "text": "Das Spielfeld besteht aus einem 5x5 Grid. Karten werden strategisch platziert und interagieren mit ihren direkten Nachbarn.\n\nKrieger-Karten geben horizontalen Nachbarn +2 Angriff.\nMagier-Karten verstärken diagonal platzierte Zauber um 50%.\nUnterstützer-Karten heilen kreuzförmig angrenzende Karten.\n\nDas Meistern dieser räumlichen Synergien ist der Schlüssel zum Sieg!",
+      "imagePosition": "right"
+    },
+    {
+      "type": "stats",
+      "title": "Kartensammlung",
+      "metrics": [
+        {
+          "label": "Basis-Karten",
+          "value": "120+"
+        },
+        {
+          "label": "Legendäre Karten",
+          "value": "24"
+        },
+        {
+          "label": "Fraktionen",
+          "value": "6"
+        },
+        {
+          "label": "Einzigartige Effekte",
+          "value": "80+"
+        }
+      ]
+    },
+    {
+      "type": "slider",
+      "title": "UI Evolution",
+      "before": "images/concept1.jpg",
+      "after": "images/concept1.jpg",
+      "beforeLabel": "Erste Iteration",
+      "afterLabel": "Finale Version"
+    },
+    {
+      "type": "accordion",
+      "title": "Spielmechaniken erklärt",
+      "items": [
+        {
+          "question": "Wie funktionieren Combo-Ketten?",
+          "answer": "Wenn du eine Karte platzierst die mit Nachbarn synergiert, startet eine Combo. Jede weitere Synerie in dieser Runde erhöht den Combo-Counter. Bei 3+ Combos erhältst du Bonus-Mana, bei 5+ zusätzliche Kartenziehungen, bei 10+ aktivieren sich spezielle Legendary Effekte!"
+        },
+        {
+          "question": "Was sind Fraktionen?",
+          "answer": "Es gibt 6 Fraktionen: Krieger, Magier, Unterstützer, Bestien, Untote und Mechanisch. Jede Fraktion hat eigene Synergien. Du kannst mehrere Fraktionen mischen, aber reine Fraktions-Decks haben mächtige Bonus-Effekte."
+        },
+        {
+          "question": "Gibt es einen Story-Modus?",
+          "answer": "Ja! Die Kampagne hat 5 Kapitel mit jeweils 10 Begegnungen. Jedes Kapitel endet mit einem Boss-Fight der spezielle Mechaniken einführt. Nach jedem Sieg kannst du neue Karten freischalten oder dein Deck upgraden."
+        }
+      ]
+    },
+    {
+      "type": "timeline",
+      "title": "Entwicklungsplan",
+      "events": [
+        {
+          "date": "Phase 1",
+          "title": "Core Gameplay",
+          "description": "Grid-System, Basis-Karten (60), Singleplayer gegen KI"
+        },
+        {
+          "date": "Phase 2",
+          "title": "Content Expansion",
+          "description": "120 Karten, 6 Fraktionen, Kampagnen-Modus (3 Kapitel)"
+        },
+        {
+          "date": "Phase 3",
+          "title": "Multiplayer",
+          "description": "PvP Modus, Ranked System, Turniere"
+        },
+        {
+          "date": "Phase 4",
+          "title": "Live Service",
+          "description": "Saison-System, neue Karten-Sets, Balance Updates"
+        }
+      ]
+    },
+    {
+      "type": "gallery",
+      "title": "Karten-Designs",
+      "images": [
+        {
+          "src": "images/concept1.jpg",
+          "alt": "Krieger Karten Set"
+        },
+        {
+          "src": "images/concept1.jpg",
+          "alt": "Magier Karten Set"
+        },
+        {
+          "src": "images/concept1.jpg",
+          "alt": "Legendäre Karten"
+        }
+      ]
     }
   ]
 }

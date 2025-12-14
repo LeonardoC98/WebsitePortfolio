@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gameplay Loops in RPGs - Blog</title>
+    <link rel="stylesheet" href="../../assets/css/style-base.css">
+    <link rel="stylesheet" href="../../assets/css/style-concepts.css">
+    <link rel="stylesheet" href="../../assets/css/style-blog-post.css">
+</head>
+<body style="opacity: 0;">
+
+    <!-- Navbar Include -->
+    <div id="navbar-placeholder"></div>
+
+    <!-- Back Button -->
+    <div class="back-button-container">
+        <a href="../../blog.html" class="back-button">← <span data-i18n="blog.backToBlog">Zurück zum Blog</span></a>
+    </div>
+
+    <!-- Blog Post Detail Page -->
+    <section class="concept-detail">
+        <div class="concept-hero">
+            <img id="postHeroImage" src="../../concepts/concept-dungeon/images/dungeon.jpg" alt="Gameplay Loops" class="concept-hero-image">
+            <div class="concept-hero-overlay">
+                <h1 id="postTitle" data-i18n="blog.posts.gameplayLoops.title">Gameplay Loops in RPGs</h1>
+                <p class="concept-subtitle" id="postMeta"></p>
+            </div>
+        </div>
+
+        <div class="container concept-content">
+            <div class="concept-main">
+                <!-- Blog Post Content (dynamically loaded) -->
+                <div id="postContent"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p data-i18n="footer.copyright">&copy; 2025 Game Concept Portfolio. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="../../assets/js/navbar-loader.js"></script>
+    <script src="../../assets/js/i18n.js"></script>
+    <script src="../../assets/js/blog.js"></script>
+    <script src="../../assets/js/blog-loader.js"></script>
+    <script>
+        setTimeout(() => {
+            document.body.style.transition = 'opacity 0.3s ease';
+            document.body.style.opacity = '1';
+        }, 100);
+    </script>
+    <script src="../../assets/js/script.js"></script>
+</body>
+</html>
