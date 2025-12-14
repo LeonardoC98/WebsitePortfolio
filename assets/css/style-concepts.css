@@ -1,6 +1,6 @@
 ﻿/* ===== CONCEPT DETAIL ===== */
 .back-button-container {
-    padding: 20px;
+    padding: 10px 20px;
     background-color: var(--bg-white);
     border-bottom: 1px solid var(--border-color);
 }
@@ -26,7 +26,8 @@
 
 .concept-hero-image {
     width: 100%;
-    height: 100%;
+    height: 120%;
+    object-position: center 45%;
     object-fit: cover;
     display: block;
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);

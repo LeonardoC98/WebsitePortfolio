@@ -30,6 +30,7 @@ async function loadConceptData() {
         const heroImage = document.getElementById('conceptHeroImage');
         if (heroImage) {
             heroImage.src = concept.hero_image;
+            
         }
         
         // Load concept title from translations
