@@ -32,6 +32,9 @@
     color: var(--primary-color);
     text-transform: uppercase;
     letter-spacing: 2px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
 }
 
 .info-item {
@@ -86,6 +89,9 @@
     color: var(--primary-color);
     text-transform: uppercase;
     letter-spacing: 2px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
 }
 
 .social-link {
