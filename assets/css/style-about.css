@@ -141,9 +141,19 @@
 }
 
 .skill-icon {
-    font-size: 3rem;
-    margin-bottom: 15px;
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 15px;
     display: block;
+    border-radius: 20px;
+    object-fit: cover;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.skill-card:hover .skill-icon {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
 }
 
 .skill-card h3 {
