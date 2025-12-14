@@ -89,7 +89,6 @@
 .about-intro h2 {
     text-align: center;
     font-size: 2.5rem;
-    margin-bottom: 30px;
     color: var(--primary-color);
     text-transform: uppercase;
     letter-spacing: 3px;
@@ -102,6 +101,17 @@
     font-size: 1.2rem;
     line-height: 1.8;
     color: var(--text-light);
+}
+
+.intro-description {
+    max-width: 800px;
+    margin: 5px auto 30px;
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--text-light);
+    opacity: 0.6;
+    font-style: italic;
+    height: 100%; 
 }
 
 /* ===== RECENT PROJECTS SECTION ===== */

@@ -12,10 +12,11 @@
     "cta": "Kontakt aufnehmen"
   },
   "home": {
-    "aboutTitle": "Über mein Portfolio",
-    "aboutIntro": "Willkommen in meiner Sammlung innovativer Game-Design-Konzepte. Hier findest du detaillierte Dokumentationen verschiedener Spielsysteme, Mechaniken und Design-Ansätze.",
+    "aboutTitle": "Über diese Webseite",
+    "aboutIntro": "Konzepte wie Item-Upgrades, Skill- und Spell-Progression sowie das Zusammenspiel von Spielsystemen sind essenzielle Elemente, um ein Spiel fesselnd und spaßig zu machen. Hier erkunden wir diese Ideen und entwickeln neue Konzepte.",
     "recentProjectsTitle": "Neueste Konzepte",
-    "viewAllButton": "Alle Konzepte ansehen"
+    "viewAllButton": "Alle Konzepte ansehen",
+    "description": "Erstellt am 14. Dezember 2025"
   },
   "portfolio": {
     "title": "Meine Spielkonzepte",
@@ -89,12 +90,12 @@
     "backToBlog": "Zurück zum Blog",
     "posts": {
       "gameplayLoops": {
-        "title": "Gameplay Loops in RPGs",
+        "title": "Gameplay Loops in MMORPGs",
         "excerpt": "Wie man fesselnde Kern-Mechaniken designt die Spieler immer wieder zurückbringen."
       },
-      "cardBalance": {
-        "title": "Balance in Kartenspielen",
-        "excerpt": "Die Kunst des Balancings in kompetitiven Kartenspielen und TCGs."
+      "powerBalance": {
+        "title": "Balance in PVP Spiele",
+        "excerpt": "Die Kunst des Balancings in kompetitiven Spielen."
       },
       "progression": {
         "title": "Progressions-Systeme",
