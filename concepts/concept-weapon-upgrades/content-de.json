@@ -3,7 +3,189 @@
     {
       "type": "text",
       "title": "Grundidee",
-      "text": "Füge hier deinen Inhalt hinzu..."
+      "text": "Ein innovatives Waffen-Upgrade-System das Materialsammlung mit einem Skill-Tree kombiniert. Jede Waffe hat einen einzigartigen Entwicklungsbaum mit multiplen Pfaden. Spieler können ihre Waffen durch verschiedene 'Zweige' entwickeln - von elementarem Schaden über kritische Treffer bis hin zu speziellen Fähigkeiten."
+    },
+    {
+      "type": "quote",
+      "text": "Eine Waffe ist mehr als nur Stahl - sie ist eine Reise die du mit ihr gehst",
+      "author": "Schmied Meister Thorin"
+    },
+    {
+      "type": "features",
+      "title": "System-Features",
+      "items": [
+        {
+          "icon": "🗡️",
+          "text": "Waffen-spezifische Skill-Trees mit 3 Hauptzweigen"
+        },
+        {
+          "icon": "💎",
+          "text": "Material-basiertes Upgrade System"
+        },
+        {
+          "icon": "🔥",
+          "text": "Elementar-Infusionen (Feuer, Eis, Blitz, Gift)"
+        },
+        {
+          "icon": "✨",
+          "text": "Verzauberungen und Runen-Slots"
+        },
+        {
+          "icon": "🔄",
+          "text": "Respec-Möglichkeit zum Experimentieren"
+        },
+        {
+          "icon": "🏆",
+          "text": "Legendäre Waffen mit exklusiven Zweigen"
+        }
+      ]
+    },
+    {
+      "type": "comparison",
+      "title": "Upgrade-Pfade Vergleich",
+      "columns": ["Macht-Zweig", "Präzisions-Zweig", "Elemental-Zweig"],
+      "rows": [
+        {
+          "label": "Fokus",
+          "values": ["Roher Schaden", "Kritische Treffer", "Status-Effekte"]
+        },
+        {
+          "label": "Schaden Bonus",
+          "values": ["+150%", "+80%", "+100%"]
+        },
+        {
+          "label": "Krit Chance",
+          "values": ["+10%", "+45%", "+20%"]
+        },
+        {
+          "label": "Spezial-Effekt",
+          "values": ["Flächenschaden", "Lebensentzug", "DoT & Crowd Control"]
+        },
+        {
+          "label": "Material-Kosten",
+          "values": ["Mittel", "Hoch", "Sehr Hoch"]
+        }
+      ]
+    },
+    {
+      "type": "stats",
+      "title": "System-Übersicht",
+      "metrics": [
+        {
+          "label": "Waffentypen",
+          "value": "12"
+        },
+        {
+          "label": "Upgrade-Stufen",
+          "value": "20"
+        },
+        {
+          "label": "Materialien",
+          "value": "45+"
+        },
+        {
+          "label": "Verzauberungen",
+          "value": "60+"
+        }
+      ]
+    },
+    {
+      "type": "split",
+      "title": "Der Macht-Zweig",
+      "image": "images/concept1.jpg",
+      "text": "Der Macht-Zweig fokussiert sich auf rohen Schaden. Perfekt für Spieler die große Zahlen lieben!\n\nStufe 5: +50% Basis-Schaden\nStufe 10: Schwere Schläge ignorieren 25% Rüstung\nStufe 15: 'Berserker-Modus' - Jeder Treffer erhöht Schaden um 2% (stapelt bis 10x)\nStufe 20: 'Zerstörer' - Kritische Treffer erzeugen Schockwellen die Gegner in der Nähe betäuben",
+      "imagePosition": "left"
+    },
+    {
+      "type": "split",
+      "title": "Der Präzisions-Zweig",
+      "image": "images/concept1.jpg",
+      "text": "Der Präzisions-Zweig ist für Spieler die taktisch und kalkuliert vorgehen.\n\nStufe 5: +15% Krit-Chance, +25% Krit-Schaden\nStufe 10: 'Schwachstellen' - Enthüllt Gegner-Schwachpunkte\nStufe 15: 'Präzisions-Kette' - Jeder Krit erhöht nächste Krit-Chance um 5%\nStufe 20: 'Meister-Schütze' - Garantierter Krit alle 7 Sekunden",
+      "imagePosition": "right"
+    },
+    {
+      "type": "code",
+      "title": "Schadens-Berechnung Formel",
+      "language": "pseudo",
+      "code": "// Basis Schadenberechnung\nfinalDamage = weaponBaseDamage * upgradeMultiplier * elementalBonus\n\n// Upgrade Multiplier\nupgradeMultiplier = 1.0 + (upgradeLevel * 0.1) + branchBonuses\n\n// Branch Bonuses (additiv)\npowerBranch = upgradeLevel * 0.075  // +7.5% pro Level\nprecisionBranch = (critChance * critDamage) / 100\nelementalBranch = elementalDamage + statusEffectDamage\n\n// Kritischer Treffer\nif (isCritical) {\n    finalDamage *= (1.0 + critDamageBonus)\n}\n\n// Elementar DoT\nif (hasElementalEffect) {\n    applyDamageOverTime(finalDamage * 0.3, duration: 5s)\n}"
+    },
+    {
+      "type": "timeline",
+      "title": "Waffen-Entwicklung Beispiel",
+      "events": [
+        {
+          "date": "Level 1-5",
+          "title": "Grundlegende Waffe",
+          "description": "50 Basis-Schaden, keine speziellen Effekte. Sammle erste Materialien."
+        },
+        {
+          "date": "Level 6-10",
+          "title": "Verstärkte Waffe",
+          "description": "100 Basis-Schaden, wähle ersten Zweig. Erste passive Boni aktiv."
+        },
+        {
+          "date": "Level 11-15",
+          "title": "Meisterwerk",
+          "description": "200 Basis-Schaden, Spezial-Fähigkeit freigeschaltet. Elementar-Slot verfügbar."
+        },
+        {
+          "date": "Level 16-20",
+          "title": "Legendäre Waffe",
+          "description": "400+ Basis-Schaden, ultimative Fähigkeit, mehrere Runen-Slots. Visual Effekte."
+        }
+      ]
+    },
+    {
+      "type": "accordion",
+      "title": "Häufige Fragen",
+      "items": [
+        {
+          "question": "Kann ich meine Upgrade-Entscheidungen rückgängig machen?",
+          "answer": "Ja! Du kannst für Gold deine Skill-Punkte zurücksetzen. Die Waffe behält ihr Level, aber du kannst die Punkte neu verteilen. Die ersten 3 Resets sind kostenlos, danach steigen die Kosten graduell."
+        },
+        {
+          "question": "Was passiert wenn ich alle drei Zweige gleichzeitig skillen will?",
+          "answer": "Das ist möglich, aber nicht optimal! Jeder Zweig hat 'Meisterschafts-Boni' die sich bei 15+ investierten Punkten aktivieren. Ein fokussierter Build ist meist stärker als ein Hybrid."
+        },
+        {
+          "question": "Wie bekomme ich legendäre Materialien?",
+          "answer": "Legendäre Materialien droppen von Boss-Gegnern, sind Belohnungen für schwierige Herausforderungen oder können in der Endgame-Währung gekauft werden. Jede legendäre Waffe benötigt ein spezifisches Material."
+        },
+        {
+          "question": "Gibt es Waffen-Transmog?",
+          "answer": "Absolut! Sobald du eine Waffe auf Level 20 gebracht hast, kannst du ihr Aussehen auf jede andere Waffe übertragen. Deine Stats bleiben, aber die Waffe sieht aus wie dein Lieblingsdesign!"
+        }
+      ]
+    },
+    {
+      "type": "gallery",
+      "title": "Waffen-Galerie",
+      "images": [
+        {
+          "src": "images/concept1.jpg",
+          "alt": "Basis-Waffen Collection"
+        },
+        {
+          "src": "images/concept1.jpg",
+          "alt": "Elementar-Infusionen Visual"
+        },
+        {
+          "src": "images/concept1.jpg",
+          "alt": "Legendäre Waffen Showcase"
+        },
+        {
+          "src": "images/concept1.jpg",
+          "alt": "Upgrade UI Interface"
+        },
+        {
+          "src": "images/concept1.jpg",
+          "alt": "Skill-Tree Beispiel"
+        },
+        {
+          "src": "images/concept1.jpg",
+          "alt": "Material-Sammlung"
+        }
+      ]
     }
   ]
 }

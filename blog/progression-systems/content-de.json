@@ -1,0 +1,32 @@
+{
+  "sections": [
+    {
+      "type": "text",
+      "title": "Warum Progression wichtig ist",
+      "text": "Progression gibt Spielern das Gefühl von Fortschritt und Entwicklung. Ohne klare Progression verlieren viele Spieler schnell das Interesse."
+    },
+    {
+      "type": "features",
+      "title": "Typen von Progression",
+      "items": [
+        {
+          "icon": "📈",
+          "text": "<strong>Vertikale Progression:</strong> Der Spieler wird direkt stärker - höhere Stats, mehr Schaden, bessere Ausrüstung. Klar messbar und befriedigend."
+        },
+        {
+          "icon": "🌐",
+          "text": "<strong>Horizontale Progression:</strong> Der Spieler gewinnt mehr Optionen und Vielfalt - neue Fähigkeiten, Spielstile und Strategien. Erhöht die Spieltiefe."
+        },
+        {
+          "icon": "🎨",
+          "text": "<strong>Kosmetische Progression:</strong> Visuelle Anpassung ohne Gameplay-Einfluss - Skins, Emotes, Effekte. Wichtig für Langzeit-Motivation."
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "title": "Design-Tipps",
+      "text": "<ul style=\"color: var(--text-light); line-height: 2; margin: 1rem 0 1rem 2rem;\"><li><strong style=\"color: var(--primary-color);\">Frühe Belohnungen:</strong> Am Anfang häufiger leveln</li><li><strong style=\"color: var(--primary-color);\">Mehrere Pfade:</strong> Verschiedene Wege zur Progression anbieten</li><li><strong style=\"color: var(--primary-color);\">Transparenz:</strong> Zeige klar was der nächste Schritt ist</li><li><strong style=\"color: var(--primary-color);\">Bedeutsame Rewards:</strong> Jedes Level sollte sich wertvoll anfühlen</li></ul>"
+    }
+  ]
+}

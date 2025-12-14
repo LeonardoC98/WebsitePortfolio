@@ -4,10 +4,12 @@ async function loadNavbar() {
         // Determine current page and path depth
         const currentPath = window.location.pathname;
         const isConceptPage = currentPath.includes('/concepts/');
-        const basePath = isConceptPage ? '../../' : '';
+        const isBlogPost = currentPath.includes('/blog/');
+        const isSubPage = isConceptPage || isBlogPost;
+        const basePath = isSubPage ? '../../' : '';
         
         // Choose navbar file based on page type
-        const navbarFile = isConceptPage ? 'navbar-concept.html' : 'navbar.html';
+        const navbarFile = isSubPage ? 'navbar-concept.html' : 'navbar.html';
         
         // Fetch navbar component
         const navbarPath = basePath + 'assets/includes/' + navbarFile;
@@ -33,6 +35,16 @@ async function loadNavbar() {
             navLinks.forEach(link => {
                 const href = link.getAttribute('href');
                 if (href.includes('portfolio.html')) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+        } else if (isBlogPost) {
+            // On blog post pages, always set Blog as active
+            navLinks.forEach(link => {
+                const href = link.getAttribute('href');
+                if (href.includes('blog.html')) {
                     link.classList.add('active');
                 } else {
                     link.classList.remove('active');
