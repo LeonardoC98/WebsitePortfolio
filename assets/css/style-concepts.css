@@ -604,39 +604,80 @@
         grid-template-columns: 1fr;
         padding: 20px 15px;
         gap: 20px;
+        max-width: 100%;
+        overflow-x: hidden;
     }
     
     .concept-main {
-        min-width: auto;
+        min-width: 0;
         width: 100%;
+        max-width: 100%;
         padding: 0;
+        overflow-x: hidden;
     }
     
     .concept-section {
         padding: 0;
         margin-bottom: 30px;
+        max-width: 100%;
+        overflow-x: hidden;
     }
     
     .concept-section h2 {
         font-size: 1.5rem;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
     }
     
     .concept-section h3 {
         font-size: 1.2rem;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+    
+    .concept-section p,
+    .concept-section li {
+        font-size: 0.9rem;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        max-width: 100%;
     }
     
     .mechanic-item {
         padding: 15px;
+        max-width: 100%;
+        box-sizing: border-box;
     }
     
     .feature-card {
         padding: 20px;
+        max-width: 100%;
+        box-sizing: border-box;
     }
     
-    /* Make images responsive */
-    .concept-section img {
+    /* Make all content scale uniformly */
+    .concept-section img,
+    .concept-section table,
+    .concept-section pre,
+    .concept-section code {
         max-width: 100%;
         height: auto;
+        box-sizing: border-box;
+    }
+    
+    /* Scale tables */
+    .concept-section table {
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        font-size: 0.85rem;
+    }
+    
+    /* Scale code blocks */
+    .concept-section pre {
+        overflow-x: auto;
+        font-size: 0.8rem;
+        padding: 10px;
     }
 }
 
