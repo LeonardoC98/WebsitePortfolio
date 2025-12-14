@@ -61,15 +61,61 @@
     }
     
     .concept-hero-image {
-        clip-path: polygon(
-            0 0,
-            80% 0,
-            60% 100%,
-            0 100%
-        );
+        width: 100%;
+        clip-path: none;
+    }
+    
+    .concept-hero-overlay {
+        background: rgba(0, 0, 0, 0.85);
+        padding: 30px 20px;
     }
     
     .concept-hero-overlay h1 {
-        font-size: 2rem;
+        font-size: 1.8rem;
+    }
+    
+    .concept-subtitle {
+        font-size: 0.9rem;
+    }
+    
+    /* Make blog post content readable on mobile */
+    .concept-content {
+        padding: 20px 15px;
+    }
+    
+    .concept-main {
+        width: 100%;
+        padding: 0;
+    }
+    
+    .concept-section {
+        padding: 0;
+        margin-bottom: 30px;
+    }
+    
+    .concept-section h2 {
+        font-size: 1.5rem;
+    }
+    
+    .concept-section h3 {
+        font-size: 1.2rem;
+    }
+    
+    .mechanic-item {
+        padding: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .concept-hero {
+        height: 250px;
+    }
+    
+    .concept-hero-overlay h1 {
+        font-size: 1.5rem;
+    }
+    
+    .concept-subtitle {
+        font-size: 0.85rem;
     }
 }

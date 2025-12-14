@@ -181,6 +181,12 @@
 
     .social-link {
         padding: 15px;
+        /* Disable hover animation on mobile */
+        transform: none !important;
+    }
+    
+    .social-link:hover {
+        transform: none;
     }
 }
 

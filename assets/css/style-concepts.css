@@ -598,6 +598,46 @@
     .split-container.image-right .split-image {
         order: 1;
     }
+    
+    /* Make concept content more readable on mobile */
+    .concept-content {
+        grid-template-columns: 1fr;
+        padding: 20px 15px;
+        gap: 20px;
+    }
+    
+    .concept-main {
+        min-width: auto;
+        width: 100%;
+        padding: 0;
+    }
+    
+    .concept-section {
+        padding: 0;
+        margin-bottom: 30px;
+    }
+    
+    .concept-section h2 {
+        font-size: 1.5rem;
+    }
+    
+    .concept-section h3 {
+        font-size: 1.2rem;
+    }
+    
+    .mechanic-item {
+        padding: 15px;
+    }
+    
+    .feature-card {
+        padding: 20px;
+    }
+    
+    /* Make images responsive */
+    .concept-section img {
+        max-width: 100%;
+        height: auto;
+    }
 }
 
 /* ===== ACCORDION TEMPLATE ===== */

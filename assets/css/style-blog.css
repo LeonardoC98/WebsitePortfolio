@@ -354,6 +354,27 @@
     }
 }
 
+@media (max-width: 768px) {
+    /* Make search bar wrap on mobile */
+    .search-filter-wrapper {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .tag-dropdown-wrapper {
+        width: 100%;
+    }
+    
+    .tag-select-btn {
+        width: 100%;
+        min-width: auto;
+    }
+    
+    .search-wrapper {
+        width: 100%;
+    }
+}
+
 @media (max-width: 600px) {
     .blog-card-content {
         padding: 20px;
@@ -366,5 +387,9 @@
     .blog-card-meta {
         flex-direction: column;
         align-items: flex-start;
+    }
+    
+    .portfolio-search-section {
+        padding: 20px 15px;
     }
 }
