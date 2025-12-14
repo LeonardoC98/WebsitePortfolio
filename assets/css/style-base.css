@@ -461,6 +461,25 @@ body {
     .nav-menu.active {
         left: 0;
     }
+
+    /* Page Hero Mobile (alle Seiten außer Home) */
+    .page-hero {
+        height: auto !important;
+        min-height: auto !important;
+        padding: 40px 15px;
+    }
+
+    .page-hero h1 {
+        font-size: 2rem;
+        line-height: 1.2;
+        letter-spacing: 2px;
+        margin-bottom: 0.5rem;
+    }
+
+    .page-hero p {
+        font-size: 1rem;
+        margin-bottom: 0;
+    }
 }
 
 @media (max-width: 480px) {
@@ -470,5 +489,19 @@ body {
 
     .logo {
         font-size: 1.2rem;
+    }
+
+    /* Page Hero Extra Small Mobile */
+    .page-hero {
+        padding: 30px 15px;
+    }
+
+    .page-hero h1 {
+        font-size: 1.5rem;
+        letter-spacing: 1px;
+    }
+
+    .page-hero p {
+        font-size: 0.9rem;
     }
 }
