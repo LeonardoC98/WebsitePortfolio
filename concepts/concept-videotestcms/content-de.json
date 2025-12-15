@@ -1,0 +1,26 @@
+{
+  "sections": [
+    {
+      "type": "Text",
+      "data": {
+        "title": "DET",
+        "text": "DETEXT"
+      }
+    },
+    {
+      "type": "Video",
+      "data": {
+        "src": "https://www.youtube.com/watch?v=sOGpideuDL4&list=RDqVmyl57P5Fw&index=12",
+        "title": "Mukke",
+        "description": "ballert"
+      }
+    },
+    {
+      "type": "Gallery",
+      "data": {
+        "images": "",
+        "title": ""
+      }
+    }
+  ]
+}
