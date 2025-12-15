@@ -1,0 +1,15 @@
+{
+  "id": "fff",
+  "translationKey": "concepts.fff",
+  "titleDE": "AA",
+  "titleEN": "AAA",
+  "descriptionDE": "AA",
+  "descriptionEN": "AAA",
+  "image": "concepts/concept-fff/images/card.jpg",
+  "tags": [
+    "AA",
+    "AAA"
+  ],
+  "link": "concepts/concept-fff/index.html",
+  "hero_image": "images/bg.jpg"
+}
