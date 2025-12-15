@@ -365,7 +365,6 @@ body {
     flex: 1;
     max-height: none;
 }
-}
 
 #templateModal .modal-content {
     display: block;
@@ -451,8 +450,6 @@ body {
     transition: opacity 0.3s;
     pointer-events: none;
 }
-    pointer-events: none;
-}
 
 .auto-save.show {
     opacity: 1;
@@ -502,8 +499,6 @@ body {
     color: var(--text-dark);
     white-space: pre-wrap;
     word-break: break-all;
-}
-    pointer-events: none;
 }
 
 .auto-save.show {
