@@ -12,7 +12,6 @@
         <aside class="sidebar">
             <div class="sidebar-header">
                 <h2>Content Editor</h2>
-                <button id="settingsBtn" class="btn btn-small">Settings</button>
             </div>
 
             <div class="sidebar-content">
@@ -86,7 +85,7 @@
                     <div id="bgPreview" class="image-preview"></div>
                 </div>
 
-                <button onclick="clearDraft()" class="btn btn-secondary" style="width: 100%; margin-top: 1rem;">New Draft</button>
+                <button onclick="clearDraft()" class="btn btn-secondary" style="width: 100%; margin-top: 1rem; background: rgba(255,0,51,0.1); color: var(--accent); border-color: rgba(255,0,51,0.25);">New Draft</button>
             </div>
         </aside>
 
@@ -95,6 +94,7 @@
             <div class="toolbar">
                 <button id="addSectionBtn" class="btn btn-primary">+ Add Section</button>
                 <div style="display: flex; gap: 0.5rem;">
+                    <button id="settingsBtn" class="btn btn-secondary" style="background: #d4d4d4; color: var(--text-dark); border-color: #c8c8c8;">Settings</button>
                     <button id="previewBtn" class="btn btn-secondary">Preview</button>
                     <button id="publishBtn" class="btn btn-success">Publish</button>
                 </div>

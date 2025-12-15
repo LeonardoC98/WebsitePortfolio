@@ -64,7 +64,9 @@ function populateTemplates() {
     const list = document.getElementById('templateList');
     list.innerHTML = '';
 
-    Object.keys(window.TEMPLATES).forEach(key => {
+    Object.keys(window.TEMPLATES)
+        .sort((a, b) => a.localeCompare(b))
+        .forEach(key => {
         const btn = document.createElement('button');
         btn.className = 'template-option';
         btn.innerHTML = `<strong>${key}</strong><small>Add section</small>`;
@@ -73,7 +75,7 @@ function populateTemplates() {
             addSection(key);
         };
         list.appendChild(btn);
-    });
+        });
 }
 
 function addSection(templateKey) {
@@ -118,6 +120,9 @@ function renderSections() {
         const el = createSectionElement(section, index);
         container.appendChild(el);
     });
+
+    // Autosize code textareas after render
+    applyCodeAutosize();
 }
 
 function createSectionElement(section, index) {
@@ -126,10 +131,22 @@ function createSectionElement(section, index) {
 
     const fieldsHTML = generateFieldsHTML(section, index);
 
+    const isFirst = index === 0;
+    const isLast = index === sections.length - 1;
+    const upDisabled = isFirst ? 'disabled' : '';
+    const downDisabled = isLast ? 'disabled' : '';
+    const disabledStyle = 'opacity:0.45; pointer-events:none;';
+
     div.innerHTML = `
         <div class="section-header">
-            <div class="section-title">${section.type}</div>
-            <button onclick="removeSection(${index})" class="btn btn-small\" style=\"background: rgba(255,0,51,0.1); color: var(--accent);\">Delete</button>
+            <div style="display:flex; gap:0.35rem; align-items:center;">
+                <button ${upDisabled} onclick="moveSection(${index}, -1)" class="btn btn-primary btn-small" style="background: var(--primary-color); border-color: var(--primary-color); color: white; ${isFirst ? disabledStyle : ''}">Swap ↑</button>
+                <button ${downDisabled} onclick="moveSection(${index}, 1)" class="btn btn-primary btn-small" style="background: var(--primary-color); border-color: var(--primary-color); color: white; ${isLast ? disabledStyle : ''}">Swap ↓</button>
+                <div class="section-title">${section.type}</div>
+            </div>
+            <div style="display:flex; gap:0.35rem; align-items:center;">
+                <button onclick="removeSection(${index})" class="btn btn-small" style="background: rgba(255,0,51,0.1); color: var(--accent);">Delete</button>
+            </div>
         </div>
         ${fieldsHTML}
     `;
@@ -168,21 +185,458 @@ function generateFieldsHTML(section, index) {
     });
 
     // Shared fields (show once, language-independent)
-    template.shared?.forEach(key => {
-        const value = shared[key] || '';
+        // Shared fields (show once, language-independent)
+        template.shared?.forEach(key => {
+            const value = shared[key] || '';
 
-        html += `
-            <div>
-                <label style="color: var(--text-light); font-size: 0.85rem; margin-bottom: 0.25rem; display: block;">${key}</label>
-                <input type="text" value="${value}" placeholder="${key}" 
-                       onchange="updateSectionField(${index}, '${key}', this.value, 'shared'); autoSave();"
-                       style="width: 100%; padding: 0.5rem 0.8rem; background: var(--bg-white); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-dark);">
-            </div>
-        `;
-    });
+            // Special-case: Split imagePosition must be a toggle, handle before array/generic
+            if (section.type === 'Split' && key === 'imagePosition') {
+                const current = (value === 'right' ? 'right' : 'left');
+                html += `
+                    <div>
+                        <label style="color: var(--text-light); font-size: 0.85rem; margin-bottom: 0.25rem; display: block;">Position</label>
+                        <div style="display:flex; gap:0.5rem;">
+                            <button type="button" tabindex="0"
+                                style="padding:0.4rem 0.8rem; border:1px solid var(--border-color); border-radius:4px; cursor:pointer; ${current==='left'?'background: var(--bg-light); color: var(--text-dark);':'background: rgba(0,0,0,0.08); color: var(--text-light);'}"
+                                    onclick="setSplitPosition(${index}, 'left')">Left</button>
+                            <button type="button" tabindex="0"
+                                style="padding:0.4rem 0.8rem; border:1px solid var(--border-color); border-radius:4px; cursor:pointer; ${current==='right'?'background: var(--bg-light); color: var(--text-dark);':'background: rgba(0,0,0,0.08); color: var(--text-light);'}"
+                                    onclick="setSplitPosition(${index}, 'right')">Right</button>
+                        </div>
+                    </div>
+                `;
+                return; // Skip further handling for this key
+            }
+
+            // Check if this field expects an array (items, images, metrics, events, documents, etc.)
+            const isArrayField = ['items', 'images', 'metrics', 'events', 'rows', 'columns', 'files', 'documents'].includes(key);
+
+            if (isArrayField) {
+                html += generateArrayFieldHTML(index, key, value, section.type);
+            } else {
+                // Special-case: Code content as larger textarea
+                if (section.type === 'Code' && key === 'code') {
+                    html += `
+                        <div>
+                            <label style="color: var(--text-light); font-size: 0.85rem; margin-bottom: 0.25rem; display: block;">${key}</label>
+                            <textarea rows="6" placeholder="code" data-autosize="code"
+                                      oninput="autoSizeCode(this); updateSectionField(${index}, '${key}', this.value, 'shared'); autoSave();"
+                                      style="width: 100%; padding: 0.5rem 0.8rem; background: #e6ffe6; border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-dark); font-family: monospace; font-size: 0.9rem; overflow:hidden; resize:none; min-height: 140px;">${value || ''}</textarea>
+                        </div>
+                    `;
+                } else {
+                    html += `
+                        <div>
+                            <label style="color: var(--text-light); font-size: 0.85rem; margin-bottom: 0.25rem; display: block;">${key}</label>
+                            <input type="text" value="${value}" placeholder="${key}" 
+                                   onchange="updateSectionField(${index}, '${key}', this.value, 'shared'); autoSave();"
+                                   style="width: 100%; padding: 0.5rem 0.8rem; background: var(--bg-white); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-dark);">
+                        </div>
+                    `;
+                }
+            }
+        });
 
     html += '</div>';
     return html;
+}
+
+function generateArrayFieldHTML(sectionIndex, key, value, sectionType) {
+    let array = [];
+    try {
+        array = value ? JSON.parse(value) : [];
+    } catch (e) {
+        array = [];
+    }
+    
+    let html = `
+        <div style="margin-bottom: 1rem;">
+            <label style="color: var(--text-light); font-size: 0.85rem; margin-bottom: 0.5rem; display: block;">${key}</label>
+            <div id="array-${sectionIndex}-${key}" style="display: flex; flex-direction: column; gap: 0.5rem;">
+    `;
+    
+    array.forEach((item, itemIndex) => {
+        html += generateArrayItemHTML(sectionIndex, key, item, itemIndex, sectionType);
+    });
+    
+    html += `
+            </div>
+            <button onclick="addArrayItem(${sectionIndex}, '${key}', '${sectionType}')" class="btn btn-secondary" style="margin-top: 0.5rem; width: 100%;">+ Add ${key.slice(0, -1)}</button>
+        </div>
+    `;
+    
+    return html;
+}
+
+function generateArrayItemHTML(sectionIndex, key, item, itemIndex, sectionType) {
+    let fieldsHTML = '';
+    
+    // Generate individual fields based on item type
+    if (key === 'items') {
+         if (sectionType === 'Accordion') {
+             // Accordion items: question + answer
+             fieldsHTML = `
+              <input type="text" value="${(item.question || '').replace(/"/g, '&quot;')}" placeholder="Question" 
+                  onchange="updateArrayItemField(${sectionIndex}, '${key}', ${itemIndex}, 'question', this.value)"
+                  style="flex: 1; padding: 0.4rem 0.6rem; background: var(--bg-white); border: 1px solid var(--border-color); border-radius: 4px; font-size: 0.85rem;">
+              <textarea placeholder="Answer" rows="2"
+                     onchange="updateArrayItemField(${sectionIndex}, '${key}', ${itemIndex}, 'answer', this.value)"
+                     style="flex: 1; padding: 0.4rem 0.6rem; background: var(--bg-white); border: 1px solid var(--border-color); border-radius: 4px; font-size: 0.85rem; resize: vertical;">${(item.answer || '').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</textarea>
+             `;
+        } else {
+            // Features items: icon + text
+            fieldsHTML = `
+                <input type="text" value="${(item.icon || '').replace(/"/g, '&quot;')}" placeholder="Icon (emoji)" 
+                       onchange="updateArrayItemField(${sectionIndex}, '${key}', ${itemIndex}, 'icon', this.value)"
+                       style="width: 120px; padding: 0.4rem 0.6rem; background: var(--bg-white); border: 1px solid var(--border-color); border-radius: 4px; font-size: 0.85rem;">
+                <input type="text" value="${(item.text || '').replace(/"/g, '&quot;')}" placeholder="Text" 
+                       onchange="updateArrayItemField(${sectionIndex}, '${key}', ${itemIndex}, 'text', this.value)"
+                       style="flex: 1; padding: 0.4rem 0.6rem; background: var(--bg-white); border: 1px solid var(--border-color); border-radius: 4px; font-size: 0.85rem;">
+            `;
+         }
+    } else if (key === 'images') {
+        fieldsHTML = `
+            <input type="text" value="${(item.src || '').replace(/"/g, '&quot;')}" placeholder="images/img1.jpg" 
+                   onchange="updateArrayItemField(${sectionIndex}, '${key}', ${itemIndex}, 'src', this.value)"
+                 style="flex: 1; padding: 0.4rem 0.6rem; background: var(--bg-white); border: 1px solid var(--border-color); border-radius: 4px; font-size: 0.85rem;">
+             <button type="button" class="btn btn-secondary" style="padding:0.35rem 0.6rem;" onclick="openGalleryUpload(${sectionIndex}, ${itemIndex})">Upload</button>
+             <button type="button" class="btn btn-secondary" style="padding:0.35rem 0.6rem;" onclick="pickGalleryImage(${sectionIndex}, ${itemIndex})">Pick</button>
+        `;
+    } else if (key === 'metrics') {
+        fieldsHTML = `
+            <input type="text" value="${(item.label || '').replace(/"/g, '&quot;')}" placeholder="Label" 
+                   onchange="updateArrayItemField(${sectionIndex}, '${key}', ${itemIndex}, 'label', this.value)"
+                   style="flex: 1; padding: 0.4rem 0.6rem; background: var(--bg-white); border: 1px solid var(--border-color); border-radius: 4px; font-size: 0.85rem;">
+            <input type="text" value="${(item.value || '').replace(/"/g, '&quot;')}" placeholder="Value" 
+                   onchange="updateArrayItemField(${sectionIndex}, '${key}', ${itemIndex}, 'value', this.value)"
+                   style="flex: 1; padding: 0.4rem 0.6rem; background: var(--bg-white); border: 1px solid var(--border-color); border-radius: 4px; font-size: 0.85rem;">
+        `;
+    } else if (key === 'events') {
+        fieldsHTML = `
+            <input type="text" value="${(item.date || '').replace(/"/g, '&quot;')}" placeholder="Date" 
+                   onchange="updateArrayItemField(${sectionIndex}, '${key}', ${itemIndex}, 'date', this.value)"
+                   style="width: 100px; padding: 0.4rem 0.6rem; background: var(--bg-white); border: 1px solid var(--border-color); border-radius: 4px; font-size: 0.85rem;">
+            <input type="text" value="${(item.title || '').replace(/"/g, '&quot;')}" placeholder="Title" 
+                   onchange="updateArrayItemField(${sectionIndex}, '${key}', ${itemIndex}, 'title', this.value)"
+                   style="flex: 1; padding: 0.4rem 0.6rem; background: var(--bg-white); border: 1px solid var(--border-color); border-radius: 4px; font-size: 0.85rem;">
+            <input type="text" value="${(item.description || '').replace(/"/g, '&quot;')}" placeholder="Description" 
+                   onchange="updateArrayItemField(${sectionIndex}, '${key}', ${itemIndex}, 'description', this.value)"
+                   style="flex: 1; padding: 0.4rem 0.6rem; background: var(--bg-white); border: 1px solid var(--border-color); border-radius: 4px; font-size: 0.85rem;">
+        `;
+    } else if (key === 'documents' || key === 'files') {
+         const sizeLabel = item.size ? item.size : '';
+         const inputId = `docfile-${sectionIndex}-${key}-${itemIndex}`;
+         fieldsHTML = `
+             <input type="text" value="${(item.name || '').replace(/"/g, '&quot;')}" placeholder="File name" 
+                 onchange="updateArrayItemField(${sectionIndex}, '${key}', ${itemIndex}, 'name', this.value)"
+                 style="flex: 1; padding: 0.4rem 0.6rem; background: var(--bg-white); border: 1px solid var(--border-color); border-radius: 4px; font-size: 0.85rem;">
+             <input type="text" value="${(item.src || '').replace(/"/g, '&quot;')}" placeholder="documents/file.pdf" 
+                 onchange="updateArrayItemField(${sectionIndex}, '${key}', ${itemIndex}, 'src', this.value)"
+                 style="flex: 1; padding: 0.4rem 0.6rem; background: var(--bg-white); border: 1px solid var(--border-color); border-radius: 4px; font-size: 0.85rem;">
+             <span style="min-width: 100px; color: var(--text-light); font-size: 0.8rem;">${sizeLabel}</span>
+             <input id="${inputId}" type="file" style="display:none" 
+                 accept=".pdf,.doc,.docx,.ppt,.pptx,.txt,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation,text/plain"
+                 onchange="handleDocumentUpload(event, ${sectionIndex}, '${key}', ${itemIndex})">
+             <button type="button" class="btn btn-secondary" onclick="document.getElementById('${inputId}').click()">Upload</button>
+         `;
+    } else if (key === 'slides') {
+        fieldsHTML = `
+            <input type="text" value="${(item.image || '').replace(/"/g, '&quot;')}" placeholder="images/slide1.jpg" 
+                   onchange="updateArrayItemField(${sectionIndex}, '${key}', ${itemIndex}, 'image', this.value)"
+                   style="flex: 2; padding: 0.4rem 0.6rem; background: var(--bg-white); border: 1px solid var(--border-color); border-radius: 4px; font-size: 0.85rem;">
+            <input type="text" value="${(item.caption || '').replace(/"/g, '&quot;')}" placeholder="Caption" 
+                   onchange="updateArrayItemField(${sectionIndex}, '${key}', ${itemIndex}, 'caption', this.value)"
+                   style="flex: 1; padding: 0.4rem 0.6rem; background: var(--bg-white); border: 1px solid var(--border-color); border-radius: 4px; font-size: 0.85rem;">
+        `;
+    } else if (key === 'rows') {
+        fieldsHTML = `
+            <input type="text" value="${(item.label || '').replace(/"/g, '&quot;')}" placeholder="Row label" 
+                   onchange="updateArrayItemField(${sectionIndex}, '${key}', ${itemIndex}, 'label', this.value)"
+                   style="flex: 1; padding: 0.4rem 0.6rem; background: var(--bg-white); border: 1px solid var(--border-color); border-radius: 4px; font-size: 0.85rem;">
+            <input type="text" value="${JSON.stringify(item.values || []).replace(/"/g, '&quot;')}" placeholder='["value1", "value2"]' 
+                   onchange="updateArrayItemField(${sectionIndex}, '${key}', ${itemIndex}, 'values', JSON.parse(this.value))"
+                   style="flex: 2; padding: 0.4rem 0.6rem; background: var(--bg-white); border: 1px solid var(--border-color); border-radius: 4px; font-size: 0.85rem; font-family: monospace;">
+        `;
+    } else if (key === 'columns') {
+        // Columns is a simple string array
+        const itemStr = typeof item === 'string' ? item : '';
+        fieldsHTML = `
+            <input type="text" value="${itemStr.replace(/"/g, '&quot;')}" placeholder="Column header" 
+                   onchange="updateArrayItem(${sectionIndex}, '${key}', ${itemIndex}, JSON.stringify(this.value))"
+                   style="flex: 1; padding: 0.4rem 0.6rem; background: var(--bg-white); border: 1px solid var(--border-color); border-radius: 4px; font-size: 0.85rem;">
+        `;
+    } else {
+        // Fallback for unknown types
+        const itemStr = JSON.stringify(item).replace(/"/g, '&quot;');
+        fieldsHTML = `
+            <input type="text" value='${itemStr}' 
+                   onchange="updateArrayItem(${sectionIndex}, '${key}', ${itemIndex}, this.value)"
+                   style="flex: 1; padding: 0.4rem 0.6rem; background: var(--bg-white); border: 1px solid var(--border-color); border-radius: 4px; font-size: 0.85rem;">
+        `;
+    }
+    
+    return `
+        <div style="display: flex; gap: 0.5rem; align-items: center; padding: 0.5rem; background: var(--bg-light); border-radius: 4px;">
+            ${fieldsHTML}
+            <button onclick="removeArrayItem(${sectionIndex}, '${key}', ${itemIndex})" class="btn btn-small" style="background: rgba(236,72,153,0.1); color: var(--accent-color);">×</button>
+        </div>
+    `;
+}
+
+// Allowed document MIME types and extensions
+const ALLOWED_DOCUMENT_TYPES = new Set([
+    'application/pdf',
+    'application/msword',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    'application/vnd.ms-powerpoint',
+    'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+    'text/plain'
+]);
+
+function formatBytes(bytes) {
+    if (!bytes && bytes !== 0) return '';
+    const sizes = ['B', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(1024));
+    const val = (bytes / Math.pow(1024, i)).toFixed(2);
+    return `${val} ${sizes[i]}`;
+}
+
+// Handle document upload, validate type, store base64 in draft for publish
+function handleDocumentUpload(evt, sectionIndex, key, itemIndex) {
+    const file = evt.target.files && evt.target.files[0];
+    if (!file) return;
+    const typeOk = ALLOWED_DOCUMENT_TYPES.has(file.type) || /\.(pdf|doc|docx|ppt|pptx|txt)$/i.test(file.name);
+    if (!typeOk) {
+        alert('Unsupported document type. Allowed: PDF, DOC/DOCX, PPT/PPTX, TXT');
+        evt.target.value = '';
+        return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+        const base64 = reader.result; // data:*/*;base64,....
+        // Update section item fields: name, src, size
+        updateArrayItemField(sectionIndex, key, itemIndex, 'name', file.name);
+        updateArrayItemField(sectionIndex, key, itemIndex, 'src', `documents/${file.name}`);
+        updateArrayItemField(sectionIndex, key, itemIndex, 'size', formatBytes(file.size));
+        // Re-render to reflect changes immediately in the CMS UI
+        renderSections();
+
+        // Persist document data in draft
+        try {
+            const DRAFT_KEY = 'cms_draft';
+            const savedDraft = JSON.parse(localStorage.getItem(DRAFT_KEY) || '{}');
+            if (!savedDraft.documents) savedDraft.documents = {};
+            savedDraft.documents[file.name] = base64; // include data URL prefix
+            localStorage.setItem(DRAFT_KEY, JSON.stringify(savedDraft));
+        } catch (e) {
+            console.error('Failed to store document in draft', e);
+        }
+    };
+    reader.readAsDataURL(file);
+}
+
+// Gallery image upload / pick
+function openGalleryUpload(sectionIndex, itemIndex) {
+    const inputId = `gallery-file-${sectionIndex}-${itemIndex}-${Date.now()}`;
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.style.display = 'none';
+    input.id = inputId;
+    input.onchange = (evt) => {
+        const file = evt.target.files && evt.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = () => {
+            const base64 = reader.result; // data:image/...;base64,
+            const fileName = file.name;
+            // Update section item fields
+            updateArrayItemField(sectionIndex, 'images', itemIndex, 'src', `images/${fileName}`);
+            updateArrayItemField(sectionIndex, 'images', itemIndex, 'alt', fileName);
+            renderSections();
+            // Persist in draft.galleryImages
+            try {
+                const savedDraft = JSON.parse(localStorage.getItem(DRAFT_KEY) || '{}');
+                if (!savedDraft.galleryImages) savedDraft.galleryImages = {};
+                savedDraft.galleryImages[fileName] = base64;
+                localStorage.setItem(DRAFT_KEY, JSON.stringify(savedDraft));
+            } catch (e) {
+                console.error('Failed to store gallery image', e);
+            }
+        };
+        reader.readAsDataURL(file);
+    };
+    document.body.appendChild(input);
+    input.click();
+    setTimeout(() => input.remove(), 0);
+}
+
+// Scrollable picker modal for existing gallery images
+let galleryPickerState = null;
+
+function pickGalleryImage(sectionIndex, itemIndex) {
+    try {
+        const savedDraft = JSON.parse(localStorage.getItem(DRAFT_KEY) || '{}');
+        const images = savedDraft.galleryImages || {};
+        const names = Object.keys(images);
+        if (!names.length) {
+            alert('No gallery images in draft yet. Upload one first.');
+            return;
+        }
+        galleryPickerState = { sectionIndex, itemIndex, images };
+        renderGalleryPicker(names, images);
+    } catch (e) {
+        console.error('Failed to pick gallery image', e);
+    }
+}
+
+function renderGalleryPicker(names, images) {
+    const existing = document.getElementById('galleryPickerOverlay');
+    if (existing) existing.remove();
+
+    const overlay = document.createElement('div');
+    overlay.id = 'galleryPickerOverlay';
+    overlay.style.cssText = 'position:fixed; inset:0; background:rgba(0,0,0,0.35); display:flex; align-items:center; justify-content:center; z-index:9999;';
+    overlay.onclick = (e) => { if (e.target === overlay) overlay.remove(); };
+
+    const modal = document.createElement('div');
+    modal.style.cssText = 'background:var(--bg-white,#fff); color:var(--text-dark,#111); border-radius:8px; padding:16px; width:520px; max-width:90vw; max-height:80vh; display:flex; flex-direction:column; box-shadow:0 10px 30px rgba(0,0,0,0.25);';
+
+    const header = document.createElement('div');
+    header.style.cssText = 'display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;';
+    const title = document.createElement('div');
+    title.textContent = 'Pick an image';
+    title.style.cssText = 'font-weight:600; font-size:1rem;';
+    const closeBtn = document.createElement('button');
+    closeBtn.textContent = '×';
+    closeBtn.style.cssText = 'border:none; background:transparent; font-size:1.2rem; cursor:pointer;';
+    closeBtn.onclick = () => overlay.remove();
+    header.appendChild(title);
+    header.appendChild(closeBtn);
+
+    const list = document.createElement('div');
+    list.style.cssText = 'display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:10px; overflow-y:auto; padding-right:4px; max-height:60vh;';
+
+    names.forEach(name => {
+        const card = document.createElement('div');
+        card.style.cssText = 'border:1px solid var(--border-color,#ddd); border-radius:6px; padding:6px; background:var(--bg-light,#f7f7f7); cursor:pointer; display:flex; flex-direction:column; gap:6px;';
+        const img = document.createElement('img');
+        img.src = images[name];
+        img.alt = name;
+        img.style.cssText = 'width:100%; aspect-ratio:4/3; object-fit:cover; border-radius:4px;';
+        const label = document.createElement('div');
+        label.textContent = name;
+        label.style.cssText = 'font-size:0.8rem; color:var(--text-dark,#111); word-break:break-all;';
+        card.onclick = () => {
+            applyGalleryPick(name);
+            overlay.remove();
+        };
+        card.appendChild(img);
+        card.appendChild(label);
+        list.appendChild(card);
+    });
+
+    modal.appendChild(header);
+    modal.appendChild(list);
+    overlay.appendChild(modal);
+    document.body.appendChild(overlay);
+}
+
+function applyGalleryPick(name) {
+    if (!galleryPickerState) return;
+    const { sectionIndex, itemIndex } = galleryPickerState;
+    updateArrayItemField(sectionIndex, 'images', itemIndex, 'src', `images/${name}`);
+    renderSections();
+    galleryPickerState = null;
+}
+
+function addArrayItem(sectionIndex, key, sectionType) {
+    const section = sections[sectionIndex];
+    if (!section) return;
+    
+    let array = [];
+    try {
+        array = section.shared[key] ? JSON.parse(section.shared[key]) : [];
+    } catch (e) {
+        array = [];
+    }
+    
+    // Create default item based on key type
+    let newItem = {};
+    if (key === 'items') {
+        if (sectionType === 'Accordion') {
+            newItem = { question: '', answer: '' };
+        } else {
+            newItem = { icon: '', text: '' };
+        }
+    } else if (key === 'images') {
+        newItem = { src: '', alt: '' };
+    } else if (key === 'metrics') {
+        newItem = { label: '', value: '' };
+    } else if (key === 'events') {
+        newItem = { date: '', title: '', description: '' };
+    } else if (key === 'documents' || key === 'files') {
+        newItem = { name: '', src: '', size: '' };
+    } else if (key === 'rows') {
+        newItem = { label: '', values: [] };
+    } else if (key === 'columns') {
+        newItem = '';
+    } else if (key === 'slides') {
+        newItem = { image: '', caption: '' };
+    }
+    
+    array.push(newItem);
+    section.shared[key] = JSON.stringify(array);
+    renderSections();
+    autoSave();
+}
+
+function removeArrayItem(sectionIndex, key, itemIndex) {
+    const section = sections[sectionIndex];
+    if (!section) return;
+    
+    let array = [];
+    try {
+        array = JSON.parse(section.shared[key] || '[]');
+    } catch (e) {
+        return;
+    }
+    
+    array.splice(itemIndex, 1);
+    section.shared[key] = JSON.stringify(array);
+    renderSections();
+    autoSave();
+}
+
+function updateArrayItemField(sectionIndex, key, itemIndex, field, value) {
+    const section = sections[sectionIndex];
+    if (!section) return;
+    
+    let array = [];
+    try {
+        array = JSON.parse(section.shared[key] || '[]');
+        if (!array[itemIndex]) array[itemIndex] = {};
+        array[itemIndex][field] = value;
+        section.shared[key] = JSON.stringify(array);
+        autoSave();
+    } catch (e) {
+        console.error('Error updating array item field');
+    }
+}
+
+function updateArrayItem(sectionIndex, key, itemIndex, value) {
+    const section = sections[sectionIndex];
+    if (!section) return;
+    
+    let array = [];
+    try {
+        array = JSON.parse(section.shared[key] || '[]');
+        array[itemIndex] = JSON.parse(value);
+        section.shared[key] = JSON.stringify(array);
+        autoSave();
+    } catch (e) {
+        console.error('Invalid JSON for array item');
+    }
 }
 
 function updateSectionField(index, key, value, lang) {
@@ -202,6 +656,27 @@ function removeSection(index) {
     sections.splice(index, 1);
     renderSections();
     autoSave();
+}
+
+function moveSection(index, direction) {
+    const target = index + direction;
+    if (target < 0 || target >= sections.length) return;
+    const temp = sections[index];
+    sections[index] = sections[target];
+    sections[target] = temp;
+    renderSections();
+    autoSave();
+}
+
+function autoSizeCode(el) {
+    if (!el) return;
+    el.style.height = 'auto';
+    el.style.height = `${el.scrollHeight}px`;
+}
+
+function applyCodeAutosize() {
+    const codes = document.querySelectorAll('textarea[data-autosize="code"]');
+    codes.forEach(autoSizeCode);
 }
 
 function handleImage(e, type) {
@@ -307,6 +782,17 @@ function clearDraft() {
     }
 }
 
+// Helper to set Split section image position reliably and update UI
+function setSplitPosition(sectionIndex, pos) {
+    try {
+        updateSectionField(sectionIndex, 'imagePosition', (pos === 'right' ? 'right' : 'left'), 'shared');
+        autoSave();
+        renderSections();
+    } catch (e) {
+        console.error('Failed to set split position', e);
+    }
+}
+
 function openModal(id) {
     document.getElementById(id).style.display = 'flex';
 }
@@ -351,16 +837,19 @@ function showPreview() {
         : baseData;
 
     // Merge shared + translatable data for each language
+    // Use lowercase type and flatten data to top level for template renderers
     const contentDE = { 
         sections: sections.map(s => ({ 
-            type: s.type, 
-            data: { ...s.shared, ...s.data_de }
+            type: s.type.toLowerCase(),
+            ...s.shared,
+            ...s.data_de
         })) 
     };
     const contentEN = { 
         sections: sections.map(s => ({ 
-            type: s.type, 
-            data: { ...s.shared, ...s.data_en }
+            type: s.type.toLowerCase(),
+            ...s.shared,
+            ...s.data_en
         })) 
     };
     const htmlPreview = generateIndexHTML(meta);
@@ -659,22 +1148,44 @@ async function publishContent() {
         }
 
         // Create content-de.json and content-en.json (merge shared + translatable data)
-        // Use lowercase type to match template renderers
+        // Use lowercase type and flatten data to top level for template renderers
         const contentDE = { 
             sections: sections.map(s => ({ 
-                type: s.type.toLowerCase(), 
-                data: { ...s.shared, ...s.data_de }
+                type: s.type.toLowerCase(),
+                ...s.shared,
+                ...s.data_de
             })) 
         };
         const contentEN = { 
             sections: sections.map(s => ({ 
-                type: s.type.toLowerCase(), 
-                data: { ...s.shared, ...s.data_en }
+                type: s.type.toLowerCase(),
+                ...s.shared,
+                ...s.data_en
             })) 
         };
 
         await uploadFile(settings, `${folder}/content-de.json`, JSON.stringify(contentDE, null, 2));
         await uploadFile(settings, `${folder}/content-en.json`, JSON.stringify(contentEN, null, 2));
+
+        // Upload documents from draft (PDF, DOC/DOCX, PPT/PPTX, TXT)
+        try {
+            const savedDraft2 = JSON.parse(localStorage.getItem(DRAFT_KEY) || '{}');
+            if (savedDraft2.documents) {
+                for (const [name, dataUrl] of Object.entries(savedDraft2.documents)) {
+                    const path = `${folder}/documents/${name}`;
+                    await uploadFile(settings, path, dataUrl, true);
+                }
+            }
+            // Upload gallery images from draft
+            if (savedDraft2.galleryImages) {
+                for (const [name, dataUrl] of Object.entries(savedDraft2.galleryImages)) {
+                    const path = `${folder}/images/${name}`;
+                    await uploadFile(settings, path, dataUrl, true);
+                }
+            }
+        } catch (e) {
+            console.error('Document upload failed', e);
+        }
 
         alert('Published successfully!');
         localStorage.removeItem(DRAFT_KEY);

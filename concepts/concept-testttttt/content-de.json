@@ -2,10 +2,8 @@
   "sections": [
     {
       "type": "text",
-      "data": {
-        "title": "ttrte",
-        "text": "erte"
-      }
+      "title": "ttrte",
+      "text": "erte"
     }
   ]
 }
