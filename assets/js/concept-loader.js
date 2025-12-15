@@ -1,5 +1,12 @@
+let conceptLoaderInitialized = false;
+let conceptLoading = false;
+
 // Load concept data from data.json and populate the page
 async function loadConceptData() {
+    // Prevent concurrent loads
+    if (conceptLoading) return;
+    conceptLoading = true;
+    
     try {
         // Get concept ID from URL path (same as blog system)
         const pathParts = window.location.pathname.split('/');
@@ -15,9 +22,10 @@ async function loadConceptData() {
         // Get current language
         const lang = localStorage.getItem('language') || 'de';
         
-        // Load hero image
+        // Load hero image with eager loading (above the fold)
         const heroImage = document.getElementById('conceptHeroImage');
         if (heroImage) {
+            heroImage.loading = 'eager';
             heroImage.src = concept.hero_image;
         }
         
@@ -35,8 +43,10 @@ async function loadConceptData() {
         
         // Load dynamic content sections from local content files
         const contentContainer = document.getElementById('conceptContentSections');
+        const skeleton = document.getElementById('conceptSkeleton');
         if (contentContainer) {
-            const lang = currentLanguage || localStorage.getItem('language') || 'en';
+            if (skeleton) skeleton.style.display = 'grid';
+            contentContainer.style.opacity = '0';
             try {
                 const contentResponse = await fetch(`content-${lang}.json`);
                 if (contentResponse.ok) {
@@ -49,9 +59,16 @@ async function loadConceptData() {
                             renderSection(section, contentContainer);
                         });
                     }
+
+                    // Fade in once content is ready
+                    if (skeleton) skeleton.style.display = 'none';
+                    requestAnimationFrame(() => {
+                        contentContainer.style.opacity = '1';
+                    });
                 }
             } catch (error) {
                 console.log('No content file found for this concept');
+                if (skeleton) skeleton.style.display = 'none';
             }
         }
         
@@ -62,21 +79,20 @@ async function loadConceptData() {
         
     } catch (error) {
         console.error('Error loading concept data:', error);
+    } finally {
+        conceptLoading = false;
     }
 }
 
-// Load when i18n is ready
+// Load when DOM is ready
 function initConceptPage() {
-    // Wait for i18n to be loaded with translations
-    const checkI18n = setInterval(() => {
-        if (typeof t === 'function' && typeof translations !== 'undefined' && Object.keys(translations).length > 0) {
-            clearInterval(checkI18n);
-            loadConceptData();
-            
-            // Listen for language changes
-            window.addEventListener('languageChanged', loadConceptData);
-        }
-    }, 50);
+    if (conceptLoaderInitialized) return;
+    conceptLoaderInitialized = true;
+    
+    loadConceptData();
+    
+    // Listen for language changes
+    window.addEventListener('languageChanged', loadConceptData);
 }
 
 // Load when DOM is ready

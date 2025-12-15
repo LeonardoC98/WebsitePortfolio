@@ -3,6 +3,7 @@
 let translations = {};
 let currentLanguage = localStorage.getItem('language') || 'en';
 
+
 // Determine the base path for language files
 function getLanguageBasePath() {
     const isConceptPage = window.location.pathname.includes('/concepts/');
@@ -80,6 +81,12 @@ function updatePageLanguage() {
     
     // Dispatch custom event for components to update
     window.dispatchEvent(new Event('languageChanged'));
+
+    // Reveal back button container after translation to avoid flicker
+    const backBtnContainer = document.querySelector('.back-button-container');
+    if (backBtnContainer) {
+        backBtnContainer.style.opacity = '1';
+    }
 }
 
 // Change language

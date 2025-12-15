@@ -21,8 +21,13 @@ async function loadNavbar() {
         temp.innerHTML = navbarHTML;
         const navbar = temp.querySelector('nav');
         
-        // Insert navbar at the start of body
-        document.body.insertBefore(navbar, document.body.firstChild);
+        // Replace navbar placeholder if present, otherwise insert at start
+        const placeholder = document.getElementById('navbarPlaceholder');
+        if (placeholder && placeholder.parentNode) {
+            placeholder.parentNode.replaceChild(navbar, placeholder);
+        } else {
+            document.body.insertBefore(navbar, document.body.firstChild);
+        }
         
         // Dispatch event that navbar is loaded
         window.dispatchEvent(new CustomEvent('navbarLoaded'));

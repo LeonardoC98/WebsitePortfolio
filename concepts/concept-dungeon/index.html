@@ -7,27 +7,39 @@
     <link rel="stylesheet" href="../../assets/css/style-base.css?v=2">
     <link rel="stylesheet" href="../../assets/css/style-concepts.css?v=2">
 </head>
-<body style="opacity: 0;">
+<body>
+
+    <!-- Navbar Placeholder (keeps layout stable until navbar loads) -->
+    <nav id="navbarPlaceholder" class="navbar" style="min-height:77px; visibility:hidden;"></nav>
 
     <!-- Back Button -->
-    <div class="back-button-container">
-        <a href="../../concepts.html" class="back-button" data-i18n="concept.back">i18n error</a>
+    <div class="back-button-container" style="opacity:0; transition: opacity 0.2s ease;">
+        <a href="../../concepts.html" class="back-button" data-i18n="concept.back">← Back to Portfolio</a>
     </div>
 
     <!-- Concept Detail Page -->
     <section class="concept-detail">
         <div class="concept-hero">
-            <img src="images/dungeon.jpg" alt="Concept Hero Image" class="concept-hero-image" id="conceptHeroImage">
+            <img src="images/bg.jpg" alt="Concept Hero Image" class="concept-hero-image" id="conceptHeroImage" loading="eager">
             <div class="concept-hero-overlay">
-                <h1 id="conceptTitle"></h1>
+                <h1 id="conceptTitle">Dungeon Game Concept</h1>
                 <p class="concept-subtitle" id="conceptDescription">Replayability through hunting mastery for drops and level resets for skill mastery.</p>
             </div>
         </div>
 
         <div class="container concept-content">
             <div class="concept-main">
+                <!-- Skeleton placeholder while content loads -->
+                <div id="conceptSkeleton" class="skeleton-container">
+                    <div class="skeleton skeleton-title"></div>
+                    <div class="skeleton skeleton-subtitle"></div>
+                    <div class="skeleton skeleton-text"></div>
+                    <div class="skeleton skeleton-text"></div>
+                    <div class="skeleton skeleton-text short"></div>
+                </div>
+
                 <!-- Dynamic Content Sections -->
-                <div id="conceptContentSections">
+                <div id="conceptContentSections" style="opacity: 0; transition: opacity 0.3s ease;">
                     <!-- Dynamically loaded from translations -->
                 </div>
             </div>
@@ -44,12 +56,6 @@
 
     <script src="../../assets/js/navbar-loader.js"></script>
     <script src="../../assets/js/i18n.js"></script>
-    <script>
-        setTimeout(() => {
-            document.body.style.transition = 'opacity 0.3s ease';
-            document.body.style.opacity = '1';
-        }, 100);
-    </script>
     <script src="../../assets/js/script.js"></script>
     <script src="../../assets/js/portfolio.js"></script>
     <script src="../../assets/js/concept-templates.js"></script>

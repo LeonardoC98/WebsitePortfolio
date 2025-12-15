@@ -92,7 +92,7 @@
     {
       "type": "split",
       "title": "Das Meisterungssystem",
-      "image": "images/concept1.jpg",
+      "image": "images/img1.jpg",
       "text": "Jeder Gegner hat eine spezifische Drop-Tabelle die Spieler durch wiederholtes Besiegen meistern können. Je mehr du einen Gegnertyp besiegst, desto besser verstehst du deren Bewegungsmuster und Drop-Wahrscheinlichkeiten.\n\nNach 100 Kills erhältst du garantierte seltene Drops. Nach 500 Kills kannst du die Drop-Tabelle permanent einsehen. Bei 1000 Kills wird der Gegner zu deinem 'Gemeisterten Feind' und du erhältst einen permanenten Bonus gegen diesen Typ.",
       "imagePosition": "left"
     },
@@ -188,27 +188,27 @@
       "title": "Concept Art & Screenshots",
       "images": [
         {
-          "src": "images/concept1.jpg",
+          "src": "images/img1.jpg",
           "alt": "Dungeon Environment Concept"
         },
         {
-          "src": "images/concept1.jpg",
+          "src": "images/img1.jpg",
           "alt": "Boss Design Sketches"
         },
         {
-          "src": "images/concept1.jpg",
+          "src": "images/img1.jpg",
           "alt": "UI Mockup - Meisterung System"
         },
         {
-          "src": "images/concept1.jpg",
+          "src": "images/img1.jpg",
           "alt": "Character Progression Tree"
         },
         {
-          "src": "images/concept1.jpg",
+          "src": "images/img1.jpg",
           "alt": "Level Design - Crystal Caverns"
         },
         {
-          "src": "images/concept1.jpg",
+          "src": "images/img1.jpg",
           "alt": "Enemy Variety Showcase"
         }
       ]

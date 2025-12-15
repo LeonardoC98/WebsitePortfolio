@@ -4,9 +4,14 @@
  */
 
 let blogLoaderInitialized = false;
+let blogLoading = false;
 
 async function loadBlogPost() {
     if (blogLoaderInitialized) return;
+    
+    // Prevent concurrent loads
+    if (blogLoading) return;
+    blogLoading = true;
     blogLoaderInitialized = true;
 
     try {
@@ -21,17 +26,7 @@ async function loadBlogPost() {
         if (!dataRes.ok) throw new Error('Failed to load data.json');
         const blogPost = await dataRes.json();
 
-        // Wait for i18n
-        await new Promise(resolve => {
-            const check = setInterval(() => {
-                if (typeof t === 'function' && translations && Object.keys(translations).length > 0) {
-                    clearInterval(check);
-                    resolve();
-                }
-            }, 50);
-        });
-
-        // Function to render blog post
+        // Function to render blog post (starts immediately, doesn't wait for i18n)
         const renderBlogPost = () => {
             const lang = localStorage.getItem('language') || 'de';
             
@@ -49,18 +44,18 @@ async function loadBlogPost() {
                 excerptEl.textContent = excerpt;
             }
 
-            // Set hero image with PNG/JPG fallback
+            // Set hero image with PNG/JPG fallback and lazy loading
             const heroEl = document.getElementById('postHeroImage');
             if (heroEl && !heroEl.src) {
                 const filename = (blogPost.heroImage || 'bg').replace(/\.(png|jpg)$/i, '');
                 const candidates = [`images/${filename}.png`, `images/${filename}.jpg`];
-                let i = 0;
-                const tryNext = () => {
-                    if (i >= candidates.length) return;
-                    heroEl.src = candidates[i++];
-                    heroEl.onerror = () => tryNext();
+                heroEl.loading = 'lazy';
+                
+                // Try to load first candidate, fallback to second
+                heroEl.src = candidates[0];
+                heroEl.onerror = () => {
+                    if (candidates[1]) heroEl.src = candidates[1];
                 };
-                tryNext();
             }
 
             // Set meta (tags and date)
@@ -74,17 +69,21 @@ async function loadBlogPost() {
             // Load content
             const contentEl = document.getElementById('postContent');
             if (contentEl) {
-                const contentRes = fetch(`content-${lang}.json`)
+                fetch(`content-${lang}.json`)
                     .then(res => {
                         if (!res.ok) throw new Error(`Failed to load content-${lang}.json`);
                         return res.json();
                     })
                     .then(content => {
-                        console.log('Loaded content:', content);
                         contentEl.innerHTML = '';
 
                         if (content.sections) {
                             content.sections.forEach(section => {
+                                // Add lazy loading to images
+                                if (section.images) {
+                                    section.images.forEach(img => { img.loading = 'lazy'; });
+                                }
+                                
                                 const rendererName = `render${section.type.charAt(0).toUpperCase() + section.type.slice(1)}Section`;
                                 
                                 if (typeof window[rendererName] === 'function') {
@@ -96,8 +95,6 @@ async function loadBlogPost() {
                         }
                     })
                     .catch(error => console.error('Error loading content:', error));
-            } else {
-                console.warn('postContent element not found');
             }
         };
 
@@ -106,8 +103,8 @@ async function loadBlogPost() {
 
         // Listen for language changes
         window.addEventListener('languageChanged', renderBlogPost);
-    } catch (error) {
-        console.error('Error loading blog post:', error);
+    } finally {
+        blogLoading = false;
     }
 }
 

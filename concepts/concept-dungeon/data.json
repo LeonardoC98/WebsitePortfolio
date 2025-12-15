@@ -5,8 +5,8 @@
   "titleEN": "Dungeon Game Concept",
   "descriptionDE": "Wiederholbarkeit durch Meisterung der Jagd nach Drops und Level-Resets für Skill-Meisterung.",
   "descriptionEN": "Replayability through hunting mastery for drops and level resets for skill mastery.",
-  "image": "concepts/concept-dungeon/images/dungeon.jpg",
+  "image": "concepts/concept-dungeon/images/card.jpg",
   "tags": ["System", "Progression", "Enemy", "PVM"],
   "link": "concepts/concept-dungeon/index.html",
-  "hero_image": "images/dungeon.jpg"
+  "hero_image": "images/bg.jpg"
 }
