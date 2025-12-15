@@ -1,18 +1,32 @@
-// Authentication
+// Authentication - Now uses serverless backend
 
-const AUTH_PASSWORD = 'admi';
-
-document.getElementById('loginForm')?.addEventListener('submit', (e) => {
+document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const password = document.getElementById('password').value;
     const error = document.getElementById('loginError');
 
-    if (password === AUTH_PASSWORD) {
-        sessionStorage.setItem('cms_auth', 'true');
-        window.location.href = 'editor.html';
-    } else {
+    try {
+        // Call serverless auth function instead of checking locally
+        const response = await fetch('/.netlify/functions/auth', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ password })
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.success) {
+            sessionStorage.setItem('cms_auth', 'true');
+            window.location.href = 'editor.html';
+        } else {
+            error.textContent = 'Invalid password';
+            error.style.display = 'block';
+            setTimeout(() => error.style.display = 'none', 3000);
+        }
+    } catch (err) {
+        console.error('Auth error:', err);
+        error.textContent = 'Connection error. Try again.';
         error.style.display = 'block';
-        setTimeout(() => error.style.display = 'none', 3000);
     }
 });
 
