@@ -1,0 +1,16 @@
+{
+  "id": "videotestcms",
+  "translationKey": "concepts.videotestcms",
+  "titleDE": "titel de",
+  "titleEN": "title en",
+  "descriptionDE": "frgfdrtgdgsdrg gdg jjdrgdu  gdggdgdg.",
+  "descriptionEN": "ertzgegzhzrutz iziuouizuuz ziz ztuizuoui iiiui tzzuzu.",
+  "image": "concepts/concept-videotestcms/images/card.jpg",
+  "tags": [
+    "test",
+    "testing",
+    "123"
+  ],
+  "link": "concepts/concept-videotestcms/index.html",
+  "hero_image": "images/bg.jpg"
+}
