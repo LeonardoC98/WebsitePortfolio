@@ -639,12 +639,23 @@ async function publishContent() {
         await uploadFile(settings, `${folder}/data.json`, JSON.stringify(dataJson, null, 2));
         await uploadFile(settings, `${folder}/index.html`, htmlPreview);
 
-        // Upload images if they exist
-        if (draft.images?.card) {
-            await uploadFile(settings, `${folder}/images/card.jpg`, draft.images.card, true);
+        // Upload images if they exist (check both input elements and draft storage)
+        const savedDraft = JSON.parse(localStorage.getItem(DRAFT_KEY) || '{}');
+        const cardImageData = savedDraft.images?.card;
+        const bgImageData = savedDraft.images?.bg;
+        
+        if (cardImageData) {
+            console.log('Uploading card image...');
+            await uploadFile(settings, `${folder}/images/card.jpg`, cardImageData, true);
+        } else {
+            console.warn('No card image found - please upload one in the sidebar');
         }
-        if (draft.images?.bg) {
-            await uploadFile(settings, `${folder}/images/bg.jpg`, draft.images.bg, true);
+        
+        if (bgImageData) {
+            console.log('Uploading background image...');
+            await uploadFile(settings, `${folder}/images/bg.jpg`, bgImageData, true);
+        } else {
+            console.warn('No background image found - please upload one in the sidebar');
         }
 
         // Create content-de.json and content-en.json (merge shared + translatable data)
