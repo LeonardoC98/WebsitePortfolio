@@ -552,3 +552,65 @@ function closeLightbox() {
         document.body.style.overflow = '';
     }
 }
+
+// Template definitions for CMS editor
+// Fields marked with _SHARED are language-independent (src, images, etc)
+// Other fields are translatable (title, text, description, etc)
+window.TEMPLATES = {
+    'Text': {
+        translatable: ['title', 'text'],
+        shared: []
+    },
+    'Gallery': {
+        translatable: ['title'],
+        shared: ['images']
+    },
+    'Video': {
+        translatable: ['title', 'description'],
+        shared: ['src']
+    },
+    'Features': {
+        translatable: ['title'],
+        shared: ['items']
+    },
+    'Stats': {
+        translatable: ['title'],
+        shared: ['metrics']
+    },
+    'Timeline': {
+        translatable: ['title'],
+        shared: ['events']
+    },
+    'Documents': {
+        translatable: ['title'],
+        shared: ['documents']
+    },
+    'Comparison': {
+        translatable: ['title'],
+        shared: ['columns', 'rows']
+    },
+    'Quote': {
+        translatable: ['text', 'author'],
+        shared: []
+    },
+    'Code': {
+        translatable: ['title'],
+        shared: ['language', 'code']
+    },
+    'Embed': {
+        translatable: ['title'],
+        shared: ['src', 'height']
+    },
+    'Split': {
+        translatable: ['title', 'text'],
+        shared: ['image', 'imagePosition']
+    },
+    'Accordion': {
+        translatable: ['title'],
+        shared: ['items']
+    },
+    'Slider': {
+        translatable: ['title', 'beforeLabel', 'afterLabel'],
+        shared: ['before', 'after']
+    }
+};

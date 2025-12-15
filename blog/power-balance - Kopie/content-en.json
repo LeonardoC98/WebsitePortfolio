@@ -1,0 +1,32 @@
+{
+  "sections": [
+    {
+      "type": "text",
+      "title": "The Art of Balancing",
+      "text": "Card games thrive on balance. A single overpowered card can destroy the entire meta and make the game unplayable."
+    },
+    {
+      "type": "features",
+      "title": "Balance Principles",
+      "items": [
+        {
+          "icon": "⚖️",
+          "text": "<strong>Cost vs. Effect:</strong> A card's mana cost must match its effect. Cards that are too cheap dominate the meta."
+        },
+        {
+          "icon": "🎯",
+          "text": "<strong>Counterplay:</strong> Every strong strategy needs a counter option. Without counterplay, the game feels unfair."
+        },
+        {
+          "icon": "📊",
+          "text": "<strong>Statistical Analysis:</strong> Use data: Win rates, pick rates, and deck diversity reveal balance issues."
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "title": "Examples from TCGs",
+      "text": "Magic: The Gathering and Hearthstone show how difficult balancing is - even with decades of experience, cards regularly need to be banned or adjusted."
+    }
+  ]
+}

@@ -1,105 +1,43 @@
-// ===== BLOG DATA =====
-const blogData = [
-    {
-        id: 'gameplay-loops',
-        translationKey: 'blog.posts.gameplayLoops',
-        image: 'blog/images/gploop.jpg',
-        heroImage: 'blog/images/gploop.jpg',
-        tags: ['RPG', 'Game Design', 'Mechanics'],
-        date: '2025-12-14',
-        category: 'Game Design',
-        link: 'blog/gameplay-loops/index.html'
-    },
-    {
-        id: 'power-balance',
-        translationKey: 'blog.posts.powerBalance',
-        image: 'blog/images/scalebalance.jpg',
-        heroImage: 'blog/images/scalebalance.jpg',
-        tags: ['Theory', 'Balance', 'PVP'],
-        date: '2025-12-14',
-        category: 'Game Theory',
-        link: 'blog/power-balance/index.html'
-    },
-];
+/**
+ * BLOG SYSTEM - Blog Overview (blog.html)
+ * Simple, clean implementation
+ */
 
-// ===== BLOG GRID LADEN =====
-function loadBlog(searchQuery = '', selectedTags = []) {
-    const blogGrid = document.getElementById('blogGrid');
-    if (!blogGrid) return;
+let blogData = [];
+let blogInitialized = false;
 
-    blogGrid.innerHTML = '';
-
-    const q = (searchQuery || '').trim().toLowerCase();
-
-    const items = blogData.filter(post => {
-        const title = (t(`${post.translationKey}.title`) || '').toLowerCase();
-        const excerpt = (t(`${post.translationKey}.excerpt`) || '').toLowerCase();
-        const tags = (post.tags || []).map(t => t.toLowerCase()).join(' ');
+async function loadBlogData() {
+    blogData = [];
+    try {
+        // Fetch dynamic blog post list from server
+        const res = await fetch('/api/blog-index');
+        if (!res.ok) throw new Error('Failed to fetch blog index');
         
-        let matchesSearch = true;
-        if (q) {
-            matchesSearch = title.includes(q) || excerpt.includes(q) || tags.includes(q);
+        const { posts } = await res.json();
+        const lang = localStorage.getItem('language') || 'de';
+        
+        // Load each blog post's data.json
+        for (const path of posts) {
+            try {
+                const postRes = await fetch(path);
+                if (postRes.ok) {
+                    const postData = await postRes.json();
+                    
+                    // Create translationKey dynamically for compatibility
+                    postData.translationKey = `blog.posts.${postData.id}`;
+                    
+                    blogData.push(postData);
+                    console.log('Loaded post:', postData);
+                }
+            } catch (e) {
+                console.warn(`Error loading ${path}:`, e);
+            }
         }
-
-        let matchesTags = true;
-        if (selectedTags.length > 0) {
-            matchesTags = (post.tags || []).some(tag => selectedTags.includes(tag));
-        }
-
-        return matchesSearch && matchesTags;
-    });
-
-    if (items.length === 0) {
-        blogGrid.innerHTML = `
-            <div style="text-align: center; padding: 60px 20px; color: var(--text-light);">
-                ${t('blog.noResults')}
-            </div>
-        `;
-        return;
+    } catch (e) {
+        console.warn('Error loading blog data:', e);
     }
-
-    items.forEach(post => {
-        const card = document.createElement('a');
-        card.href = post.link;
-        card.className = 'blog-card';
-        const tagsHTML = (post.tags || []).map(tag => `<span class="tag">${tag}</span>`).join('');
-        
-        const title = t(`${post.translationKey}.title`);
-        const excerpt = t(`${post.translationKey}.excerpt`);
-        const dateFormatted = formatDate(post.date);
-        
-        card.innerHTML = `
-            <div class="blog-card-image">
-                <img src="${post.image}" alt="${title}">
-            </div>
-            <div class="blog-card-content">
-                <div>
-                    <div style="display: flex; gap: 15px; margin-bottom: 10px; font-size: 0.9rem;">
-                        <span class="blog-category">${post.category}</span>
-                        <span class="blog-date">${dateFormatted}</span>
-                    </div>
-                    <h3>${title}</h3>
-                    <p>${excerpt}</p>
-                </div>
-                <div class="blog-card-meta">
-                    <div class="blog-card-tags">${tagsHTML}</div>
-                </div>
-            </div>
-        `;
-
-        card.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateY(-5px)';
-        });
-        
-        card.addEventListener('mouseleave', function() {
-            this.style.transform = 'translateY(0)';
-        });
-
-        blogGrid.appendChild(card);
-    });
 }
 
-// Format date
 function formatDate(dateString) {
     const date = new Date(dateString);
     const lang = localStorage.getItem('language') || 'de';
@@ -107,126 +45,140 @@ function formatDate(dateString) {
     return date.toLocaleDateString(lang === 'de' ? 'de-DE' : 'en-US', options);
 }
 
-// ===== TAG SYSTEM =====
 function getAllTags() {
-    const allTags = new Set();
-    blogData.forEach(post => {
-        (post.tags || []).forEach(tag => allTags.add(tag));
-    });
-    return Array.from(allTags).sort();
+    const tags = new Set();
+    blogData.forEach(post => (post.tags || []).forEach(tag => tags.add(tag)));
+    return Array.from(tags).sort();
 }
 
-function loadTagCheckboxes() {
-    const tagList = document.getElementById('tagDropdownList');
-    if (!tagList) return;
+function loadBlog(search = '', tags = []) {
+    const grid = document.getElementById('blogGrid');
+    if (!grid) return;
+    
+    const lang = localStorage.getItem('language') || 'de';
 
-    tagList.innerHTML = '';
-    const tags = getAllTags();
+    const filtered = blogData.filter(post => {
+        // Get title and excerpt based on language
+        const title = lang === 'de' ? (post.titleDE || '') : (post.titleEN || '');
+        const excerpt = lang === 'de' ? (post.excerptDE || '') : (post.excerptEN || '');
+        const postTags = (post.tags || []).map(t => t.toLowerCase()).join(' ');
+        
+        const searchOk = !search || title.toLowerCase().includes(search.toLowerCase()) || excerpt.toLowerCase().includes(search.toLowerCase()) || postTags.includes(search.toLowerCase());
+        const tagsOk = tags.length === 0 || (post.tags || []).some(tag => tags.includes(tag));
+        
+        return searchOk && tagsOk;
+    });
 
-    tags.forEach(tag => {
-        const checkbox = document.createElement('label');
-        checkbox.className = 'tag-checkbox-label';
-        checkbox.innerHTML = `
-            <input type="checkbox" value="${tag}" class="tag-checkbox">
-            <span>${tag}</span>
+    grid.innerHTML = filtered.length === 0 
+        ? `<div style="text-align:center;padding:60px 20px;color:var(--text-light)">${t('blog.noResults')}</div>`
+        : '';
+
+    filtered.forEach(post => {
+        const card = document.createElement('a');
+        card.href = post.link;
+        card.className = 'blog-card';
+        const imgId = `img-${post.id}`;
+        
+        const title = lang === 'de' ? post.titleDE : post.titleEN;
+        const excerpt = lang === 'de' ? post.excerptDE : post.excerptEN;
+        
+        card.innerHTML = `
+            <div class="blog-card-image">
+                <img id="${imgId}" alt="${title}" loading="lazy">
+            </div>
+            <div class="blog-card-content">
+                <div>
+                    <div style="display:flex;gap:15px;margin-bottom:10px;font-size:0.9rem">
+                        <span class="blog-category">${post.category}</span>
+                        <span class="blog-date">${formatDate(post.date)}</span>
+                    </div>
+                    <h3>${title}</h3>
+                    <p>${excerpt}</p>
+                </div>
+                <div class="blog-card-meta">
+                    <div class="blog-card-tags">${(post.tags || []).map(tag => `<span class="tag">${tag}</span>`).join('')}</div>
+                </div>
+            </div>
         `;
-        tagList.appendChild(checkbox);
-
-        checkbox.querySelector('input').addEventListener('change', onTagChange);
+        // Resolve image extension (.png or .jpg)
+        const imgEl = card.querySelector(`#${imgId}`);
+        const base = `blog/${post.id}/images/`;
+        const filename = post.image?.replace(/\.(png|jpg)$/i, '');
+        const candidates = [`${base}${filename || 'card'}.png`, `${base}${filename || 'card'}.jpg`];
+        let idx = 0;
+        const tryNext = () => {
+            if (idx >= candidates.length) return;
+            imgEl.src = candidates[idx++];
+            imgEl.onerror = () => tryNext();
+        };
+        tryNext();
+        card.addEventListener('mouseenter', () => card.style.transform = 'translateY(-5px)');
+        card.addEventListener('mouseleave', () => card.style.transform = 'translateY(0)');
+        grid.appendChild(card);
     });
 }
 
-let selectedTags = [];
-
-function onTagChange() {
-    const checkboxes = document.querySelectorAll('.tag-checkbox');
-    selectedTags = Array.from(checkboxes)
-        .filter(cb => cb.checked)
-        .map(cb => cb.value);
-
-    updateSelectedTagsDisplay();
-    loadBlog(document.getElementById('blogSearch')?.value || '', selectedTags);
-}
-
-function updateSelectedTagsDisplay() {
-    const display = document.getElementById('selectedTagsDisplay');
-    if (!display) return;
-
-    if (selectedTags.length === 0) {
-        display.innerHTML = '';
-        display.style.display = 'none';
-        return;
-    }
-
-    display.style.display = 'flex';
-    display.innerHTML = selectedTags.map(tag => `
-        <span class="selected-tag">
-            ${tag}
-            <button class="remove-tag" data-tag="${tag}">✕</button>
-        </span>
+function initTags() {
+    const list = document.getElementById('tagDropdownList');
+    if (!list) return;
+    
+    list.innerHTML = getAllTags().map(tag => `
+        <label class="tag-checkbox-label">
+            <input type="checkbox" class="tag-checkbox" value="${tag}">
+            <span>${tag}</span>
+        </label>
     `).join('');
 
-    display.querySelectorAll('.remove-tag').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const tag = this.getAttribute('data-tag');
-            const checkbox = document.querySelector(`.tag-checkbox[value="${tag}"]`);
-            if (checkbox) {
-                checkbox.checked = false;
-                onTagChange();
+    document.querySelectorAll('.tag-checkbox').forEach(cb => {
+        cb.addEventListener('change', updateAll);
+    });
+}
+
+function updateAll() {
+    const search = document.getElementById('blogSearch')?.value || '';
+    const selected = Array.from(document.querySelectorAll('.tag-checkbox:checked')).map(cb => cb.value);
+    loadBlog(search, selected);
+}
+
+function initSearch() {
+    const search = document.getElementById('blogSearch');
+    const clear = document.getElementById('blogClear');
+    
+    if (search) search.addEventListener('input', updateAll);
+    if (clear) clear.addEventListener('click', () => {
+        if (search) {
+            search.value = '';
+            search.focus();
+            updateAll();
+        }
+    });
+}
+
+async function initBlogPage() {
+    if (blogInitialized) return;
+    blogInitialized = true;
+
+    await loadBlogData();
+
+    await new Promise(resolve => {
+        const check = setInterval(() => {
+            if (typeof t === 'function' && translations && Object.keys(translations).length > 0) {
+                clearInterval(check);
+                resolve();
             }
-        });
-    });
-}
-
-// ===== SEARCH =====
-const searchInput = document.getElementById('blogSearch');
-const clearBtn = document.getElementById('blogClear');
-
-if (searchInput) {
-    searchInput.addEventListener('input', function() {
-        loadBlog(this.value, selectedTags);
-    });
-}
-
-if (clearBtn) {
-    clearBtn.addEventListener('click', function() {
-        searchInput.value = '';
-        loadBlog('', selectedTags);
-    });
-}
-
-// Tag Dropdown Toggle
-const tagSelectBtn = document.getElementById('tagSelectBtn');
-const tagDropdownList = document.getElementById('tagDropdownList');
-
-if (tagSelectBtn && tagDropdownList) {
-    tagSelectBtn.addEventListener('click', function(e) {
-        e.stopPropagation();
-        tagDropdownList.classList.toggle('active');
-        this.classList.toggle('active');
+        }, 50);
     });
 
-    document.addEventListener('click', function(e) {
-        if (!e.target.closest('.tag-dropdown-wrapper')) {
-            tagDropdownList.classList.remove('active');
-            tagSelectBtn.classList.remove('active');
-        }
-    });
+    initTags();
+    initSearch();
+    loadBlog();
 }
 
-// ===== INITIALIZATION =====
-function initBlogPage() {
-    const checkI18n = setInterval(() => {
-        if (typeof t === 'function' && typeof translations !== 'undefined' && Object.keys(translations).length > 0) {
-            clearInterval(checkI18n);
-            loadTagCheckboxes();
-            loadBlog();
-        }
-    }, 50);
+if (document.getElementById('blogGrid')) {
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initBlogPage);
+    } else {
+        initBlogPage();
+    }
 }
 
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initBlogPage);
-} else {
-    initBlogPage();
-}
