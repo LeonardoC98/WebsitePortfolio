@@ -1,0 +1,14 @@
+{
+  "id": "test",
+  "translationKey": "concepts.test",
+  "titleDE": "test",
+  "titleEN": "test",
+  "descriptionDE": "test",
+  "descriptionEN": "test",
+  "image": "concepts/concept-test/images/card.jpg",
+  "tags": [
+    "test"
+  ],
+  "link": "concepts/concept-test/index.html",
+  "hero_image": "images/bg.jpg"
+}
