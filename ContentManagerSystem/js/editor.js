@@ -609,6 +609,7 @@ async function publishContent() {
         document.getElementById('publishBtn').textContent = 'Publishing...';
 
         const folder = getContentFolder(meta);
+        const htmlPreview = generateIndexHTML(meta);
 
         // Create data.json (metadata only, no sections)
         const baseData = {
@@ -636,6 +637,7 @@ async function publishContent() {
             : baseData;
 
         await uploadFile(settings, `${folder}/data.json`, JSON.stringify(dataJson, null, 2));
+        await uploadFile(settings, `${folder}/index.html`, htmlPreview);
 
         // Create content-de.json and content-en.json (merge shared + bilingual data)
         const contentDE = { 
@@ -667,7 +669,8 @@ async function publishContent() {
 
 async function uploadFile(settings, path, content) {
     const url = `https://api.github.com/repos/${settings.user}/${settings.repo}/contents/${path}`;
-    const encoded = btoa(content);
+    // UTF-8 safe encoding
+    const encoded = btoa(unescape(encodeURIComponent(content)));
 
     // Get existing file SHA if it exists
     let sha = null;
@@ -699,6 +702,8 @@ async function uploadFile(settings, path, content) {
     });
 
     if (!response.ok) {
-        throw new Error(`Upload failed: ${response.statusText}`);
+        const errorData = await response.json().catch(() => ({}));
+        const errorMsg = errorData.message || response.statusText;
+        throw new Error(`Upload failed for ${path}: ${errorMsg}`);
     }
 }
