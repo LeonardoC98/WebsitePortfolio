@@ -1,59 +1,81 @@
-// ===== PORTFOLIO DATA =====
-// Base data structure - all text content is in languages/*.json for translation
-const portfolioData = [
-    {
-        id: 'dungeon',
-        translationKey: 'concepts.dungeon',
-        image: 'concepts/concept-dungeon/images/dungeon.jpg',
-        tags: ['System', 'Progression', 'Enemy', 'PVM'],
-        link: 'concepts/concept-dungeon/index.html'
-    },
-    {
-        id: 'puzzle',
-        translationKey: 'concepts.puzzle',
-        image: 'concepts/concept-puzzle/images/card.jpg',
-        tags: ['Game Concept', 'Card Game', 'PVP'],
-        link: 'concepts/concept-puzzle/index.html'
-    },
-    {
-        id: 'weaponUpgrades',
-        translationKey: 'concepts.weaponUpgrades',
-        image: 'concepts/concept-weapon-upgrades/images/weaponupgrade.jpg',
-        tags: ['System', 'Progression', 'Upgrade'],
-        link: 'concepts/concept-weapon-upgrades/index.html'
+// ===== CONCEPT DATA =====
+// Concept data wird dynamisch aus den data.json Dateien in den concept-Ordnern geladen
+let conceptData = [];
+let conceptInitialized = false;
+
+/**
+ * Lädt die Concept-Daten dynamisch aus allen concept-Ordnern
+ * Jeder concept-Ordner sollte eine data.json mit den Concept-Metadaten enthalten
+ */
+async function loadConceptData() {
+    try {
+        // Erkenne den Kontext: Bin ich auf einer Detail-Seite oder auf der Übersicht?
+        // Auf Detail-Seite: /concepts/concept-dungeon/index.html
+        // Auf Übersicht: /concepts.html
+        const isDetailPage = window.location.pathname.includes('/concepts/') && 
+                            window.location.pathname !== '/concepts.html' &&
+                            !window.location.pathname.endsWith('/concepts/');
+        
+        const pathPrefix = isDetailPage ? '../../' : '';
+
+        conceptData = [];
+
+        try {
+            // Fetch dynamic concepts list from server
+            const res = await fetch('/api/concepts-index');
+            if (!res.ok) throw new Error('Failed to fetch concepts index');
+            
+            const { concepts } = await res.json();
+            
+            // Load each concept's data.json
+            for (const path of concepts) {
+                try {
+                    // Add path prefix for detail pages
+                    const fullPath = isDetailPage ? pathPrefix + path : path;
+                    const response = await fetch(fullPath);
+                    if (response.ok) {
+                        const data = await response.json();
+                        conceptData.push(data);
+                        console.log(`Concept data loaded from ${fullPath}:`, data);
+                    } else {
+                        console.warn(`Failed to load ${fullPath}: ${response.status}`);
+                    }
+                } catch (error) {
+                    console.warn(`Error loading ${path}:`, error);
+                }
+            }
+        } catch (e) {
+            console.warn('Error loading concepts index:', e);
+        }
+
+        console.log('Total concept items loaded:', conceptData.length);
+        return conceptData;
+    } catch (error) {
+        console.error('Error loading concept data:', error);
+        return [];
     }
-];
+}
 
-// Weitere Konzepte können hier hinzugefügt werden
-// {
-//     id: 'concept-2',
-//     title: 'Another Concept',
-//     description: 'Description',
-//     subtitle: 'Subtitle',
-//     image: 'concepts/concept-2/images/thumbnail.jpg',
-//     genre: 'genre',
-//     link: 'concepts/concept-2/index.html'
-// },
+// ===== CONCEPT GRID LADEN =====
+function loadConcepts(searchQuery = '', selectedTags = []) {
+    const conceptGrid = document.getElementById('conceptGrid');
+    if (!conceptGrid) return;
 
-// ===== PORTFOLIO GRID LADEN =====
-function loadPortfolio(searchQuery = '', selectedTags = []) {
-    const portfolioGrid = document.getElementById('portfolioGrid');
-    if (!portfolioGrid) return;
-
-    portfolioGrid.innerHTML = '';
+    conceptGrid.innerHTML = '';
 
     const q = (searchQuery || '').trim().toLowerCase();
+    const lang = localStorage.getItem('language') || 'de';
 
-    const items = portfolioData.filter(c => {
-        // Get translated title and description for search
-        const title = (t(`${c.translationKey}.title`) || '').toLowerCase();
-        const desc = (t(`${c.translationKey}.description`) || '').toLowerCase();
+    const items = conceptData.filter(c => {
+        // Get title and description directly from data based on language
+        const title = (lang === 'de' ? c.titleDE : c.titleEN) || '';
+        const desc = (lang === 'de' ? c.descriptionDE : c.descriptionEN) || '';
         const tags = (c.tags || []).map(t => t.toLowerCase()).join(' ');
         
         // Filter by search query
         let matchesSearch = true;
         if (q) {
-            matchesSearch = title.includes(q) || desc.includes(q) || tags.includes(q);
+            matchesSearch = title.toLowerCase().includes(q) || desc.toLowerCase().includes(q) || tags.includes(q);
         }
 
         // Filter by selected tags
@@ -66,9 +88,9 @@ function loadPortfolio(searchQuery = '', selectedTags = []) {
     });
 
     if (items.length === 0) {
-        portfolioGrid.innerHTML = `
+        conceptGrid.innerHTML = `
             <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; color: var(--text-light);">
-                ${t('portfolio.noResults')}
+                ${t('concept.noResults')}
             </div>
         `;
         return;
@@ -77,12 +99,13 @@ function loadPortfolio(searchQuery = '', selectedTags = []) {
     items.forEach(concept => {
         const card = document.createElement('a');
         card.href = concept.link;
+        // Use portfolio card classes so existing CSS applies
         card.className = 'portfolio-card';
         const tagsHTML = (concept.tags || []).map(tag => `<span class="tag">${tag}</span>`).join('');
         
-        // Get translated content
-        const title = t(`${concept.translationKey}.title`);
-        const description = t(`${concept.translationKey}.description`);
+        // Get title and description directly from data based on language
+        const title = lang === 'de' ? concept.titleDE : concept.titleEN;
+        const description = lang === 'de' ? concept.descriptionDE : concept.descriptionEN;
         
         card.innerHTML = `
             <img src="${concept.image}" alt="${title}" class="portfolio-card-image">
@@ -103,7 +126,7 @@ function loadPortfolio(searchQuery = '', selectedTags = []) {
             this.style.transform = 'translateY(0)';
         });
 
-        portfolioGrid.appendChild(card);
+        conceptGrid.appendChild(card);
     });
 }
 
@@ -116,10 +139,10 @@ function debounce(fn, delay = 250) {
     };
 }
 
-// Get all unique tags from portfolio data
+// Get all unique tags from concept data
 function getAllTags() {
     const allTags = new Set();
-    portfolioData.forEach(concept => {
+    conceptData.forEach(concept => {
         (concept.tags || []).forEach(tag => allTags.add(tag));
     });
     return Array.from(allTags).sort();
@@ -151,7 +174,7 @@ function initTagFilter() {
         
         checkbox.addEventListener('change', function() {
             updateSelectedTagsDisplay();
-            updatePortfolioWithFilters();
+            updateConceptWithFilters();
         });
         
         label.appendChild(checkbox);
@@ -196,7 +219,7 @@ function updateSelectedTagsDisplay() {
         removeBtn.addEventListener('click', function() {
             checkbox.checked = false;
             updateSelectedTagsDisplay();
-            updatePortfolioWithFilters();
+            updateConceptWithFilters();
         });
         
         badge.appendChild(removeBtn);
@@ -204,17 +227,23 @@ function updateSelectedTagsDisplay() {
     });
 }
 
-// Update portfolio based on current filters
-function updatePortfolioWithFilters() {
-    const searchEl = document.getElementById('portfolioSearch');
+// Update concept based on current filters
+function updateConceptWithFilters() {
+    const searchEl = document.getElementById('conceptSearch');
     const selectedTags = Array.from(document.querySelectorAll('.tag-option input[type="checkbox"]:checked'))
         .map(cb => cb.value);
     
-    loadPortfolio(searchEl ? searchEl.value : '', selectedTags);
+    loadConcepts(searchEl ? searchEl.value : '', selectedTags);
 }
 
 // Wire up search on DOMContentLoaded
 document.addEventListener('DOMContentLoaded', async function() {
+    // Verhindere mehrfaches Laden
+    if (conceptInitialized) return;
+    conceptInitialized = true;
+
+    // Lade Concept-Daten zuerst
+    await loadConceptData();
     // Wait for i18n to load
     await new Promise(resolve => {
         const checkI18n = setInterval(() => {
@@ -226,21 +255,21 @@ document.addEventListener('DOMContentLoaded', async function() {
     });
     
     initTagFilter();
-    loadPortfolio('', []);
+    loadConcepts('', []);
 
-    const searchEl = document.getElementById('portfolioSearch');
-    const clearEl = document.getElementById('portfolioClear');
+    const searchEl = document.getElementById('conceptSearch');
+    const clearEl = document.getElementById('conceptClear');
 
     if (searchEl) {
         const onInput = debounce(function(e) {
-            updatePortfolioWithFilters();
+            updateConceptWithFilters();
         }, 200);
 
         searchEl.addEventListener('input', onInput);
         searchEl.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 searchEl.value = '';
-                updatePortfolioWithFilters();
+                updateConceptWithFilters();
             }
         });
     }
@@ -250,14 +279,29 @@ document.addEventListener('DOMContentLoaded', async function() {
             if (searchEl) {
                 searchEl.value = '';
                 searchEl.focus();
-                updatePortfolioWithFilters();
+                updateConceptWithFilters();
             }
         });
     }
 });
 
 // ===== LOAD CONCEPT DETAILS DYNAMICALLY =====
-function loadConceptDetails() {
+async function loadConceptDetails() {
+    // Lade Concept-Daten zuerst falls noch nicht geladen
+    if (conceptData.length === 0) {
+        await loadConceptData();
+    }
+
+    // Wait for i18n to load
+    await new Promise(resolve => {
+        const checkI18n = setInterval(() => {
+            if (typeof t === 'function' && typeof translations !== 'undefined' && Object.keys(translations).length > 0) {
+                clearInterval(checkI18n);
+                resolve();
+            }
+        }, 50);
+    });
+
     // Extrahiere Konzept-ID aus URL
     const pathParts = window.location.pathname.split('/');
     const conceptId = pathParts[pathParts.length - 2];
@@ -265,7 +309,7 @@ function loadConceptDetails() {
     console.log('Loading concept:', conceptId);
     
     // Finde das Konzept
-    const concept = portfolioData.find(c => c.id === conceptId);
+    const concept = conceptData.find(c => c.id === conceptId);
     
     if (!concept) {
         console.log('Concept not found!');
@@ -279,13 +323,17 @@ function loadConceptDetails() {
     const subtitleEl = document.getElementById('conceptSubtitle');
     const imageEl = document.getElementById('conceptHeroImage');
     
+    // Nutze translationKey wenn verfügbar, ansonsten fallback
+    const translatedTitle = concept.translationKey ? t(`${concept.translationKey}.title`) : concept.title;
+    const translatedDesc = concept.translationKey ? t(`${concept.translationKey}.description`) : concept.description;
+    
     if (titleEl) {
-        titleEl.textContent = concept.title;
-        console.log('Title set to:', concept.title);
+        titleEl.textContent = translatedTitle;
+        console.log('Title set to:', translatedTitle);
     }
     
     if (subtitleEl) {
-        subtitleEl.textContent = concept.subtitle || concept.description;
+        subtitleEl.textContent = concept.subtitle || translatedDesc;
         console.log('Subtitle set to:', concept.subtitle);
     }
     
@@ -305,7 +353,7 @@ function loadConceptDetails() {
 
     // Befülle Overview
     const overviewEl = document.getElementById('conceptOverview');
-    if (overviewEl) overviewEl.textContent = concept.overview || concept.description;
+    if (overviewEl) overviewEl.textContent = concept.overview || translatedDesc;
 
     // Befülle Spielmechaniken
     const mechanicsContainer = document.getElementById('mechanicsContainer');
@@ -330,44 +378,14 @@ function loadConceptDetails() {
     if (typeEl) typeEl.textContent = concept.type || 'Single-Player';
 
     // Befülle Titel im Browser-Tab
-    document.title = `${concept.title} - Game Concepts`;
+    document.title = `${translatedTitle} - Game Concepts`;
 }
 
-document.addEventListener('DOMContentLoaded', loadConceptDetails);
+document.addEventListener('DOMContentLoaded', async function() {
+    // Verhindere mehrfaches Laden
+    if (conceptInitialized) return;
+    conceptInitialized = true;
 
-// ===== ADD NEW CONCEPT HELPER FUNCTION =====
-/**
- * Fügt ein neues Konzept zur Portfolio-Liste hinzu
- * Beispiel: addConcept('my-game', 'My Game Title', 'Subtitle', 'Description', ['RPG', 'Action'], 'path/to/image.jpg')
- */
-function addConcept(id, title, subtitle, description, tags, image) {
-    const newConcept = {
-        id: id,
-        title: title,
-        subtitle: subtitle,
-        description: description,
-        image: image,
-        tags: tags || [],
-        link: `concepts/${id}/index.html`
-    };
-    
-    portfolioData.push(newConcept);
-    console.log(`Concept "${title}" added successfully!`);
-}
+    loadConceptDetails();
+});
 
-// ===== EMPTY PORTFOLIO MESSAGE =====
-function checkPortfolioEmpty() {
-    const portfolioGrid = document.getElementById('portfolioGrid');
-    
-    if (portfolioGrid && portfolioData.length === 0) {
-        portfolioGrid.innerHTML = `
-            <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px;">
-                <p style="color: var(--text-light); font-size: 1.1rem;">
-                    Noch keine Konzepte hinzugefügt. Verwende <code>addConcept()</code> um neue Konzepte zu erstellen.
-                </p>
-            </div>
-        `;
-    }
-}
-
-document.addEventListener('DOMContentLoaded', checkPortfolioEmpty);
