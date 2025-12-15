@@ -1,0 +1,14 @@
+{
+  "id": "hjk",
+  "translationKey": "concepts.hjk",
+  "titleDE": "hjk",
+  "titleEN": "hjk",
+  "descriptionDE": "hjk",
+  "descriptionEN": "hjk",
+  "image": "concepts/concept-hjk/images/card.jpg",
+  "tags": [
+    "hjk"
+  ],
+  "link": "concepts/concept-hjk/index.html",
+  "hero_image": "images/bg.jpg"
+}
