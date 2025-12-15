@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Content Manager - Login</title>
+    <link rel="stylesheet" href="css/cms-styles.css">
+</head>
+<body class="cms-login">
+    <div class="login-container">
+        <div class="login-box">
+            <h1>🎮 Content Manager System</h1>
+            <p class="login-subtitle">Portfolio Content Management</p>
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter password" required>
+                </div>
+                
+                <button type="submit" class="btn-primary">Login</button>
+                
+                <div id="loginError" class="error-message" style="display: none;"></div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+</body>
+</html>
