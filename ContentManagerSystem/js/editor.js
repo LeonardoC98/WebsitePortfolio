@@ -639,16 +639,25 @@ async function publishContent() {
         await uploadFile(settings, `${folder}/data.json`, JSON.stringify(dataJson, null, 2));
         await uploadFile(settings, `${folder}/index.html`, htmlPreview);
 
-        // Create content-de.json and content-en.json (merge shared + bilingual data)
+        // Upload images if they exist
+        if (draft.images?.card) {
+            await uploadFile(settings, `${folder}/images/card.jpg`, draft.images.card, true);
+        }
+        if (draft.images?.bg) {
+            await uploadFile(settings, `${folder}/images/bg.jpg`, draft.images.bg, true);
+        }
+
+        // Create content-de.json and content-en.json (merge shared + translatable data)
+        // Use lowercase type to match template renderers
         const contentDE = { 
             sections: sections.map(s => ({ 
-                type: s.type, 
+                type: s.type.toLowerCase(), 
                 data: { ...s.shared, ...s.data_de }
             })) 
         };
         const contentEN = { 
             sections: sections.map(s => ({ 
-                type: s.type, 
+                type: s.type.toLowerCase(), 
                 data: { ...s.shared, ...s.data_en }
             })) 
         };
@@ -667,10 +676,10 @@ async function publishContent() {
     }
 }
 
-async function uploadFile(settings, path, content) {
+async function uploadFile(settings, path, content, isBase64 = false) {
     const url = `https://api.github.com/repos/${settings.user}/${settings.repo}/contents/${path}`;
-    // UTF-8 safe encoding
-    const encoded = btoa(unescape(encodeURIComponent(content)));
+    // UTF-8 safe encoding for text, or use base64 directly for images
+    const encoded = isBase64 ? content.split(',')[1] : btoa(unescape(encodeURIComponent(content)));
 
     // Get existing file SHA if it exists
     let sha = null;
