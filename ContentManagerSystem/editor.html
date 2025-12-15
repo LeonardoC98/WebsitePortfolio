@@ -3,126 +3,173 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Content Manager - Editor</title>
-    <link rel="stylesheet" href="css/cms-styles.css">
+    <title>Content Manager</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
-<body class="cms-editor">
-    <nav class="cms-nav">
-        <div class="cms-nav-brand">🎮 Content Manager</div>
-        <div class="cms-nav-links">
-            <a href="dashboard.html">Dashboard</a>
-            <a href="settings.html">Settings</a>
-            <a href="#" id="logoutBtn">Logout</a>
-        </div>
-    </nav>
-
-    <div class="editor-container">
-        <div class="editor-sidebar">
-            <h2>Metadata</h2>
-            
-            <div class="form-group">
-                <label for="contentType">Content Type</label>
-                <select id="contentType" required>
-                    <option value="concept">Game Concept</option>
-                    <option value="blog">Blog Post</option>
-                </select>
+<body style="margin: 0;">
+    <div class="editor-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>Content Editor</h2>
+                <button id="settingsBtn" class="btn btn-small">Settings</button>
             </div>
 
-            <div class="form-group">
-                <label for="contentId">ID (URL-friendly)</label>
-                <input type="text" id="contentId" placeholder="my-game-concept" required>
-                <small>Use lowercase, hyphens only</small>
-            </div>
+            <div class="sidebar-content">
+                <div class="form-group">
+                    <label>Type</label>
+                    <select id="contentType">
+                        <option value="concept">Game Concept</option>
+                        <option value="blog">Blog Post</option>
+                    </select>
+                </div>
 
-            <div class="form-group">
-                <label for="titleDE">Title (German)</label>
-                <input type="text" id="titleDE" placeholder="Mein Spielkonzept" required>
-            </div>
+                <div class="form-group">
+                    <label>ID</label>
+                    <input type="text" id="contentId" placeholder="my-concept" required>
+                    <small>URL-friendly, lowercase, hyphens only</small>
+                </div>
 
-            <div class="form-group">
-                <label for="titleEN">Title (English)</label>
-                <input type="text" id="titleEN" placeholder="My Game Concept" required>
-            </div>
+                <div class="form-group">
+                    <label>Title (DE)</label>
+                    <input type="text" id="titleDE" placeholder="Deutscher Titel" required>
+                </div>
 
-            <div class="form-group">
-                <label for="descriptionDE">Description (German)</label>
-                <textarea id="descriptionDE" rows="3" placeholder="Kurze Beschreibung..." required></textarea>
-            </div>
+                <div class="form-group">
+                    <label>Title (EN)</label>
+                    <input type="text" id="titleEN" placeholder="English Title" required>
+                </div>
 
-            <div class="form-group">
-                <label for="descriptionEN">Description (English)</label>
-                <textarea id="descriptionEN" rows="3" placeholder="Short description..." required></textarea>
-            </div>
+                <div class="form-group">
+                    <label id="descLabel">Description (DE)</label>
+                    <textarea id="descDE" rows="2" placeholder="Beschreibung..." required></textarea>
+                </div>
 
-            <div class="form-group">
-                <label for="tags">Tags (comma-separated)</label>
-                <input type="text" id="tags" placeholder="System, Progression, RPG">
-            </div>
+                <div class="form-group">
+                    <label>Description (EN)</label>
+                    <textarea id="descEN" rows="2" placeholder="Description..." required></textarea>
+                </div>
 
-            <div class="form-group">
-                <label>Card Image (card.jpg)</label>
-                <input type="file" id="cardImage" accept="image/*">
-                <div id="cardPreview" class="image-preview"></div>
-            </div>
+                <!-- Concept-only fields -->
+                <div id="conceptOnly">
+                    <div class="form-group">
+                        <label>Tags</label>
+                        <input type="text" id="tags" placeholder="System, Gameplay, RPG">
+                    </div>
+                </div>
 
-            <div class="form-group">
-                <label>Background Image (bg.jpg)</label>
-                <input type="file" id="bgImage" accept="image/*">
-                <div id="bgPreview" class="image-preview"></div>
-            </div>
-        </div>
+                <!-- Blog-only fields -->
+                <div id="blogOnly" style="display: none;">
+                    <div class="form-group">
+                        <label>Author</label>
+                        <input type="text" id="author" placeholder="Leo Cucinelli">
+                    </div>
+                    <div class="form-group">
+                        <label>Date</label>
+                        <input type="date" id="publishDate">
+                    </div>
+                    <div class="form-group">
+                        <label>Read Time (min)</label>
+                        <input type="number" id="readTime" min="1" placeholder="5">
+                    </div>
+                </div>
 
-        <div class="editor-main">
-            <div class="editor-toolbar">
-                <button id="addSectionBtn" class="btn-primary">+ Add Section</button>
-                <div class="toolbar-right">
-                    <button id="previewBtn" class="btn-secondary">👁️ Preview</button>
-                    <button id="publishBtn" class="btn-success">🚀 Publish to GitHub</button>
+                <div class="form-group">
+                    <label>Card Image</label>
+                    <input type="file" id="cardImage" accept="image/*">
+                    <div id="cardPreview" class="image-preview"></div>
+                </div>
+
+                <div class="form-group">
+                    <label>Background Image</label>
+                    <input type="file" id="bgImage" accept="image/*">
+                    <div id="bgPreview" class="image-preview"></div>
+                </div>
+
+                <button onclick="clearDraft()" class="btn btn-secondary" style="width: 100%; margin-top: 1rem;">New Draft</button>
+            </div>
+        </aside>
+
+        <!-- Main Editor -->
+        <main class="main-editor">
+            <div class="toolbar">
+                <button id="addSectionBtn" class="btn btn-primary">+ Add Section</button>
+                <div style="display: flex; gap: 0.5rem;">
+                    <button id="previewBtn" class="btn btn-secondary">Preview</button>
+                    <button id="publishBtn" class="btn btn-success">Publish</button>
                 </div>
             </div>
 
-            <div class="editor-language-tabs">
-                <button class="lang-tab active" data-lang="de">🇩🇪 German</button>
-                <button class="lang-tab" data-lang="en">🇬🇧 English</button>
+            <div id="sectionsContainer" class="sections-container">
+                <div class="empty-state">Click "+ Add Section" to start</div>
             </div>
 
-            <div class="editor-content" id="editorContent">
-                <div class="empty-state">
-                    <p>Click "+ Add Section" to start building your content</p>
-                </div>
-            </div>
-        </div>
+            <div id="autoSave" class="auto-save">✓ Saved</div>
+        </main>
     </div>
 
     <!-- Template Selector Modal -->
     <div id="templateModal" class="modal" style="display: none;">
         <div class="modal-content">
-            <div class="modal-header">
-                <h2>Select Section Template</h2>
-                <button class="modal-close">&times;</button>
-            </div>
-            <div class="modal-body" id="templateList">
-                <!-- Populated by JS -->
-            </div>
+            <h2>Select Section Type</h2>
+            <div id="templateList" class="template-grid"></div>
+            <button onclick="closeModal('templateModal')" class="btn btn-secondary" style="margin-top: 1rem;">Cancel</button>
         </div>
     </div>
 
     <!-- Preview Modal -->
-    <div id="previewModal" class="modal modal-fullscreen" style="display: none;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Preview</h2>
-                <button class="modal-close">&times;</button>
+    <div id="previewModal" class="modal" style="display: none;">
+        <div class="modal-content" style="max-width: 90%; height: 90vh; overflow-y: auto;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h3>Export Preview</h3>
+                <button onclick="closeModal('previewModal')" class="btn btn-secondary">Close</button>
             </div>
-            <div class="modal-body">
-                <iframe id="previewFrame" style="width: 100%; height: 80vh; border: 1px solid #333;"></iframe>
+            
+            <!-- Tab Selector -->
+            <div class="preview-tabs">
+                <button class="preview-tab active" onclick="switchPreviewTab('data')">data.json</button>
+                <button class="preview-tab" onclick="switchPreviewTab('de')">content-de.json</button>
+                <button class="preview-tab" onclick="switchPreviewTab('en')">content-en.json</button>
+                <button class="preview-tab" onclick="switchPreviewTab('html')">index.html</button>
+            </div>
+            
+            <!-- Preview Content -->
+            <div id="previewContent" class="preview-code"></div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="modal" style="display: none;">
+        <div class="modal-content" style="max-width: 500px;">
+            <h2>GitHub Settings</h2>
+            <div class="form-group">
+                <label>GitHub Token</label>
+                <input type="password" id="githubToken" placeholder="ghp_..." required>
+                <small><a href="https://github.com/settings/tokens" target="_blank" style="color: var(--accent);">Create token</a></small>
+            </div>
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" id="githubUser" placeholder="your-username" required>
+            </div>
+            <div class="form-group">
+                <label>Repository</label>
+                <input type="text" id="githubRepo" placeholder="repo-name" required>
+            </div>
+            <div class="form-group">
+                <label>Branch</label>
+                <input type="text" id="githubBranch" value="main" required>
+            </div>
+            <div id="settingsStatus" class="status-message" style="display: none; margin-bottom: 1rem;"></div>
+            <div style="display: flex; gap: 0.5rem;">
+                <button onclick="testGitHub()" class="btn btn-secondary">Test</button>
+                <button onclick="saveSettings()" class="btn btn-primary" style="flex: 1;">Save Settings</button>
+                <button onclick="closeModal('settingsModal')" class="btn btn-secondary">Close</button>
             </div>
         </div>
     </div>
 
-    <script src="../assets/js/concept-templates.js"></script>
+    <script src="../assets/js/section-templates.js"></script>
     <script src="js/auth.js"></script>
     <script src="js/editor.js"></script>
-    <script src="js/github.js"></script>
 </body>
 </html>

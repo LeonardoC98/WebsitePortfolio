@@ -1,404 +1,704 @@
-// Content Editor
+// Content Manager Editor
 
-let currentLanguage = 'de';
-let sections = { de: [], en: [] };
-let metadata = {};
-let images = { card: null, bg: null };
+const DRAFT_KEY = 'cms_draft';
+const SETTINGS_KEY = 'cms_settings';
 
-// Get content type from URL
-const urlParams = new URLSearchParams(window.location.search);
-const contentType = urlParams.get('type') || 'concept';
-document.getElementById('contentType').value = contentType;
+let sections = [];
+let draft = {};
 
-// Language tab switcher
-document.querySelectorAll('.lang-tab').forEach(tab => {
-    tab.addEventListener('click', () => {
-        document.querySelectorAll('.lang-tab').forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
-        currentLanguage = tab.dataset.lang;
-        renderSections();
+// Initialize
+document.addEventListener('DOMContentLoaded', () => {
+    loadDraft();
+    setupEventListeners();
+    populateTemplates();
+    updateMetadataLabels();
+});
+
+function setupEventListeners() {
+    // Content type change
+    document.getElementById('contentType').addEventListener('change', (e) => {
+        updateMetadataLabels();
+        autoSave();
     });
-});
 
-// Add section button
-document.getElementById('addSectionBtn')?.addEventListener('click', () => {
-    showTemplateModal();
-});
+    // All metadata inputs
+    document.querySelectorAll('#contentId, #titleDE, #titleEN, #descDE, #descEN, #tags, #author, #publishDate, #readTime').forEach(el => {
+        el.addEventListener('input', autoSave);
+        el.addEventListener('change', autoSave);
+    });
 
-// Show template selector modal
-function showTemplateModal() {
-    const modal = document.getElementById('templateModal');
-    const templateList = document.getElementById('templateList');
-    
-    // Get all available templates from concept-templates.js
-    const templates = [
-        { type: 'text', name: 'Text Section', icon: '📝', description: 'Title and paragraph' },
-        { type: 'features', name: 'Features List', icon: '⭐', description: 'Feature items with icons' },
-        { type: 'mechanics', name: 'Mechanics', icon: '⚙️', description: 'Game mechanics with descriptions' },
-        { type: 'gallery', name: 'Image Gallery', icon: '🖼️', description: 'Grid of images' },
-        { type: 'examples', name: 'Examples', icon: '💡', description: 'Example scenarios' },
-        { type: 'video', name: 'Video Embed', icon: '🎥', description: 'YouTube video' },
-        { type: 'quote', name: 'Quote', icon: '💬', description: 'Highlighted quote' },
-        { type: 'list', name: 'Bullet List', icon: '📋', description: 'Simple list' }
-    ];
-    
-    templateList.innerHTML = '<div class="template-grid">' +
-        templates.map(t => `
-            <div class="template-item" onclick="addSection('${t.type}')">
-                <div style="font-size: 2rem; margin-bottom: 10px;">${t.icon}</div>
-                <strong>${t.name}</strong>
-                <p style="font-size: 0.85rem; color: var(--text-light); margin-top: 5px;">${t.description}</p>
-            </div>
-        `).join('') +
-    '</div>';
-    
-    modal.style.display = 'flex';
+    // Images
+    document.getElementById('cardImage').addEventListener('change', (e) => handleImage(e, 'card'));
+    document.getElementById('bgImage').addEventListener('change', (e) => handleImage(e, 'bg'));
+
+    // Buttons
+    document.getElementById('addSectionBtn').addEventListener('click', () => openModal('templateModal'));
+    document.getElementById('settingsBtn').addEventListener('click', () => {
+        loadSettings();
+        openModal('settingsModal');
+    });
+    document.getElementById('previewBtn').addEventListener('click', showPreview);
+    document.getElementById('publishBtn').addEventListener('click', publishContent);
 }
 
-// Close template modal
-document.querySelectorAll('.modal-close').forEach(btn => {
-    btn.addEventListener('click', () => {
-        btn.closest('.modal').style.display = 'none';
-    });
-});
+function updateMetadataLabels() {
+    const type = document.getElementById('contentType').value;
+    const conceptOnly = document.getElementById('conceptOnly');
+    const blogOnly = document.getElementById('blogOnly');
+    const descLabel = document.querySelector('[id="descLabel"]');
 
-// Add section to content
-function addSection(type) {
-    const sectionId = Date.now();
-    
-    const newSection = {
-        id: sectionId,
-        type: type,
-        data: getDefaultDataForType(type)
-    };
-    
-    sections[currentLanguage].push(newSection);
-    document.getElementById('templateModal').style.display = 'none';
-    renderSections();
-}
-
-// Get default data structure for section type
-function getDefaultDataForType(type) {
-    switch(type) {
-        case 'text':
-            return { title: '', text: '' };
-        case 'features':
-            return { title: '', items: [{ icon: '⭐', text: '' }] };
-        case 'mechanics':
-            return { title: '', items: [{ title: '', description: '' }] };
-        case 'gallery':
-            return { images: [] };
-        case 'examples':
-            return { title: '', items: [{ title: '', description: '' }] };
-        case 'video':
-            return { url: '', title: '' };
-        case 'quote':
-            return { text: '', author: '' };
-        case 'list':
-            return { title: '', items: [''] };
-        default:
-            return {};
+    if (type === 'blog') {
+        conceptOnly.style.display = 'none';
+        blogOnly.style.display = 'block';
+        descLabel.textContent = 'Excerpt (DE)';
+    } else {
+        conceptOnly.style.display = 'block';
+        blogOnly.style.display = 'none';
+        descLabel.textContent = 'Description (DE)';
     }
 }
 
-// Render all sections for current language
+function populateTemplates() {
+    if (!window.TEMPLATES) return;
+
+    const list = document.getElementById('templateList');
+    list.innerHTML = '';
+
+    Object.keys(window.TEMPLATES).forEach(key => {
+        const btn = document.createElement('button');
+        btn.className = 'template-option';
+        btn.innerHTML = `<strong>${key}</strong><small>Add section</small>`;
+        btn.onclick = (e) => {
+            e.preventDefault();
+            addSection(key);
+        };
+        list.appendChild(btn);
+    });
+}
+
+function addSection(templateKey) {
+    if (!window.TEMPLATES || !window.TEMPLATES[templateKey]) return;
+
+    const template = window.TEMPLATES[templateKey];
+    const newSection = {
+        id: Date.now(),
+        type: templateKey,
+        data_de: {},
+        data_en: {},
+        shared: {}
+    };
+
+    // Initialize translatable fields
+    template.translatable?.forEach(field => {
+        newSection.data_de[field] = '';
+        newSection.data_en[field] = '';
+    });
+
+    // Initialize shared fields
+    template.shared?.forEach(field => {
+        newSection.shared[field] = '';
+    });
+
+    sections.push(newSection);
+    closeModal('templateModal');
+    renderSections();
+    autoSave();
+}
+
 function renderSections() {
-    const container = document.getElementById('editorContent');
-    const currentSections = sections[currentLanguage];
-    
-    if (currentSections.length === 0) {
-        container.innerHTML = '<div class="empty-state"><p>Click "+ Add Section" to start building your content</p></div>';
+    const container = document.getElementById('sectionsContainer');
+
+    if (sections.length === 0) {
+        container.innerHTML = '<div class="empty-state">Click "+ Add Section" to start</div>';
         return;
     }
-    
-    container.innerHTML = currentSections.map((section, index) => renderSectionEditor(section, index)).join('');
-    attachSectionEvents();
-}
 
-// Render individual section editor
-function renderSectionEditor(section, index) {
-    const typeLabels = {
-        text: '📝 Text', features: '⭐ Features', mechanics: '⚙️ Mechanics',
-        gallery: '🖼️ Gallery', examples: '💡 Examples', video: '🎥 Video',
-        quote: '💬 Quote', list: '📋 List'
-    };
-    
-    let fieldsHTML = '';
-    
-    switch(section.type) {
-        case 'text':
-            fieldsHTML = `
-                <div class="form-group">
-                    <label>Title</label>
-                    <input type="text" class="section-field" data-field="title" value="${section.data.title || ''}">
-                </div>
-                <div class="form-group">
-                    <label>Text</label>
-                    <textarea class="section-field" data-field="text" rows="4">${section.data.text || ''}</textarea>
-                </div>
-            `;
-            break;
-            
-        case 'features':
-            fieldsHTML = `
-                <div class="form-group">
-                    <label>Title</label>
-                    <input type="text" class="section-field" data-field="title" value="${section.data.title || ''}">
-                </div>
-                <div class="form-group">
-                    <label>Feature Items</label>
-                    ${section.data.items.map((item, i) => `
-                        <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-                            <input type="text" placeholder="Icon" style="width: 60px;" class="section-field" data-field="items.${i}.icon" value="${item.icon || ''}">
-                            <input type="text" placeholder="Feature text" class="section-field" data-field="items.${i}.text" value="${item.text || ''}" style="flex: 1;">
-                            <button onclick="removeArrayItem(${index}, 'items', ${i})" style="padding: 5px 10px;">🗑️</button>
-                        </div>
-                    `).join('')}
-                    <button onclick="addArrayItem(${index}, 'items', {icon: '⭐', text: ''})" class="btn-secondary" style="width: 100%; margin-top: 10px;">+ Add Feature</button>
-                </div>
-            `;
-            break;
-            
-        case 'list':
-            fieldsHTML = `
-                <div class="form-group">
-                    <label>Title</label>
-                    <input type="text" class="section-field" data-field="title" value="${section.data.title || ''}">
-                </div>
-                <div class="form-group">
-                    <label>List Items</label>
-                    ${section.data.items.map((item, i) => `
-                        <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-                            <input type="text" class="section-field" data-field="items.${i}" value="${item}" style="flex: 1;">
-                            <button onclick="removeArrayItem(${index}, 'items', ${i})" style="padding: 5px 10px;">🗑️</button>
-                        </div>
-                    `).join('')}
-                    <button onclick="addArrayItem(${index}, 'items', '')" class="btn-secondary" style="width: 100%; margin-top: 10px;">+ Add Item</button>
-                </div>
-            `;
-            break;
-            
-        case 'video':
-            fieldsHTML = `
-                <div class="form-group">
-                    <label>YouTube URL</label>
-                    <input type="text" class="section-field" data-field="url" value="${section.data.url || ''}" placeholder="https://www.youtube.com/watch?v=...">
-                </div>
-                <div class="form-group">
-                    <label>Title (optional)</label>
-                    <input type="text" class="section-field" data-field="title" value="${section.data.title || ''}">
-                </div>
-            `;
-            break;
-            
-        case 'quote':
-            fieldsHTML = `
-                <div class="form-group">
-                    <label>Quote Text</label>
-                    <textarea class="section-field" data-field="text" rows="3">${section.data.text || ''}</textarea>
-                </div>
-                <div class="form-group">
-                    <label>Author</label>
-                    <input type="text" class="section-field" data-field="author" value="${section.data.author || ''}">
-                </div>
-            `;
-            break;
-            
-        default:
-            fieldsHTML = '<p class="text-muted">This section type is not yet fully implemented in the editor.</p>';
-    }
-    
-    return `
-        <div class="section-editor" data-section-index="${index}">
-            <div class="section-header">
-                <span class="section-type-badge">${typeLabels[section.type] || section.type}</span>
-                <div class="section-controls">
-                    <button onclick="moveSectionUp(${index})">↑</button>
-                    <button onclick="moveSectionDown(${index})">↓</button>
-                    <button onclick="duplicateSection(${index})">📋</button>
-                    <button onclick="removeSection(${index})">🗑️</button>
-                </div>
-            </div>
-            ${fieldsHTML}
-        </div>
-    `;
-}
-
-// Attach events to section fields
-function attachSectionEvents() {
-    document.querySelectorAll('.section-field').forEach(field => {
-        field.addEventListener('input', (e) => {
-            const sectionEl = e.target.closest('.section-editor');
-            const index = parseInt(sectionEl.dataset.sectionIndex);
-            const fieldPath = e.target.dataset.field;
-            
-            updateSectionData(index, fieldPath, e.target.value);
-        });
+    container.innerHTML = '';
+    sections.forEach((section, index) => {
+        const el = createSectionElement(section, index);
+        container.appendChild(el);
     });
 }
 
-// Update section data
-function updateSectionData(index, fieldPath, value) {
-    const parts = fieldPath.split('.');
-    let target = sections[currentLanguage][index].data;
-    
-    for (let i = 0; i < parts.length - 1; i++) {
-        target = target[parts[i]];
-    }
-    
-    target[parts[parts.length - 1]] = value;
+function createSectionElement(section, index) {
+    const div = document.createElement('div');
+    div.className = 'section-item';
+
+    const fieldsHTML = generateFieldsHTML(section, index);
+
+    div.innerHTML = `
+        <div class="section-header">
+            <div class="section-title">${section.type}</div>
+            <button onclick="removeSection(${index})" class="btn btn-small\" style=\"background: rgba(255,0,51,0.1); color: var(--accent);\">Delete</button>
+        </div>
+        ${fieldsHTML}
+    `;
+
+    return div;
 }
 
-// Section manipulation functions
-window.removeSection = function(index) {
-    if (confirm('Remove this section?')) {
-        sections[currentLanguage].splice(index, 1);
-        renderSections();
-    }
-};
+function generateFieldsHTML(section, index) {
+    const template = window.TEMPLATES?.[section.type];
+    if (!template) return '<p style="color: var(--text-light);">No template found</p>';
 
-window.moveSectionUp = function(index) {
-    if (index > 0) {
-        [sections[currentLanguage][index - 1], sections[currentLanguage][index]] = 
-        [sections[currentLanguage][index], sections[currentLanguage][index - 1]];
-        renderSections();
-    }
-};
+    const dataDE = section.data_de || {};
+    const dataEN = section.data_en || {};
+    const shared = section.shared || {};
 
-window.moveSectionDown = function(index) {
-    if (index < sections[currentLanguage].length - 1) {
-        [sections[currentLanguage][index], sections[currentLanguage][index + 1]] = 
-        [sections[currentLanguage][index + 1], sections[currentLanguage][index]];
-        renderSections();
-    }
-};
+    let html = '<div class="section-fields">';
 
-window.duplicateSection = function(index) {
-    const copy = JSON.parse(JSON.stringify(sections[currentLanguage][index]));
-    copy.id = Date.now();
-    sections[currentLanguage].splice(index + 1, 0, copy);
-    renderSections();
-};
+    // Translatable fields (show DE/EN side by side)
+    template.translatable?.forEach(key => {
+        const value_de = dataDE[key] || '';
+        const value_en = dataEN[key] || '';
 
-window.addArrayItem = function(sectionIndex, arrayName, defaultValue) {
-    sections[currentLanguage][sectionIndex].data[arrayName].push(defaultValue);
-    renderSections();
-};
+        html += `
+            <div>
+                <label style="color: var(--text-light); font-size: 0.85rem; margin-bottom: 0.25rem; display: block;">${key}</label>
+                <div style="display: flex; gap: 0.5rem;">
+                    <input type="text" value="${value_de}" placeholder="DE" 
+                           onchange="updateSectionField(${index}, '${key}', this.value, 'de'); autoSave();"
+                           style="flex: 1; padding: 0.5rem 0.8rem; background: var(--bg-white); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-dark);">
+                    <input type="text" value="${value_en}" placeholder="EN" 
+                           onchange="updateSectionField(${index}, '${key}', this.value, 'en'); autoSave();"
+                           style="flex: 1; padding: 0.5rem 0.8rem; background: var(--bg-white); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-dark);">
+                </div>
+            </div>
+        `;
+    });
 
-window.removeArrayItem = function(sectionIndex, arrayName, itemIndex) {
-    sections[currentLanguage][sectionIndex].data[arrayName].splice(itemIndex, 1);
-    renderSections();
-};
+    // Shared fields (show once, language-independent)
+    template.shared?.forEach(key => {
+        const value = shared[key] || '';
 
-// Image upload handlers
-document.getElementById('cardImage')?.addEventListener('change', (e) => {
-    handleImageUpload(e, 'card', 'cardPreview');
-});
+        html += `
+            <div>
+                <label style="color: var(--text-light); font-size: 0.85rem; margin-bottom: 0.25rem; display: block;">${key}</label>
+                <input type="text" value="${value}" placeholder="${key}" 
+                       onchange="updateSectionField(${index}, '${key}', this.value, 'shared'); autoSave();"
+                       style="width: 100%; padding: 0.5rem 0.8rem; background: var(--bg-white); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-dark);">
+            </div>
+        `;
+    });
 
-document.getElementById('bgImage')?.addEventListener('change', (e) => {
-    handleImageUpload(e, 'bg', 'bgPreview');
-});
+    html += '</div>';
+    return html;
+}
 
-function handleImageUpload(event, type, previewId) {
-    const file = event.target.files[0];
-    if (!file) return;
+function updateSectionField(index, key, value, lang) {
+    if (!sections[index]) return;
     
+    if (lang === 'shared') {
+        sections[index].shared[key] = value;
+    } else {
+        const dataKey = `data_${lang}`;
+        sections[index][dataKey][key] = value;
+    }
+    
+    autoSave();
+}
+
+function removeSection(index) {
+    sections.splice(index, 1);
+    renderSections();
+    autoSave();
+}
+
+function handleImage(e, type) {
+    const file = e.target.files[0];
+    if (!file) return;
+
     const reader = new FileReader();
-    reader.onload = (e) => {
-        images[type] = {
-            file: file,
-            data: e.target.result
-        };
-        
-        const preview = document.getElementById(previewId);
-        preview.innerHTML = `<img src="${e.target.result}" alt="${type} preview">`;
+    reader.onload = (event) => {
+        const preview = document.getElementById(`${type}Preview`);
+        preview.innerHTML = `<img src="${event.target.result}" alt="preview">`;
         preview.classList.add('has-image');
+
+        draft.images = draft.images || {};
+        draft.images[type] = event.target.result;
+        autoSave();
     };
     reader.readAsDataURL(file);
 }
 
-// Collect metadata
 function collectMetadata() {
-    return {
+    const type = document.getElementById('contentType').value;
+    const meta = {
         id: document.getElementById('contentId').value,
-        type: document.getElementById('contentType').value,
-        titleDE: document.getElementById('titleDE').value,
-        titleEN: document.getElementById('titleEN').value,
-        descriptionDE: document.getElementById('descriptionDE').value,
-        descriptionEN: document.getElementById('descriptionEN').value,
-        tags: document.getElementById('tags').value.split(',').map(t => t.trim()).filter(t => t)
+        type: type,
+        title_de: document.getElementById('titleDE').value,
+        title_en: document.getElementById('titleEN').value,
+        description_de: document.getElementById('descDE').value,
+        description_en: document.getElementById('descEN').value
     };
+
+    if (type === 'concept') {
+        meta.tags = document.getElementById('tags').value.split(',').map(t => t.trim()).filter(t => t);
+    } else {
+        meta.author = document.getElementById('author').value || 'Leo Cucinelli';
+        meta.publishDate = document.getElementById('publishDate').value || new Date().toISOString().split('T')[0];
+        meta.readTime = document.getElementById('readTime').value || '5';
+    }
+
+    return meta;
 }
 
-// Preview button
-document.getElementById('previewBtn')?.addEventListener('click', () => {
-    const meta = collectMetadata();
-    
-    // Generate preview HTML
-    const previewHTML = generatePreviewHTML(meta, sections, images);
-    
-    const modal = document.getElementById('previewModal');
-    const iframe = document.getElementById('previewFrame');
-    
-    iframe.srcdoc = previewHTML;
-    modal.style.display = 'flex';
-});
+function autoSave() {
+    draft.metadata = collectMetadata();
+    draft.sections = sections;
+    draft.timestamp = Date.now();
 
-// Generate preview HTML
-function generatePreviewHTML(meta, sections, images) {
-    // TODO: Generate actual HTML preview similar to concept/blog pages
-    return `
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <style>
-                body { font-family: Arial, sans-serif; margin: 20px; background: #0a0a0a; color: #fff; }
-                h1 { color: #ff0033; }
-                .section { margin: 20px 0; padding: 20px; background: #141414; border-radius: 8px; }
-            </style>
-        </head>
-        <body>
-            <h1>${meta.titleEN} / ${meta.titleDE}</h1>
-            <p>${meta.descriptionEN}</p>
-            <hr>
-            ${sections.de.map(s => `<div class="section"><strong>${s.type}</strong><pre>${JSON.stringify(s.data, null, 2)}</pre></div>`).join('')}
-        </body>
-        </html>
-    `;
+    localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
+
+    const indicator = document.getElementById('autoSave');
+    indicator.classList.add('show');
+    setTimeout(() => indicator.classList.remove('show'), 2000);
 }
 
-// Publish button
-document.getElementById('publishBtn')?.addEventListener('click', async () => {
-    const meta = collectMetadata();
-    
-    // Validate
-    if (!meta.id || !meta.titleDE || !meta.titleEN) {
-        alert('Please fill in at least ID and titles (DE/EN)');
-        return;
-    }
-    
-    if (sections.de.length === 0 || sections.en.length === 0) {
-        alert('Please add content sections for both languages (DE and EN)');
-        return;
-    }
-    
-    if (confirm('Publish this content to GitHub?')) {
-        try {
-            document.getElementById('publishBtn').disabled = true;
-            document.getElementById('publishBtn').textContent = '⏳ Publishing...';
-            
-            await publishToGitHub(meta, sections, images);
-            
-            alert('✓ Content published successfully!');
-            document.getElementById('publishBtn').textContent = '🚀 Publish to GitHub';
-        } catch (error) {
-            alert('✗ Publish failed: ' + error.message);
-            document.getElementById('publishBtn').textContent = '🚀 Publish to GitHub';
-        } finally {
-            document.getElementById('publishBtn').disabled = false;
+function loadDraft() {
+    const saved = localStorage.getItem(DRAFT_KEY);
+    if (!saved) return;
+
+    try {
+        draft = JSON.parse(saved);
+
+        if (draft.metadata) {
+            const m = draft.metadata;
+            document.getElementById('contentId').value = m.id || '';
+            document.getElementById('contentType').value = m.type || 'concept';
+            document.getElementById('titleDE').value = m.title_de || '';
+            document.getElementById('titleEN').value = m.title_en || '';
+            document.getElementById('descDE').value = m.description_de || '';
+            document.getElementById('descEN').value = m.description_en || '';
+
+            if (m.type === 'concept') {
+                document.getElementById('tags').value = (m.tags || []).join(', ');
+            } else {
+                document.getElementById('author').value = m.author || '';
+                document.getElementById('publishDate').value = m.publishDate || '';
+                document.getElementById('readTime').value = m.readTime || '';
+            }
         }
-    }
-});
 
-// Initialize
-renderSections();
+        if (draft.sections) {
+            sections = draft.sections;
+            renderSections();
+        }
+
+        if (draft.images) {
+            if (draft.images.card) {
+                document.getElementById('cardPreview').innerHTML = `<img src="${draft.images.card}">`;
+                document.getElementById('cardPreview').classList.add('has-image');
+            }
+            if (draft.images.bg) {
+                document.getElementById('bgPreview').innerHTML = `<img src="${draft.images.bg}">`;
+                document.getElementById('bgPreview').classList.add('has-image');
+            }
+        }
+    } catch (e) {
+        console.error('Failed to load draft:', e);
+    }
+}
+
+function clearDraft() {
+    if (confirm('Clear draft and start new?')) {
+        localStorage.removeItem(DRAFT_KEY);
+        location.reload();
+    }
+}
+
+function openModal(id) {
+    document.getElementById(id).style.display = 'flex';
+}
+
+function closeModal(id) {
+    document.getElementById(id).style.display = 'none';
+}
+
+function getContentFolder(meta) {
+    if (meta.type === 'concept') return `concepts/concept-${meta.id}`;
+    if (meta.type === 'blog') return `blog/${meta.id}`;
+    return `${meta.type}s/${meta.id}`;
+}
+
+function showPreview() {
+    const meta = collectMetadata();
+    const folder = getContentFolder(meta);
+    
+    // Build data.json (metadata only) like live site
+    const baseData = {
+        id: meta.id,
+        translationKey: `${meta.type}s.${meta.id}`,
+        titleDE: meta.title_de,
+        titleEN: meta.title_en,
+        descriptionDE: meta.description_de,
+        descriptionEN: meta.description_en,
+        image: `${folder}/images/card.jpg`,
+        tags: meta.tags || [],
+        link: `${folder}/index.html`,
+        hero_image: 'images/bg.jpg'
+    };
+
+    const dataJson = meta.type === 'blog'
+        ? {
+            ...baseData,
+            author: meta.author,
+            publishDate: meta.publishDate,
+            readTime: meta.readTime,
+            excerptDE: meta.description_de,
+            excerptEN: meta.description_en
+        }
+        : baseData;
+
+    // Merge shared + translatable data for each language
+    const contentDE = { 
+        sections: sections.map(s => ({ 
+            type: s.type, 
+            data: { ...s.shared, ...s.data_de }
+        })) 
+    };
+    const contentEN = { 
+        sections: sections.map(s => ({ 
+            type: s.type, 
+            data: { ...s.shared, ...s.data_en }
+        })) 
+    };
+    const htmlPreview = generateIndexHTML(meta);
+    
+    // Store in window for tab switching
+    window.previewData = {
+        data: JSON.stringify(dataJson, null, 2),
+        de: JSON.stringify(contentDE, null, 2),
+        en: JSON.stringify(contentEN, null, 2),
+        html: htmlPreview
+    };
+    
+    // Show first tab
+    switchPreviewTab('data');
+    openModal('previewModal');
+}
+
+function switchPreviewTab(tab) {
+    if (!window.previewData) return;
+    
+    // Update tab buttons
+    document.querySelectorAll('.preview-tab').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    event.target.classList.add('active');
+    
+    // Show content
+    document.getElementById('previewContent').textContent = window.previewData[tab];
+}
+
+function generateIndexHTML(meta) {
+    const titleEN = meta.title_en || '';
+    const descEN = meta.description_en || '';
+    const isBlog = meta.type === 'blog';
+
+    if (isBlog) {
+        return `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${titleEN} - Blog</title>
+    <link rel="stylesheet" href="../../assets/css/style-base.css?v=2">
+    <link rel="stylesheet" href="../../assets/css/style-concepts.css?v=2">
+    <link rel="stylesheet" href="../../assets/css/style-blog-post.css?v=2">
+</head>
+<body style="opacity: 0;">
+
+    <div id="navbar-placeholder"></div>
+
+    <div class="back-button-container">
+        <a href="../../blog.html" class="back-button">← Back to Blog</a>
+    </div>
+
+    <section class="concept-detail">
+        <div class="blog-hero">
+            <img id="postHeroImage" alt="${titleEN}" class="blog-hero-image">
+            <div class="blog-hero-overlay">
+                <h1 id="postTitle">${titleEN}</h1>
+                <p id="postExcerpt" class="concept-subtitle">${descEN}</p>
+                <p class="concept-subtitle" id="postMeta"></p>
+            </div>
+        </div>
+
+        <div class="container concept-content">
+            <div class="concept-main">
+                <div id="postContent"></div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Game Concept Portfolio. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="../../assets/js/navbar-loader.js"><\/script>
+    <script src="../../assets/js/i18n.js"><\/script>
+    <script src="../../assets/js/blog.js"><\/script>
+    <script src="../../assets/js/section-templates.js"><\/script>
+    <script src="../../assets/js/blog-loader.js"><\/script>
+    <script>
+        setTimeout(() => {
+            document.body.style.transition = 'opacity 0.3s ease';
+            document.body.style.opacity = '1';
+        }, 100);
+    <\/script>
+    <script src="../../assets/js/script.js"><\/script>
+    <script src="../../assets/js/parallax.js"><\/script>
+</body>
+</html>`;
+    }
+
+    return `<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${titleEN}</title>
+    <link rel="stylesheet" href="../../assets/css/style-base.css?v=2">
+    <link rel="stylesheet" href="../../assets/css/style-concepts.css?v=2">
+</head>
+<body>
+
+    <!-- Navbar Placeholder (keeps layout stable until navbar loads) -->
+    <nav id="navbarPlaceholder" class="navbar" style="min-height:77px; visibility:hidden;"></nav>
+
+    <!-- Back Button -->
+    <div class="back-button-container" style="opacity:0; transition: opacity 0.2s ease;">
+        <a href="../../concepts.html" class="back-button" data-i18n="concept.back">← Back to Portfolio</a>
+    </div>
+
+    <!-- Concept Detail Page -->
+    <section class="concept-detail">
+        <div class="concept-hero">
+            <img src="images/bg.jpg" alt="Concept Hero Image" class="concept-hero-image" id="conceptHeroImage" loading="eager">
+            <div class="concept-hero-overlay">
+                <h1 id="conceptTitle">${titleEN}</h1>
+                <p class="concept-subtitle" id="conceptDescription">${descEN}</p>
+            </div>
+        </div>
+
+        <div class="container concept-content">
+            <div class="concept-main">
+                <!-- Skeleton placeholder while content loads -->
+                <div id="conceptSkeleton" class="skeleton-container">
+                    <div class="skeleton skeleton-title"></div>
+                    <div class="skeleton skeleton-subtitle"></div>
+                    <div class="skeleton skeleton-text"></div>
+                    <div class="skeleton skeleton-text"></div>
+                    <div class="skeleton skeleton-text short"></div>
+                </div>
+
+                <!-- Dynamic Content Sections -->
+                <div id="conceptContentSections" style="opacity: 0; transition: opacity 0.3s ease;">
+                    <!-- Dynamically loaded from translations -->
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Game Concept Portfolio. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="../../assets/js/navbar-loader.js"><\/script>
+    <script src="../../assets/js/i18n.js"><\/script>
+    <script src="../../assets/js/script.js"><\/script>
+    <script src="../../assets/js/portfolio.js"><\/script>
+    <script src="../../assets/js/section-templates.js"><\/script>
+    <script src="../../assets/js/concept-loader.js"><\/script>
+    <script src="../../assets/js/parallax.js"><\/script>
+    <!-- Cloudflare Web Analytics -->
+    <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "7b30862445244605baa7504bb6f3fe37"}'><\/script>
+    <!-- End Cloudflare Web Analytics -->
+</body>
+</html>`;
+}
+
+function loadSettings() {
+    const settings = JSON.parse(localStorage.getItem(SETTINGS_KEY) || '{}');
+    document.getElementById('githubToken').value = settings.token || '';
+    document.getElementById('githubUser').value = settings.user || '';
+    document.getElementById('githubRepo').value = settings.repo || '';
+    document.getElementById('githubBranch').value = settings.branch || 'main';
+}
+
+function saveSettings() {
+    const settings = {
+        token: document.getElementById('githubToken').value,
+        user: document.getElementById('githubUser').value,
+        repo: document.getElementById('githubRepo').value,
+        branch: document.getElementById('githubBranch').value
+    };
+
+    if (!settings.token || !settings.user || !settings.repo) {
+        showStatus('Fill all fields', 'error');
+        return;
+    }
+
+    localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
+    showStatus('Settings saved!', 'success');
+    setTimeout(() => closeModal('settingsModal'), 1000);
+}
+
+async function testGitHub() {
+    const token = document.getElementById('githubToken').value;
+    const user = document.getElementById('githubUser').value;
+    const repo = document.getElementById('githubRepo').value;
+
+    if (!token || !user || !repo) {
+        showStatus('Fill all fields first', 'error');
+        return;
+    }
+
+    try {
+        const response = await fetch(`https://api.github.com/repos/${user}/${repo}`, {
+            headers: { 'Authorization': `token ${token}` }
+        });
+
+        if (response.ok) {
+            showStatus('✓ Connection successful!', 'success');
+        } else {
+            showStatus('✗ Invalid credentials', 'error');
+        }
+    } catch (error) {
+        showStatus('✗ Network error', 'error');
+    }
+}
+
+function showStatus(message, type) {
+    const status = document.getElementById('settingsStatus');
+    status.textContent = message;
+    status.className = `status-message ${type}`;
+    status.style.display = 'block';
+}
+
+async function publishContent() {
+    const meta = collectMetadata();
+
+    if (!meta.id || !meta.title_de || !meta.title_en) {
+        alert('Fill in: ID, Title (DE), Title (EN)');
+        return;
+    }
+
+    if (sections.length === 0) {
+        alert('Add at least one section');
+        return;
+    }
+
+    const settings = JSON.parse(localStorage.getItem(SETTINGS_KEY) || '{}');
+    if (!settings.token || !settings.user || !settings.repo) {
+        alert('Configure GitHub settings first');
+        return;
+    }
+
+    if (!confirm(`Publish to GitHub?\n\n${sections.length} sections will be published`)) return;
+
+    try {
+        document.getElementById('publishBtn').disabled = true;
+        document.getElementById('publishBtn').textContent = 'Publishing...';
+
+        const folder = getContentFolder(meta);
+
+        // Create data.json (metadata only, no sections)
+        const baseData = {
+            id: meta.id,
+            translationKey: `${meta.type}s.${meta.id}`,
+            titleDE: meta.title_de,
+            titleEN: meta.title_en,
+            descriptionDE: meta.description_de,
+            descriptionEN: meta.description_en,
+            image: `${folder}/images/card.jpg`,
+            tags: meta.tags || [],
+            link: `${folder}/index.html`,
+            hero_image: 'images/bg.jpg'
+        };
+
+        const dataJson = meta.type === 'blog'
+            ? {
+                ...baseData,
+                author: meta.author,
+                publishDate: meta.publishDate,
+                readTime: meta.readTime,
+                excerptDE: meta.description_de,
+                excerptEN: meta.description_en
+            }
+            : baseData;
+
+        await uploadFile(settings, `${folder}/data.json`, JSON.stringify(dataJson, null, 2));
+
+        // Create content-de.json and content-en.json (merge shared + bilingual data)
+        const contentDE = { 
+            sections: sections.map(s => ({ 
+                type: s.type, 
+                data: { ...s.shared, ...s.data_de }
+            })) 
+        };
+        const contentEN = { 
+            sections: sections.map(s => ({ 
+                type: s.type, 
+                data: { ...s.shared, ...s.data_en }
+            })) 
+        };
+
+        await uploadFile(settings, `${folder}/content-de.json`, JSON.stringify(contentDE, null, 2));
+        await uploadFile(settings, `${folder}/content-en.json`, JSON.stringify(contentEN, null, 2));
+
+        alert('Published successfully!');
+        localStorage.removeItem(DRAFT_KEY);
+
+    } catch (error) {
+        alert('Publish failed: ' + error.message);
+    } finally {
+        document.getElementById('publishBtn').disabled = false;
+        document.getElementById('publishBtn').textContent = 'Publish';
+    }
+}
+
+async function uploadFile(settings, path, content) {
+    const url = `https://api.github.com/repos/${settings.user}/${settings.repo}/contents/${path}`;
+    const encoded = btoa(content);
+
+    // Get existing file SHA if it exists
+    let sha = null;
+    try {
+        const getResponse = await fetch(url, {
+            headers: { 'Authorization': `token ${settings.token}` }
+        });
+        if (getResponse.ok) {
+            const data = await getResponse.json();
+            sha = data.sha;
+        }
+    } catch (e) {}
+
+    const body = {
+        message: `Update ${path}`,
+        content: encoded,
+        branch: settings.branch
+    };
+
+    if (sha) body.sha = sha;
+
+    const response = await fetch(url, {
+        method: 'PUT',
+        headers: {
+            'Authorization': `token ${settings.token}`,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+    });
+
+    if (!response.ok) {
+        throw new Error(`Upload failed: ${response.statusText}`);
+    }
+}

@@ -1,54 +1,36 @@
-// Authentication Module
+// Authentication
+
 const AUTH_PASSWORD = 'admi';
-const AUTH_KEY = 'cms_authenticated';
 
-// Check if user is authenticated
-function isAuthenticated() {
-    return sessionStorage.getItem(AUTH_KEY) === 'true';
-}
+document.getElementById('loginForm')?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const password = document.getElementById('password').value;
+    const error = document.getElementById('loginError');
 
-// Set authentication
-function setAuthenticated(value) {
-    sessionStorage.setItem(AUTH_KEY, value ? 'true' : 'false');
-}
+    if (password === AUTH_PASSWORD) {
+        sessionStorage.setItem('cms_auth', 'true');
+        window.location.href = 'editor.html';
+    } else {
+        error.style.display = 'block';
+        setTimeout(() => error.style.display = 'none', 3000);
+    }
+});
 
-// Protect page (redirect if not authenticated)
-function protectPage() {
-    if (!isAuthenticated() && !window.location.pathname.endsWith('index.html') && !window.location.pathname.endsWith('/ContentManagerSystem/')) {
+// Protect editor
+if (window.location.pathname.includes('editor.html')) {
+    if (sessionStorage.getItem('cms_auth') !== 'true') {
         window.location.href = 'index.html';
     }
 }
 
-// Login form handler
-if (document.getElementById('loginForm')) {
-    document.getElementById('loginForm').addEventListener('submit', (e) => {
-        e.preventDefault();
-        
-        const password = document.getElementById('password').value;
-        const errorDiv = document.getElementById('loginError');
-        
-        if (password === AUTH_PASSWORD) {
-            setAuthenticated(true);
-            window.location.href = 'dashboard.html';
-        } else {
-            errorDiv.textContent = 'Invalid password';
-            errorDiv.style.display = 'block';
-            
-            setTimeout(() => {
-                errorDiv.style.display = 'none';
-            }, 3000);
-        }
-    });
-}
-
-// Logout handler
-if (document.getElementById('logoutBtn')) {
-    document.getElementById('logoutBtn').addEventListener('click', (e) => {
-        e.preventDefault();
-        setAuthenticated(false);
-        window.location.href = 'index.html';
-    });
-}
-
-// Run protection on page load
-protectPage();
+// Logout
+document.addEventListener('DOMContentLoaded', () => {
+    const logoutBtn = document.querySelector('[data-logout]');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            sessionStorage.removeItem('cms_auth');
+            window.location.href = 'index.html';
+        });
+    }
+});
