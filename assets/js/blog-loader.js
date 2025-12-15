@@ -1,133 +1,171 @@
-// Map blog folder names to translation keys
-const blogMapping = {
-    'gameplay-loops': 'gameplayLoops',
-    'power-balance': 'powerBalance',
-    'progression-systems': 'progression'
-};
+/**
+ * BLOG SYSTEM - Blog Detail Page (blog/{id}/index.html)
+ * Simple, clean implementation
+ */
 
-// Load blog post data and populate the page
-async function loadBlogPostData() {
+let blogLoaderInitialized = false;
+let blogLoading = false;
+
+async function loadBlogPost() {
+    if (blogLoaderInitialized) return;
+    
+    // Prevent concurrent loads
+    if (blogLoading) return;
+    blogLoading = true;
+    blogLoaderInitialized = true;
+
     try {
-        // Get blog ID from URL path
-        const pathParts = window.location.pathname.split('/');
-        const blogIndex = pathParts.indexOf('blog');
-        const blogFolder = pathParts[blogIndex + 1];
+        // Get blog ID from URL
+        const parts = window.location.pathname.split('/');
+        const blogId = parts[parts.indexOf('blog') + 1];
         
-        if (!blogFolder) return;
-        
-        // Get translation key for this blog post
-        const translationKey = blogMapping[blogFolder];
-        if (!translationKey) {
-            console.error('No translation mapping for:', blogFolder);
-            return;
-        }
-        
-        // Find blog post data from blog.js
-        const blogPost = typeof blogData !== 'undefined' ? blogData.find(post => post.id === blogFolder) : null;
-        
-        // Load post title from translations
-        const titleEl = document.getElementById('postTitle');
-        if (titleEl) {
-            titleEl.textContent = t(`blog.posts.${translationKey}.title`);
-        }
-        
-        // Load hero image
-        const heroImageEl = document.getElementById('postHeroImage');
-        if (heroImageEl && blogPost && blogPost.heroImage) {
-            heroImageEl.src = '../../' + blogPost.heroImage;
-        }
-        
-        // Load post meta (tags and date)
-        const metaEl = document.getElementById('postMeta');
-        if (metaEl && blogPost) {
-            const tagsText = blogPost.tags.join(' • ');
+        if (!blogId) throw new Error('No blog ID found');
+
+        // Load blog metadata
+        const dataRes = await fetch('data.json');
+        if (!dataRes.ok) throw new Error('Failed to load data.json');
+        const blogPost = await dataRes.json();
+
+        // Function to render blog post (starts immediately, doesn't wait for i18n)
+        const renderBlogPost = () => {
             const lang = localStorage.getItem('language') || 'de';
-            const locale = lang === 'de' ? 'de-DE' : 'en-US';
-            const dateText = new Date(blogPost.date).toLocaleDateString(locale, { year: 'numeric', month: 'long', day: 'numeric' });
-            metaEl.textContent = `${tagsText} • ${dateText}`;
-        }
-        
-        // Load dynamic content sections from local content files
-        const contentContainer = document.getElementById('postContent');
-        if (contentContainer) {
-            const lang = localStorage.getItem('language') || 'de';
-            const contentResponse = await fetch(`content-${lang}.json`);
-            const contentData = await contentResponse.json();
             
-            contentContainer.innerHTML = '';
-            
-            if (contentData.sections) {
-                contentData.sections.forEach(section => {
-                    renderSection(section, contentContainer);
-                });
+            // Get language and set title directly from blogPost data
+            const titleEl = document.getElementById('postTitle');
+            if (titleEl) {
+                const title = lang === 'de' ? blogPost.titleDE : blogPost.titleEN;
+                titleEl.textContent = title;
             }
-        }
-    } catch (error) {
-        console.error('Error loading blog post data:', error);
+
+            // Set excerpt
+            const excerptEl = document.getElementById('postExcerpt');
+            if (excerptEl) {
+                const excerpt = lang === 'de' ? blogPost.excerptDE : blogPost.excerptEN;
+                excerptEl.textContent = excerpt;
+            }
+
+            // Set hero image with PNG/JPG fallback and lazy loading
+            const heroEl = document.getElementById('postHeroImage');
+            if (heroEl && !heroEl.src) {
+                const filename = (blogPost.heroImage || 'bg').replace(/\.(png|jpg)$/i, '');
+                const candidates = [`images/${filename}.png`, `images/${filename}.jpg`];
+                heroEl.loading = 'lazy';
+                
+                // Try to load first candidate, fallback to second
+                heroEl.src = candidates[0];
+                heroEl.onerror = () => {
+                    if (candidates[1]) heroEl.src = candidates[1];
+                };
+            }
+
+            // Set meta (tags and date)
+            const metaEl = document.getElementById('postMeta');
+            if (metaEl) {
+                const dateStr = new Date(blogPost.date).toLocaleDateString(lang === 'de' ? 'de-DE' : 'en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+                const tags = (blogPost.tags || []).join(' • ');
+                metaEl.textContent = tags ? `${tags} • ${dateStr}` : dateStr;
+            }
+
+            // Load content
+            const contentEl = document.getElementById('postContent');
+            if (contentEl) {
+                fetch(`content-${lang}.json`)
+                    .then(res => {
+                        if (!res.ok) throw new Error(`Failed to load content-${lang}.json`);
+                        return res.json();
+                    })
+                    .then(content => {
+                        contentEl.innerHTML = '';
+
+                        if (content.sections) {
+                            content.sections.forEach(section => {
+                                // Add lazy loading to images
+                                if (section.images) {
+                                    section.images.forEach(img => { img.loading = 'lazy'; });
+                                }
+                                
+                                const rendererName = `render${section.type.charAt(0).toUpperCase() + section.type.slice(1)}Section`;
+                                
+                                if (typeof window[rendererName] === 'function') {
+                                    window[rendererName](section, contentEl);
+                                } else {
+                                    renderFallback(section, contentEl);
+                                }
+                            });
+                        }
+                    })
+                    .catch(error => console.error('Error loading content:', error));
+            }
+        };
+
+        // Initial render
+        renderBlogPost();
+
+        // Listen for language changes
+        window.addEventListener('languageChanged', renderBlogPost);
+    } finally {
+        blogLoading = false;
     }
 }
 
-// Render a section based on its type
-function renderSection(section, container) {
-    const sectionDiv = document.createElement('div');
-    sectionDiv.className = 'concept-section';
-    
-    switch(section.type) {
-        case 'text':
-            if (section.title) {
-                const title = document.createElement('h2');
-                title.textContent = section.title;
-                sectionDiv.appendChild(title);
-            }
-            if (section.text) {
-                const text = document.createElement('p');
-                text.innerHTML = section.text;
-                sectionDiv.appendChild(text);
-            }
-            break;
-            
-        case 'features':
-            if (section.title) {
-                const title = document.createElement('h2');
-                title.textContent = section.title;
-                sectionDiv.appendChild(title);
-            }
-            if (section.items && Array.isArray(section.items)) {
-                section.items.forEach(item => {
-                    const itemDiv = document.createElement('div');
-                    itemDiv.className = 'mechanic-item';
-                    itemDiv.innerHTML = `
-                        ${item.icon ? `<span style="font-size: 1.5rem; margin-right: 10px;">${item.icon}</span>` : ''}
-                        <span>${item.text}</span>
-                    `;
-                    sectionDiv.appendChild(itemDiv);
-                });
-            }
-            break;
-            
-        default:
-            // For any other types, use concept-templates.js if available
-            if (typeof window.renderSectionByType === 'function') {
-                window.renderSectionByType(section, sectionDiv);
-            }
-    }
-    
-    container.appendChild(sectionDiv);
-}
+function renderFallback(section, container) {
+    const div = document.createElement('div');
+    div.className = 'concept-section';
 
-// Initialize when translations are ready
-function initBlogPostPage() {
-    const checkReady = setInterval(() => {
-        if (typeof t === 'function' && typeof translations !== 'undefined' && Object.keys(translations).length > 0) {
-            clearInterval(checkReady);
-            loadBlogPostData();
+    if (section.type === 'text') {
+        if (section.title) {
+            const h = document.createElement('h2');
+            h.textContent = section.title;
+            div.appendChild(h);
         }
-    }, 50);
+        if (section.text) {
+            const p = document.createElement('p');
+            p.innerHTML = section.text;
+            div.appendChild(p);
+        }
+    } else if (section.type === 'heading') {
+        const level = section.level || 2;
+        const h = document.createElement(`h${level}`);
+        h.textContent = section.text;
+        div.appendChild(h);
+    } else if (section.type === 'paragraph') {
+        const p = document.createElement('p');
+        p.innerHTML = section.text;
+        div.appendChild(p);
+    } else if (section.type === 'list') {
+        const ul = document.createElement('ul');
+        (section.items || []).forEach(item => {
+            const li = document.createElement('li');
+            li.innerHTML = item;
+            ul.appendChild(li);
+        });
+        div.appendChild(ul);
+    } else if (section.type === 'features') {
+        if (section.title) {
+            const h = document.createElement('h2');
+            h.textContent = section.title;
+            div.appendChild(h);
+        }
+        if (section.items) {
+            section.items.forEach(item => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'mechanic-item';
+                itemDiv.innerHTML = `
+                    ${item.icon ? `<span style="font-size:1.5rem;margin-right:10px">${item.icon}</span>` : ''}
+                    <span>${item.text}</span>
+                `;
+                div.appendChild(itemDiv);
+            });
+        }
+    }
+
+    container.appendChild(div);
 }
 
-// Start initialization
+// Init on page load
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initBlogPostPage);
+    document.addEventListener('DOMContentLoaded', loadBlogPost);
 } else {
-    initBlogPostPage();
+    loadBlogPost();
 }
+

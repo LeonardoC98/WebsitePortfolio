@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Concepts - Game Concepts</title>
+    <link rel="stylesheet" href="assets/css/style-base.css?v=2">
+    <link rel="stylesheet" href="assets/css/style-portfolio.css?v=2">
+</head>
+<body style="opacity: 0;">
+    <!-- Page Hero to match portfolio layout -->
+    <section class="page-hero">
+        <div class="hero-content">
+            <h1 data-i18n="portfolio.title">i18n error</h1>
+            <p data-i18n="portfolio.subtitle">i18n error</p>
+        </div>
+    </section>
+
+    <!-- Portfolio Search and Filters -->
+    <section class="portfolio-search-section">
+        <div class="container">
+            <div class="search-filter-wrapper">
+                <!-- Tag Dropdown -->
+                <div class="tag-dropdown-wrapper">
+                    <button class="tag-select-btn" id="tagSelectBtn" type="button">
+                        <span data-i18n="portfolio.selectTags">i18n error</span>
+                        <span class="arrow">▼</span>
+                    </button>
+                    <div class="tag-dropdown-list" id="tagDropdownList"></div>
+                </div>
+                
+                <!-- Search Bar -->
+                <div class="search-wrapper">
+                    <input type="search" id="conceptSearch" placeholder="Suche..." data-i18n-placeholder="portfolio.search">
+                    <button type="button" id="conceptClear" class="clear-btn" data-i18n="portfolio.clear">i18n error</button>
+                </div>
+            </div>
+            
+            <!-- Selected Tags -->
+            <div id="selectedTagsDisplay" class="selected-tags"></div>
+        </div>
+    </section>
+
+    <!-- Portfolio Grid -->
+    <section class="portfolio">
+        <div class="container">
+            <div class="portfolio-grid" id="conceptGrid"></div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p data-i18n="footer.copyright">i18n error</p>
+        </div>
+    </footer>
+    <script src="assets/js/navbar-loader.js"></script>
+    <script>
+        // Fade in page once navbar is loaded
+        setTimeout(() => {
+            document.body.style.transition = 'opacity 0.3s ease';
+            document.body.style.opacity = '1';
+        }, 100);
+    </script>
+    <script src="assets/js/i18n.js"></script>
+    <script src="assets/js/script.js"></script>
+    <script src="assets/js/concept.js"></script>
+</body>
+</html>

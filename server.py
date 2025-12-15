@@ -5,7 +5,17 @@ Simple HTTP Server that properly serves index.html for directory requests
 import http.server
 import socketserver
 import os
+import json
+import sys
 from pathlib import Path
+
+# Add blog folder to path so we can import bloglist
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'blog'))
+from bloglist import get_blog_posts_json
+
+# Add concepts folder to path so we can import conceptlist
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'concepts'))
+from conceptlist import get_concepts_json
 
 PORT = 8000
 
@@ -17,6 +27,44 @@ class MyHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
         super().end_headers()
 
     def do_GET(self):
+        # Handle API endpoints
+        if self.path == '/api/blog-index':
+            try:
+                blog_data = get_blog_posts_json()
+                response = json.dumps(blog_data).encode('utf-8')
+                
+                self.send_response(200)
+                self.send_header('Content-type', 'application/json')
+                self.send_header('Content-Length', str(len(response)))
+                self.end_headers()
+                self.wfile.write(response)
+                return
+            except Exception as e:
+                self.send_response(500)
+                self.send_header('Content-type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'error': str(e)}).encode('utf-8'))
+                return
+        
+        if self.path == '/api/concepts-index':
+            try:
+                concepts_data = get_concepts_json()
+                response = json.dumps(concepts_data).encode('utf-8')
+                
+                self.send_response(200)
+                self.send_header('Content-type', 'application/json')
+                self.send_header('Content-Length', str(len(response)))
+                self.end_headers()
+                self.wfile.write(response)
+                return
+            except Exception as e:
+                self.send_response(500)
+                self.send_header('Content-type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'error': str(e)}).encode('utf-8'))
+                return
+        
+        # Original file serving logic
         # If the path ends with /, serve index.html
         if self.path.endswith('/'):
             # Try to serve index.html
